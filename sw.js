@@ -1,5 +1,5 @@
 // Uygulama dosyalarını telefona kaydeder, böylece internetsiz de açılır.
-const CACHE = "iklim-kartlari-v3";
+const CACHE = "iklim-kartlari-v4";
 const ASSETS = [
   "./",
   "./index.html",

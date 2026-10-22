@@ -47,7 +47,7 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
-html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--surface)}
 body{
   height:100%;margin:0;background:var(--bg);color:var(--ink);
   font-family:"Lexend","Noto Naskh Arabic",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -65,7 +65,7 @@ button{font:inherit;color:inherit}
 .brand span:last-child{font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .counter{font-size:15px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 
-main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex-direction:column}
+main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex-direction:column;scroll-padding-bottom:90px}
 .view{display:flex;flex-direction:column;flex:1;min-height:0;width:100%;max-width:480px;margin:0 auto}
 .view[hidden]{display:none}
 
@@ -135,7 +135,12 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
 .feedback{margin-top:14px;padding:14px 16px;border-radius:16px;background:var(--surface);border:1px solid var(--line);font-size:15px;line-height:1.6;flex:none}
 .feedback b{display:block;font-size:17px;margin-bottom:2px}
 .feedback.ok b{color:var(--ok)} .feedback.bad b{color:var(--bad)}
-.q-next{margin-top:14px;flex:none;width:100%}
+#q-play{display:flex;flex-direction:column;flex:1}
+.q-actions{position:sticky;bottom:0;z-index:2;background:var(--bg);padding:12px 0 4px;margin-top:auto}
+.btn:disabled{opacity:.45;cursor:default}
+.top-right{display:flex;align-items:center;gap:10px;flex:none}
+.install-pill{border:1px solid var(--line);background:var(--surface);color:var(--firuze);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+.ver{font-size:12px;opacity:.7}
 #count-chips{flex-wrap:wrap;overflow:visible}
 .panel{display:flex;flex-direction:column;gap:14px;padding:18px 2px}
 .panel h2{font-size:24px;font-weight:600;line-height:1.3;margin:0}
@@ -161,7 +166,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
 .q-hints{padding:0 6px 12px;margin-top:-4px}
 
 /* tabs */
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-top:1px solid var(--line);padding:6px 14px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs{flex:none;position:relative;z-index:20;display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-top:1px solid var(--line);padding:6px 14px}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:7px 0;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-radius:14px}
 .tab svg{width:24px;height:24px}
 .tab[aria-selected="true"]{color:var(--firuze)}
@@ -178,7 +183,10 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
 
 <header class="top">
   <div class="brand"><span class="ar">المَنَاخ</span><span>2. ünite kelimeleri</span></div>
-  <div class="counter" id="counter" aria-live="polite"></div>
+  <div class="top-right">
+    <button class="install-pill" id="btn-install-pill" type="button" hidden>Yükle</button>
+    <div class="counter" id="counter" aria-live="polite"></div>
+  </div>
 </header>
 
 <div class="install-bar" id="install-bar" hidden>
@@ -224,6 +232,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
       <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
       <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
       <p id="last-result"></p>
+      <p class="ver">Sürüm 4</p>
     </div>
 
     <div id="q-play" hidden>
@@ -249,7 +258,10 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
       </div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback" hidden aria-live="polite"></div>
-      <button class="btn primary q-next" id="btn-qnext" type="button" hidden>Sonraki soru</button>
+      <div class="row q-actions">
+        <button class="btn" id="btn-reveal" type="button">Cevabı göster</button>
+        <button class="btn primary" id="btn-qnext" type="button" disabled>Sonraki soru</button>
+      </div>
     </div>
 
     <div id="q-end" class="panel" hidden>
@@ -552,7 +564,9 @@ function renderQuestion() {
   $("q-pos").textContent = `Soru ${qz.pos + 1} / ${qz.list.length}`;
   $("q-ok").textContent = qz.ok; $("q-bad").textContent = qz.bad;
   $("q-bar").style.width = `${(qz.pos / qz.list.length) * 100}%`;
-  $("feedback").hidden = true; $("btn-qnext").hidden = true;
+  $("feedback").hidden = true;
+  $("btn-qnext").disabled = true; $("btn-reveal").disabled = false;
+  $("btn-qnext").textContent = qz.pos + 1 < qz.list.length ? "Sonraki soru" : "Sonucu gör";
   const opts = shuffled([{ t: it.tr, ok: true }, { t: it.d[0], ok: false }, { t: it.d[1], ok: false }]);
   const wrap = $("opts"); wrap.innerHTML = "";
   opts.forEach(o => {
@@ -588,10 +602,8 @@ function choose(btn, it) {
   const head = document.createElement("b"); head.textContent = right ? "Doğru" : (btn ? `Yanlış. Doğru cevap: ${it.tr}` : `Cevap: ${it.tr}`);
   const note = document.createElement("span"); note.textContent = it.n;
   fb.append(head, note); fb.hidden = false;
-  const nx = $("btn-qnext");
-  nx.textContent = qz.pos + 1 < qz.list.length ? "Sonraki soru" : "Sonucu gör";
-  nx.hidden = false;
-  setTimeout(() => nx.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" }), 60);
+  $("btn-qnext").disabled = false; $("btn-reveal").disabled = true;
+  setTimeout(() => fb.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" }), 60);
 }
 function finishQuiz() {
   const total = qz.list.length;
@@ -620,7 +632,7 @@ function suffix(n) {
 }
 $("btn-start").addEventListener("click", () => startQuiz(shuffled(DATA.map((_, i) => i)).slice(0, qz.count)));
 function quizNext() {
-  if (!qz.answered) { toast("Önce bir seçenek seç ya da sola kaydır"); return; }
+  if (!qz.answered) { toast("Önce bir seçenek seç ya da “Cevabı göster”e bas"); return; }
   if (qz.pos + 1 < qz.list.length) { qz.pos++; renderQuestion(); } else finishQuiz();
 }
 function revealAnswer() {
@@ -628,6 +640,7 @@ function revealAnswer() {
   choose(null, DATA[qz.list[qz.pos]]);
 }
 $("btn-qnext").addEventListener("click", quizNext);
+$("btn-reveal").addEventListener("click", revealAnswer);
 
 // quiz swipe: left = show answer (counts as wrong), right = next question
 const qPlay = $("q-play"), qTile = $("q-tile");
@@ -673,24 +686,28 @@ setTab(tab);
 // ---- telefona yükleme ----
 const isStandalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const TXT_READY = "Bu uygulamayı telefonuna yükleyebilirsin.";
+const TXT_IOS = "Yüklemek için Safari’de Paylaş düğmesine dokun ve “Ana Ekrana Ekle”yi seç.";
+const TXT_MENU = "Yüklemek için tarayıcının menüsünü (⋮) aç ve “Uygulamayı yükle” ya da “Ana ekrana ekle”yi seç.";
 let installEvent = null;
-const bar = $("install-bar");
+const bar = $("install-bar"), pill = $("btn-install-pill");
+function showBar(text, withButton) { $("install-text").textContent = text; $("btn-install").hidden = !withButton; bar.hidden = false; }
+if (!isStandalone) pill.hidden = false;
 window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault(); installEvent = e;
-  if (!isStandalone) { $("install-text").textContent = "Bu uygulamayı telefonuna yükleyebilirsin."; $("btn-install").hidden = false; bar.hidden = false; }
+  if (!isStandalone) showBar(TXT_READY, true);
 });
-$("btn-install").addEventListener("click", async () => {
-  if (!installEvent) return;
+async function runInstall() {
+  if (!installEvent) { showBar(isIOS ? TXT_IOS : TXT_MENU, false); return; }
   installEvent.prompt();
   try { await installEvent.userChoice; } catch (e) {}
   installEvent = null; bar.hidden = true;
-});
-window.addEventListener("appinstalled", () => { bar.hidden = true; toast("Uygulama yüklendi"); });
-$("btn-install-close").addEventListener("click", () => { bar.hidden = true; if (isIOS) { store.iosHintClosed = true; persist(); } });
-if (isIOS && !isStandalone && !store.iosHintClosed) {
-  $("install-text").textContent = "Yüklemek için Safari’de Paylaş düğmesine dokun ve “Ana Ekrana Ekle”yi seç.";
-  $("btn-install").hidden = true; bar.hidden = false;
 }
+$("btn-install").addEventListener("click", runInstall);
+pill.addEventListener("click", runInstall);
+window.addEventListener("appinstalled", () => { bar.hidden = true; pill.hidden = true; toast("Uygulama yüklendi"); });
+$("btn-install-close").addEventListener("click", () => { bar.hidden = true; if (isIOS) { store.iosHintClosed = true; persist(); } });
+if (isIOS && !isStandalone && !store.iosHintClosed) showBar(TXT_IOS, false);
 
 // ---- çevrimdışı çalışma ----
 if ("serviceWorker" in navigator) {

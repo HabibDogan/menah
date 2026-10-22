@@ -1,5 +1,5 @@
 // Uygulama dosyalarını telefona kaydeder, böylece internetsiz de açılır.
-const CACHE = "iklim-kartlari-v2";
+const CACHE = "iklim-kartlari-v3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -27,14 +27,14 @@ self.addEventListener("fetch", event => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
 
-  // Uygulamanın kendi dosyaları: önce telefondaki kopya, yoksa internet
+  // Uygulamanın kendi dosyaları: önce internetten güncel sürüm, internet yoksa telefondaki kopya
   if (url.origin === self.location.origin) {
     event.respondWith(
-      caches.match(req, { ignoreSearch: true }).then(hit => hit || fetch(req).then(res => {
+      fetch(req).then(res => {
         const copy = res.clone();
         caches.open(CACHE).then(cache => cache.put(req, copy));
         return res;
-      }).catch(() => caches.match("./index.html")))
+      }).catch(() => caches.match(req, { ignoreSearch: true }).then(hit => hit || caches.match("./index.html")))
     );
     return;
   }

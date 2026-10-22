@@ -77,7 +77,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 
 /* flashcard */
-.stage{flex:1 1 auto;min-height:300px;display:flex;align-items:stretch;justify-content:center;perspective:1300px;padding:10px 4px 8px}
+.stage{flex:1 1 auto;min-height:240px;display:flex;align-items:stretch;justify-content:center;perspective:1300px;padding:10px 4px 8px}
 .drag{position:relative;width:100%;max-width:420px;max-height:500px;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
 .drag:active{cursor:grabbing}
 .inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.75,.2,1)}
@@ -114,7 +114,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
 .score svg{width:16px;height:16px}
 .bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:var(--firuze);transition:width .3s ease}
-.tile{position:relative;background:var(--firuze);color:var(--on-firuze);border-radius:26px;min-height:156px;display:flex;align-items:center;justify-content:center;padding:26px 20px;box-shadow:var(--shadow);flex:none;margin-bottom:16px}
+.tile{position:relative;background:var(--firuze);color:var(--on-firuze);border-radius:26px;min-height:156px;display:flex;align-items:center;justify-content:center;padding:26px 20px;box-shadow:var(--shadow);flex:none;margin-bottom:12px}
 .tile::after{content:"";position:absolute;inset:10px;border:1px solid rgba(255,255,255,.24);border-radius:18px;pointer-events:none}
 .tile .word{font-size:clamp(34px,11vw,52px)}
 .tile .word.long{font-size:clamp(27px,7.6vw,40px)}
@@ -146,6 +146,20 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
 .review .ar{font-size:22px;line-height:1.7}
 .review span:last-child{color:var(--muted);text-align:right;font-size:15px}
 
+/* install bar */
+.install-bar{display:flex;align-items:center;gap:10px;margin:2px 18px 6px;padding:10px 8px 10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;font-size:14px;line-height:1.45;flex:none}
+.install-bar p{margin:0;flex:1}
+.install-bar .btn{flex:none;min-height:40px;padding:8px 16px;font-size:14px;border-radius:12px}
+.install-bar .x{flex:none;background:none;border:0;color:var(--muted);font-size:22px;line-height:1;padding:6px 8px;cursor:pointer}
+
+/* quiz swipe */
+#q-play{touch-action:pan-y}
+.tile{user-select:none;-webkit-user-select:none}
+.tile .tag{top:14px}
+.tile .tag.to-back{right:16px}
+.tile .tag.to-next{left:16px}
+.q-hints{padding:0 6px 12px;margin-top:-4px}
+
 /* tabs */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-top:1px solid var(--line);padding:6px 14px calc(6px + env(safe-area-inset-bottom,0px))}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:7px 0;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-radius:14px}
@@ -166,6 +180,12 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
   <div class="brand"><span class="ar">المَنَاخ</span><span>2. ünite kelimeleri</span></div>
   <div class="counter" id="counter" aria-live="polite"></div>
 </header>
+
+<div class="install-bar" id="install-bar" hidden>
+  <p id="install-text">Bu uygulamayı telefonuna yükleyebilirsin.</p>
+  <button class="btn primary" id="btn-install" type="button">Yükle</button>
+  <button class="x" id="btn-install-close" type="button" aria-label="Kapat">×</button>
+</div>
 
 <main>
   <!-- Flashcards -->
@@ -217,9 +237,15 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex
         </div>
         <div class="bar"><i id="q-bar"></i></div>
       </div>
-      <div class="tile">
+      <div class="tile" id="q-tile">
+        <div class="tag to-back">Cevap</div>
+        <div class="tag to-next">Sonraki</div>
         <div class="word ar" id="q-word"></div>
         <div class="verdict" id="verdict" aria-hidden="true"></div>
+      </div>
+      <div class="hints q-hints">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Sola kaydır: cevap</span>
+        <span>Sağa kaydır: sonraki<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
       <div class="opts" id="opts"></div>
       <div class="feedback" id="feedback" hidden aria-live="polite"></div>
@@ -542,7 +568,7 @@ function renderQuestion() {
 }
 function choose(btn, it) {
   if (qz.answered) return; qz.answered = true;
-  const right = btn.dataset.ok === "1";
+  const right = !!btn && btn.dataset.ok === "1";
   const all = [...$("opts").children];
   all.forEach(b => {
     b.disabled = true;
@@ -559,7 +585,7 @@ function choose(btn, it) {
   const fb = $("feedback");
   fb.className = "feedback " + (right ? "ok" : "bad");
   fb.innerHTML = "";
-  const head = document.createElement("b"); head.textContent = right ? "Doğru" : `Yanlış. Doğru cevap: ${it.tr}`;
+  const head = document.createElement("b"); head.textContent = right ? "Doğru" : (btn ? `Yanlış. Doğru cevap: ${it.tr}` : `Cevap: ${it.tr}`);
   const note = document.createElement("span"); note.textContent = it.n;
   fb.append(head, note); fb.hidden = false;
   const nx = $("btn-qnext");
@@ -593,7 +619,48 @@ function suffix(n) {
   return m[last];
 }
 $("btn-start").addEventListener("click", () => startQuiz(shuffled(DATA.map((_, i) => i)).slice(0, qz.count)));
-$("btn-qnext").addEventListener("click", () => { if (qz.pos + 1 < qz.list.length) { qz.pos++; renderQuestion(); } else finishQuiz(); });
+function quizNext() {
+  if (!qz.answered) { toast("Önce bir seçenek seç ya da sola kaydır"); return; }
+  if (qz.pos + 1 < qz.list.length) { qz.pos++; renderQuestion(); } else finishQuiz();
+}
+function revealAnswer() {
+  if (qz.answered) return;
+  choose(null, DATA[qz.list[qz.pos]]);
+}
+$("btn-qnext").addEventListener("click", quizNext);
+
+// quiz swipe: left = show answer (counts as wrong), right = next question
+const qPlay = $("q-play"), qTile = $("q-tile");
+const qTagBack = qTile.querySelector(".to-back"), qTagNext = qTile.querySelector(".to-next");
+let qsx = 0, qsy = 0, qdx = 0, qActive = false, qMoved = false, qSwiped = false;
+qPlay.addEventListener("pointerdown", e => {
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  qActive = true; qMoved = false; qdx = 0; qsx = e.clientX; qsy = e.clientY;
+  qTile.style.transition = "none";
+});
+qPlay.addEventListener("pointermove", e => {
+  if (!qActive) return;
+  qdx = e.clientX - qsx; const dy = e.clientY - qsy;
+  if (!qMoved) { if (Math.abs(qdx) < 10) return; if (Math.abs(dy) > Math.abs(qdx)) { qActive = false; return; } qMoved = true; }
+  qTile.style.transform = `translateX(${qdx * 0.6}px) rotate(${qdx / 40}deg)`;
+  qTagBack.style.opacity = qz.answered ? 0 : Math.min(1, Math.max(0, -qdx / THRESHOLD));
+  qTagNext.style.opacity = Math.min(1, Math.max(0, qdx / THRESHOLD));
+});
+function qReset() { qTagBack.style.opacity = 0; qTagNext.style.opacity = 0; qTile.style.transition = "transform .3s cubic-bezier(.2,.75,.2,1)"; qTile.style.transform = ""; }
+qPlay.addEventListener("pointerup", () => {
+  if (!qActive) return; qActive = false; qReset();
+  if (!qMoved) return;
+  qSwiped = true; setTimeout(() => { qSwiped = false; }, 350);
+  if (qdx <= -THRESHOLD) revealAnswer();
+  else if (qdx >= THRESHOLD) quizNext();
+});
+qPlay.addEventListener("pointercancel", () => { qActive = false; qReset(); });
+qPlay.addEventListener("click", e => { if (qSwiped) { e.stopPropagation(); e.preventDefault(); qSwiped = false; } }, true);
+document.addEventListener("keydown", e => {
+  if (tab !== "quiz" || qz.stage !== "play" || e.target.closest("button")) return;
+  if (e.key === "ArrowLeft") revealAnswer();
+  if (e.key === "ArrowRight") quizNext();
+});
 $("btn-retry").addEventListener("click", () => startQuiz(shuffled(qz.wrong)));
 $("btn-new").addEventListener("click", () => { renderCountChips(); showStage("start"); });
 
@@ -603,8 +670,33 @@ renderCountChips();
 showStage("start");
 setTab(tab);
 
+// ---- telefona yükleme ----
+const isStandalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+let installEvent = null;
+const bar = $("install-bar");
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault(); installEvent = e;
+  if (!isStandalone) { $("install-text").textContent = "Bu uygulamayı telefonuna yükleyebilirsin."; $("btn-install").hidden = false; bar.hidden = false; }
+});
+$("btn-install").addEventListener("click", async () => {
+  if (!installEvent) return;
+  installEvent.prompt();
+  try { await installEvent.userChoice; } catch (e) {}
+  installEvent = null; bar.hidden = true;
+});
+window.addEventListener("appinstalled", () => { bar.hidden = true; toast("Uygulama yüklendi"); });
+$("btn-install-close").addEventListener("click", () => { bar.hidden = true; if (isIOS) { store.iosHintClosed = true; persist(); } });
+if (isIOS && !isStandalone && !store.iosHintClosed) {
+  $("install-text").textContent = "Yüklemek için Safari’de Paylaş düğmesine dokun ve “Ana Ekrana Ekle”yi seç.";
+  $("btn-install").hidden = true; bar.hidden = false;
+}
+
 // ---- çevrimdışı çalışma ----
 if ("serviceWorker" in navigator) {
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (hadController && !reloaded) { reloaded = true; location.reload(); } });
   window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
 }
 </script>

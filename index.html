@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F8C84">
+<title>İklim Ünitesi Kelime Kartları</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="İklim Kartları">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8F0EF; --surface:#FFFFFF; --ink:#13294B; --muted:#56677C; --line:#CADBD9;
+  --firuze:#0F8C84; --firuze-deep:#0B6F69; --on-firuze:#FFFFFF;
+  --sand:#EAD7AC; --sand-ink:#2B2416; --sand-muted:#6A5934;
+  --ok:#1C9A54; --ok-soft:#DDF3E6; --bad:#D6423A; --bad-soft:#FBE2DF;
+  --shadow:0 22px 44px -22px rgba(19,41,75,.55);
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1524; --surface:#13213A; --ink:#E4EEED; --muted:#91A3B8; --line:#24375A;
+    --firuze:#14A197; --firuze-deep:#0E7E76; --on-firuze:#FFFFFF;
+    --sand:#3B3222; --sand-ink:#F2E5C6; --sand-muted:#C9B68A;
+    --ok:#3CCB7C; --ok-soft:#173A2A; --bad:#F0665E; --bad-soft:#40211F;
+    --shadow:0 22px 44px -22px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1524; --surface:#13213A; --ink:#E4EEED; --muted:#91A3B8; --line:#24375A;
+  --firuze:#14A197; --firuze-deep:#0E7E76; --on-firuze:#FFFFFF;
+  --sand:#3B3222; --sand-ink:#F2E5C6; --sand-muted:#C9B68A;
+  --ok:#3CCB7C; --ok-soft:#173A2A; --bad:#F0665E; --bad-soft:#40211F;
+  --shadow:0 22px 44px -22px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  height:100%;margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Lexend","Noto Naskh Arabic",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  display:flex;flex-direction:column;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button{font:inherit;color:inherit}
+.ar{font-family:"Noto Naskh Arabic","Amiri","Traditional Arabic",serif;direction:rtl}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px 6px;flex:none}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand .ar{font-size:26px;font-weight:700;line-height:1.5;color:var(--firuze)}
+.brand span:last-child{font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.counter{font-size:15px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 84px;display:flex;flex-direction:column}
+.view{display:flex;flex-direction:column;flex:1;min-height:0;width:100%;max-width:480px;margin:0 auto}
+.view[hidden]{display:none}
+
+/* chips */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;flex:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:7px 14px;font-size:14px;cursor:pointer;white-space:nowrap}
+.chip small{opacity:.7;margin-left:4px;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+/* flashcard */
+.stage{flex:1 1 auto;min-height:300px;display:flex;align-items:stretch;justify-content:center;perspective:1300px;padding:10px 4px 8px}
+.drag{position:relative;width:100%;max-width:420px;max-height:500px;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
+.drag:active{cursor:grabbing}
+.inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.75,.2,1)}
+.drag.flipped .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:30px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 24px;box-shadow:var(--shadow);overflow:hidden}
+.front{background:var(--firuze);color:var(--on-firuze)}
+.front::after{content:"";position:absolute;inset:12px;border:1px solid rgba(255,255,255,.24);border-radius:22px;pointer-events:none}
+.front::before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-70px;bottom:-70px;background:var(--firuze-deep);opacity:.55}
+.back{background:var(--sand);color:var(--sand-ink);transform:rotateY(180deg)}
+.word{position:relative;z-index:1;font-size:clamp(42px,13vw,64px);font-weight:600;line-height:1.75;text-align:center}
+.word.long{font-size:clamp(30px,8.6vw,44px)}
+.word.xlong{font-size:clamp(25px,7vw,36px)}
+.back .small-ar{font-size:24px;line-height:1.7;color:var(--sand-muted);text-align:center;margin-bottom:6px}
+.back .mean{font-size:clamp(26px,7.4vw,34px);font-weight:600;line-height:1.25;text-align:center}
+.back .note{font-size:15px;line-height:1.6;color:var(--sand-muted);text-align:center;margin-top:18px;max-width:30ch}
+.tag{position:absolute;top:22px;z-index:3;padding:6px 12px;border-radius:999px;background:var(--surface);color:var(--ink);font-size:14px;font-weight:600;opacity:0;pointer-events:none;box-shadow:0 6px 16px -8px rgba(0,0,0,.4)}
+.tag.to-back{right:22px}
+.tag.to-next{left:22px}
+.hints{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);padding:6px 6px 10px;flex:none}
+.hints span{display:flex;align-items:center;gap:6px}
+.hints svg{width:16px;height:16px;flex:none}
+.row{display:flex;gap:10px;flex:none}
+.btn{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:16px;padding:14px 12px;font-size:16px;font-weight:500;cursor:pointer;min-height:52px}
+.btn.primary{background:var(--firuze);border-color:var(--firuze);color:var(--on-firuze)}
+.btn.ghost{flex:0 0 auto;padding-inline:16px;color:var(--muted)}
+.btn:focus-visible,.chip:focus-visible,.opt:focus-visible,.tab:focus-visible,.drag:focus-visible{outline:3px solid var(--firuze);outline-offset:3px}
+
+/* quiz */
+.q-head{display:flex;flex-direction:column;gap:8px;padding:6px 2px 14px;flex:none}
+.q-meta{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.score{display:flex;gap:14px}
+.score span{display:flex;align-items:center;gap:4px;font-weight:600}
+.score .s-ok{color:var(--ok)} .score .s-bad{color:var(--bad)}
+.score svg{width:16px;height:16px}
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--firuze);transition:width .3s ease}
+.tile{position:relative;background:var(--firuze);color:var(--on-firuze);border-radius:26px;min-height:156px;display:flex;align-items:center;justify-content:center;padding:26px 20px;box-shadow:var(--shadow);flex:none;margin-bottom:16px}
+.tile::after{content:"";position:absolute;inset:10px;border:1px solid rgba(255,255,255,.24);border-radius:18px;pointer-events:none}
+.tile .word{font-size:clamp(34px,11vw,52px)}
+.tile .word.long{font-size:clamp(27px,7.6vw,40px)}
+.tile .word.xlong{font-size:clamp(23px,6.4vw,32px)}
+.verdict{position:absolute;top:-16px;right:-8px;width:70px;height:70px;border-radius:50%;display:grid;place-items:center;color:#fff;transform:scale(0);border:4px solid var(--bg);z-index:2}
+.verdict svg{width:36px;height:36px}
+.verdict.ok{background:var(--ok)} .verdict.bad{background:var(--bad)}
+.verdict.show{animation:pop .38s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.opts{display:flex;flex-direction:column;gap:10px;flex:none}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:14px 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-size:17px;min-height:56px;cursor:pointer;transition:background .15s,border-color .15s,opacity .15s}
+.opt .mark{width:26px;height:26px;flex:none;display:grid;place-items:center}
+.opt .mark svg{width:24px;height:24px}
+.opt.correct{background:var(--ok-soft);border-color:var(--ok)} .opt.correct .mark{color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)} .opt.wrong .mark{color:var(--bad)}
+.opt.dim{opacity:.5}
+.opt:disabled{cursor:default}
+.feedback{margin-top:14px;padding:14px 16px;border-radius:16px;background:var(--surface);border:1px solid var(--line);font-size:15px;line-height:1.6;flex:none}
+.feedback b{display:block;font-size:17px;margin-bottom:2px}
+.feedback.ok b{color:var(--ok)} .feedback.bad b{color:var(--bad)}
+.q-next{margin-top:14px;flex:none;width:100%}
+#count-chips{flex-wrap:wrap;overflow:visible}
+.panel{display:flex;flex-direction:column;gap:14px;padding:18px 2px}
+.panel h2{font-size:24px;font-weight:600;line-height:1.3;margin:0}
+.panel p{margin:0;color:var(--muted);line-height:1.6}
+.review{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+.review div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;border-top:1px solid var(--line)}
+.review div:first-child{border-top:0}
+.review .ar{font-size:22px;line-height:1.7}
+.review span:last-child{color:var(--muted);text-align:right;font-size:15px}
+
+/* tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-top:1px solid var(--line);padding:6px 14px calc(6px + env(safe-area-inset-bottom,0px))}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:7px 0;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-radius:14px}
+.tab svg{width:24px;height:24px}
+.tab[aria-selected="true"]{color:var(--firuze)}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:30;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion: reduce){
+  .inner,.bar i,.opt,.toast{transition:none!important}
+  .verdict.show{animation:none;transform:scale(1)}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><span class="ar">المَنَاخ</span><span>2. ünite kelimeleri</span></div>
+  <div class="counter" id="counter" aria-live="polite"></div>
+</header>
+
+<main>
+  <!-- Flashcards -->
+  <section class="view" id="view-cards" aria-label="Kartlar">
+    <div class="chips" id="chips" role="group" aria-label="Kelime grubu"></div>
+    <div class="stage">
+      <div class="drag" id="drag" tabindex="0" aria-label="Kelime kartı. Sola kaydırınca anlamı açılır, sağa kaydırınca sonraki kelimeye geçilir.">
+        <div class="tag to-back">Anlamı</div>
+        <div class="tag to-next">Sonraki</div>
+        <div class="inner" id="inner">
+          <div class="face front"><div class="word ar" id="f-word"></div></div>
+          <div class="face back">
+            <div class="small-ar ar" id="b-ar"></div>
+            <div class="mean" id="b-mean"></div>
+            <div class="note" id="b-note"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hints">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Sola kaydır: anlamı</span>
+      <span>Sağa kaydır: sonraki<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </div>
+    <div class="row">
+      <button class="btn ghost" id="btn-shuffle" type="button">Karıştır</button>
+      <button class="btn" id="btn-flip" type="button">Çevir</button>
+      <button class="btn primary" id="btn-next" type="button">Sonraki</button>
+    </div>
+  </section>
+
+  <!-- Quiz -->
+  <section class="view" id="view-quiz" aria-label="Quiz" hidden>
+    <div id="q-start" class="panel">
+      <h2>Kaç soru çözmek istersin?</h2>
+      <p>Sorular 100 kelimenin arasından karışık gelir. Her soruda üç seçenek var.</p>
+      <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
+      <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
+      <p id="last-result"></p>
+    </div>
+
+    <div id="q-play" hidden>
+      <div class="q-head">
+        <div class="q-meta">
+          <span id="q-pos"></span>
+          <div class="score">
+            <span class="s-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><b id="q-ok">0</b></span>
+            <span class="s-bad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><b id="q-bad">0</b></span>
+          </div>
+        </div>
+        <div class="bar"><i id="q-bar"></i></div>
+      </div>
+      <div class="tile">
+        <div class="word ar" id="q-word"></div>
+        <div class="verdict" id="verdict" aria-hidden="true"></div>
+      </div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback" hidden aria-live="polite"></div>
+      <button class="btn primary q-next" id="btn-qnext" type="button" hidden>Sonraki soru</button>
+    </div>
+
+    <div id="q-end" class="panel" hidden>
+      <h2 id="end-title"></h2>
+      <p id="end-sub"></p>
+      <div class="review" id="review" hidden></div>
+      <div class="row">
+        <button class="btn" id="btn-retry" type="button">Yanlışları tekrar çöz</button>
+        <button class="btn primary" id="btn-new" type="button">Yeni quiz</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" role="tablist" aria-label="Bölümler">
+  <button class="tab" role="tab" id="tab-cards" aria-selected="true" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="6" width="13" height="15" rx="2.5"/><path d="M8 3.5h10a2.5 2.5 0 0 1 2.5 2.5v12"/></svg>
+    Kartlar
+  </button>
+  <button class="tab" role="tab" id="tab-quiz" aria-selected="false" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg>
+    Quiz
+  </button>
+</nav>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+// [arapça, doğru anlam, çeldirici 1, çeldirici 2, not, grup]
+const RAW = [
+["سَاحِل","sahil, kıyı","bulut","körfez","Çoğulu: سَوَاحِل. Türkçedeki “sahil”.","cografya"],
+["شَاطِئ","kıyı, plaj","köprü","ada","Çoğulu: شَوَاطِئ. سَاحِل ile eş anlamlı.","cografya"],
+["دَافِئ","ılık","nemli","kuru","تَدْفِئَة ve مِدْفَأَة ile aynı kök (د ف ء).","iklim"],
+["مَنَاخ","iklim","günlük hava durumu","mevsim","Uzun süreli hava özellikleri. Günlük hava ise الطَّقْس.","iklim"],
+["مُعْتَدِل","ılıman","değişken","yağmurlu","Türkçedeki “mutedil”. Kökü ع د ل.","iklim"],
+["جَافّ","kuru","sıcak","açık","الجَفَاف = kuraklık. يُجَفِّفُ ile aynı kök.","iklim"],
+["رَطِب","nemli","ılık","soğuk","الرُّطُوبَة, Türkçedeki “rutubet”.","iklim"],
+["مُمْطِر","yağmurlu","karlı","bulutlu","مَطَر = yağmur. مُثْلِج gibi “mu” ile okunur.","iklim"],
+["مُتَغَيِّر","değişken","sabit","ılıman","Türkçedeki “tagayyür” (değişme) ile aynı kök. Zıttı: ثَابِت.","iklim"],
+["سَيْل","sel","fırtına","şimşek","Çoğulu: سُيُول.","iklim"],
+["عَاصِفَة","fırtına","sel","yağmur","Çoğulu: عَوَاصِف.","iklim"],
+["رَعْد","gök gürültüsü","şimşek","bulut","Ra’d suresinin adı buradan gelir.","iklim"],
+["بَرْق","şimşek","gök gürültüsü","sel","Fırtınada رَعْد ve بَرْق birlikte görülür.","iklim"],
+["تُطِلُّ عَلَى","-e bakar, -e kıyısı var","-i sınırlar","-i bağlar","Mazisi: أَطَلَّ. Eş anlamlısı: تُشْرِفُ عَلَى.","fiil"],
+["يَحُدُّ","sınırlar","bağlar","ulaşır","Kökü ح د د. Türkçedeki had ve hudut.","fiil"],
+["يَتَّصِفُ بِـ","… özelliğine sahiptir","… ile bağlanır","… ile kaplanır","Mazisi: اِتَّصَفَ. Kökü و ص ف: vasıf, sıfat.","fiil"],
+["يَبْلُغُ","ulaşır, varır","değişir","çoğalır","Mazisi: بَلَغَ. Türkçedeki “baliğ olmak”.","fiil"],
+["تَتَرَاوَحُ بَيْنَ … وَ …","… ile … arasında değişir","…e ulaşır","…den azdır","Sayı aralığı vermek için kullanılır.","fiil"],
+["دَرَجَةٌ مِئَوِيَّةٌ","santigrat derece","yıllık ortalama","milimetre","مِئَة (yüz) kelimesinden gelir.","iklim"],
+["عَاصِفَةٌ رَعْدِيَّةٌ","gök gürültülü fırtına","kar fırtınası","kum fırtınası","رَعْد = gök gürültüsü.","iklim"],
+["مَنَاخٌ قَارِّيٌّ","karasal iklim","Akdeniz iklimi","ılıman iklim","قَارَّة = kıta.","iklim"],
+["شِبْهُ جَزِيرَةٍ","yarımada","ada","körfez","Kelime anlamı “ada benzeri”. شِبْه, Türkçedeki teşbih ile aynı kök.","cografya"],
+["جَزِيرَة","ada","kıta","kıyı","Çoğulu: جُزُر. الجَزَائِر (Cezayir) “adalar” demek.","cografya"],
+["تَقَعُ","yer alır, bulunur","bağlar","bakar","Mazisi: وَقَعَ. Aynı kökten مَوْقِع (mevki).","fiil"],
+["تُسَمَّى","adlandırılır","bulunur","nitelenir","سَمَّى fiilinin meçhulü. Türkçedeki isim, müsemma.","fiil"],
+["الفَيْرُوز","turkuaz","altın","petrol","Türkçede “firuze”. Sina’nın lakabı: أَرْضُ الفَيْرُوزِ.","cografya"],
+["مُثَلَّث","üçgen","kare","daire","Kökü ث ل ث (üç). Osmanlıcada “müselles”.","cografya"],
+["شَكْل","şekil","konum","doğa","Türkçedeki “şekil”.","cografya"],
+["البَحْرُ الأَبْيَضُ المُتَوَسِّطُ","Akdeniz","Karadeniz","Kızıldeniz","Kelime anlamı “beyaz orta deniz”.","cografya"],
+["البَحْرُ الأَحْمَرُ","Kızıldeniz","Akdeniz","Karadeniz","أَحْمَر = kırmızı.","cografya"],
+["الشَّمَال","kuzey","güney","doğu","Türkçede “şimal”.","cografya"],
+["الجَنُوب","güney","kuzey","batı","Türkçede “cenup”.","cografya"],
+["الشَّرْق","doğu","batı","güney","Türkçede “şark”.","cografya"],
+["الغَرْب","batı","doğu","kuzey","Türkçede “garp”.","cografya"],
+["خَلِيج","körfez","yarımada","şerit","İstanbul’daki Haliç buradan gelir. Çoğulu: خُلْجَان.","cografya"],
+["قِطَاعُ غَزَّةَ","Gazze Şeridi","Süveyş Körfezi","Akabe Körfezi","قِطَاع = şerit, kesim.","cografya"],
+["خَلِيجُ السُّوَيْسِ","Süveyş Körfezi","Akabe Körfezi","Basra Körfezi","Sina’nın batısındaki körfez.","cografya"],
+["خَلِيجُ العَقَبَةِ","Akabe Körfezi","Süveyş Körfezi","Gazze Şeridi","Sina’nın doğusundaki körfez.","cografya"],
+["مَوْقِع","konum, mevki","şekil","köprü","Çoğulu: مَوَاقِع. Türkçedeki “mevki”.","cografya"],
+["مُهِمّ","önemli","farklı","uzun","Türkçedeki “mühim”.","ifade"],
+["بِسَبَبِ","… yüzünden, nedeniyle","…e ek olarak","…den farklı","Türkçedeki “sebep”.","ifade"],
+["الطَّبِيعَة","doğa","iklim","zenginlik","Türkçedeki “tabiat”.","cografya"],
+["الثَّرَوَاتُ الطَّبِيعِيَّةُ","doğal zenginlikler","doğal afetler","doğal güzellikler","ثَرْوَة, Türkçedeki “servet”.","cografya"],
+["البِتْرُول","petrol","maden","turkuaz","Sina’nın doğal zenginliklerinden biri.","cografya"],
+["المَعَادِن","madenler","zenginlikler","taşlar","Tekili: مَعْدِن (maden).","cografya"],
+["إِضَافَةً إِلَى","…e ek olarak","… nedeniyle","… arasında","Türkçedeki “izafe”.","ifade"],
+["الجِسْر","köprü","körfez","yol","Sina, Asya ile Afrika arasında bir köprüdür.","cografya"],
+["يَرْبِطُ بَيْنَ","arasında bağlar","arasında değişir","-i sınırlar","Kökü ر ب ط: rabıta, irtibat.","fiil"],
+["قَارَّة","kıta","ada","bölge","İkili: قَارَّتَانِ. Türkçedeki “kıta” ise قِطْعَة kelimesinden gelir.","cografya"],
+["المَشْرِقُ وَالمَغْرِبُ","Doğu ve Batı (Maşrık ve Mağrip)","kuzey ve güney","gece ve gündüz","Arap dünyasının doğusu ve batısı.","cografya"],
+["مُخْتَلِفٌ عَنْ","…den farklı","…e benzer","…e bağlı","Türkçedeki “muhtelif”.","ifade"],
+["حَارّ","sıcak","ılık","kuru","الحَرَارَة, Türkçedeki “hararet”.","iklim"],
+["السَّمَاءُ صَافِيَةٌ","gökyüzü açık","gökyüzü bulutlu","gökyüzü yağmurlu","صَافِيَة, Türkçedeki saf ve safi ile aynı kök.","iklim"],
+["دَرَجَاتُ الحَرَارَةِ","sıcaklık dereceleri","yağış miktarı","nem oranı","دَرَجَة, Türkçedeki “derece”.","iklim"],
+["الحَرَارَة","sıcaklık","nem","kuraklık","Türkçedeki “hararet”.","iklim"],
+["الشِّتَاء","kış","yaz","sonbahar","شِتَاؤُهُ = onun kışı.","zaman"],
+["الصَّيْف","yaz","kış","ilkbahar","Türkçedeki “sayfiye” (yazlık).","zaman"],
+["الرَّبِيع","ilkbahar","sonbahar","yaz","“Rebiülevvel” ay adı buradan.","zaman"],
+["الخَرِيف","sonbahar","ilkbahar","kış","Sina’nın kuzeyinde bu mevsimde hava değişkendir.","zaman"],
+["فَصْل","mevsim","ay","yıl","Çoğulu: فُصُول. فَصْلَيِ = iki mevsim (tamlamada).","zaman"],
+["مُتَوَسِّط","ortalama","miktar","yıllık","Türkçedeki “vasat” ile aynı kök.","iklim"],
+["كَمِّيَّة","miktar","derece","ortalama","Türkçedeki “kemiyet” (nicelik).","iklim"],
+["الأَمْطَار","yağmurlar, yağış","seller","fırtınalar","Tekili: مَطَر.","iklim"],
+["سَنَوِيّاً","yıllık olarak","aylık olarak","genellikle","Türkçedeki “senevi”. سَنَة = yıl.","iklim"],
+["الطَّقْس","hava (durumu)","iklim","sıcaklık","Günlük hava. Uzun süreli olanı مَنَاخ.","iklim"],
+["تَكْثُرُ","çoğalır, sık görülür","azalır","değişir","Mazisi: كَثُرَ. Türkçedeki kesret, ekseriyet.","fiil"],
+["صَحْرَاوِيّ","çöle ait","dağlık","denize ait","صَحْرَاء, Türkçedeki “sahra”.","iklim"],
+["الجَفَاف","kuraklık","ılımanlık","nem","جَافّ (kuru) kelimesinin mastarı.","iklim"],
+["مُعْظَمَ العَامِ","yılın büyük kısmı","her ay","yılda bir","مُعْظَم = çoğu, العَام = yıl.","zaman"],
+["اِعْتِدَال","ılımanlık, itidal","kuraklık","değişkenlik","مُعْتَدِل ile aynı kök. Türkçedeki “itidal”.","iklim"],
+["أَقَلُّ مِنْ","-den daha az","-den daha çok","-den daha yüksek","İsm-i tafdil: قَلِيل → أَقَلّ.","tafdil"],
+["أَكْثَرُ","daha çok","daha az","daha uzun","كَثِير → أَكْثَر. Türkçedeki “ekser”.","tafdil"],
+["أَعْلَى","daha yüksek","daha soğuk","daha kısa","عَالِي → أَعْلَى. Türkçedeki “âlâ”.","tafdil"],
+["أَبْرَدُ","daha soğuk","daha sıcak","daha güzel","بَارِد → أَبْرَد.","tafdil"],
+["أَجْمَلُ","daha güzel","daha uzun","daha az","جَمِيل → أَجْمَل.","tafdil"],
+["أَطْوَلُ","daha uzun","daha kısa","daha yüksek","طَوِيل → أَطْوَل.","tafdil"],
+["أَقْصَرُ","daha kısa","daha uzun","daha az","قَصِير → أَقْصَر.","tafdil"],
+["كَانُون الثَّانِي","Ocak","Aralık","Şubat","Osmanlıcada “Kânunusani”.","zaman"],
+["شُبَاط","Şubat","Mart","Ocak","Türkçedeki “Şubat” buradan.","zaman"],
+["آذَار","Mart","Nisan","Şubat","Yılın 3. ayı.","zaman"],
+["نَيْسَان","Nisan","Mayıs","Mart","Türkçedeki “Nisan” buradan.","zaman"],
+["أَيَّار","Mayıs","Haziran","Nisan","Yılın 5. ayı.","zaman"],
+["حُزَيْرَان","Haziran","Temmuz","Mayıs","Türkçedeki “Haziran” buradan.","zaman"],
+["تَمُّوز","Temmuz","Ağustos","Haziran","Türkçedeki “Temmuz” buradan.","zaman"],
+["آب","Ağustos","Eylül","Temmuz","Yılın 8. ayı.","zaman"],
+["أَيْلُول","Eylül","Ekim","Ağustos","Türkçedeki “Eylül” buradan.","zaman"],
+["تِشْرِين الأَوَّل","Ekim","Kasım","Eylül","Osmanlıcada “Teşrinievvel”.","zaman"],
+["تِشْرِين الثَّانِي","Kasım","Ekim","Aralık","Osmanlıcada “Teşrinisani”.","zaman"],
+["كَانُون الأَوَّل","Aralık","Ocak","Kasım","Osmanlıcada “Kânunuevvel”.","zaman"],
+["غَائِم","bulutlu","yağmurlu","karlı","غَيْم = bulut.","iklim"],
+["ثَابِت","sabit, değişmez","değişken","ılıman","Zıttı: مُتَغَيِّر.","iklim"],
+["تُشْرِفُ عَلَى","-e bakar","-i sınırlar","-e ulaşır","تُطِلُّ عَلَى ile eş anlamlı. Örnek: Trabzon Karadeniz’e bakar.","fiil"],
+["الهَوَاء","hava (soluduğumuz)","rüzgâr","gökyüzü","Türkçedeki “hava”.","iklim"],
+["الصِّفْر","sıfır","derece","yüz","Türkçedeki “sıfır”. تَحْتَ الصِّفْرِ = sıfırın altında.","iklim"],
+["تَرْتَفِعُ","yükselir","alçalır","erir","Türkçedeki “irtifa” ile aynı kök. Zıttı: تَنْخَفِضُ.","fiil"],
+["تَقْرِيباً","yaklaşık","sadece","genellikle","Türkçedeki “takriben”.","ifade"],
+["الرُّطُوبَة","nem","kuraklık","sıcaklık","Türkçedeki “rutubet”. رَطِب = nemli.","iklim"],
+["دَرَجَةُ الحَرَارَةِ الصُّغْرَى","en düşük sıcaklık","en yüksek sıcaklık","ortalama sıcaklık","الصُّغْرَى = en küçük. Zıttı: العُظْمَى veya الكُبْرَى.","iklim"],
+["دَرَجَةُ الحَرَارَةِ العُظْمَى","en yüksek sıcaklık","en düşük sıcaklık","yıllık sıcaklık","العُظْمَى yerine الكُبْرَى (Kübra) da denir.","iklim"],
+["الأَرْصَادُ الجَوِّيَّةُ","meteoroloji","hava durumu","yağış ölçümü","رَصَد = gözlem. Türkçedeki “rasathane” ile aynı kök.","iklim"]
+];
+const DATA = RAW.map(r => ({ar:r[0], tr:r[1], d:[r[2], r[3]], n:r[4], c:r[5]}));
+const CATS = [["all","Hepsi"],["fiil","Fiiller"],["cografya","Coğrafya"],["iklim","İklim ve hava"],["zaman","Mevsimler ve aylar"],["tafdil","Karşılaştırma"],["ifade","İfadeler"]];
+const COUNTS = [10, 25, 50, 100];
+const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const ICON_BAD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = id => document.getElementById(id);
+
+// ---- storage (per-device convenience) ----
+const KEY = "iklim-kelime-v1";
+let store = {};
+try { store = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { store = {}; }
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+
+function shuffled(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function sizeClass(text) { const len = text.replace(/[\u064B-\u0652]/g, "").length; return len > 20 ? "xlong" : len > 11 ? "long" : ""; }
+let toastTimer;
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 1800); }
+
+// ---- tabs ----
+let tab = store.tab === "quiz" ? "quiz" : "cards";
+function setTab(t) {
+  tab = t; store.tab = t; persist();
+  $("tab-cards").setAttribute("aria-selected", t === "cards");
+  $("tab-quiz").setAttribute("aria-selected", t === "quiz");
+  $("view-cards").hidden = t !== "cards";
+  $("view-quiz").hidden = t !== "quiz";
+  updateCounter();
+}
+$("tab-cards").addEventListener("click", () => setTab("cards"));
+$("tab-quiz").addEventListener("click", () => setTab("quiz"));
+
+function updateCounter() {
+  $("counter").textContent = tab === "cards" ? `${fc.pos + 1} / ${fc.order.length}` : (qz.stage === "play" ? `${qz.pos + 1} / ${qz.list.length}` : "");
+}
+
+// ---- flashcards ----
+const fc = { cat: "all", order: [], pos: 0, flipped: false };
+const drag = $("drag"), inner = $("inner");
+const tagBack = drag.querySelector(".to-back"), tagNext = drag.querySelector(".to-next");
+
+function idsFor(cat) { return DATA.map((_, i) => i).filter(i => cat === "all" || DATA[i].c === cat); }
+function buildOrder(shuffle) { const ids = idsFor(fc.cat); fc.order = shuffle ? shuffled(ids) : ids; fc.pos = 0; }
+
+function initCards() {
+  fc.cat = CATS.some(c => c[0] === store.cat) ? store.cat : "all";
+  const valid = idsFor(fc.cat);
+  if (Array.isArray(store.order) && store.order.length === valid.length && store.order.every(i => valid.includes(i))) {
+    fc.order = store.order; fc.pos = Math.min(Math.max(0, store.pos | 0), fc.order.length - 1);
+  } else buildOrder(false);
+  renderChips(); renderCard();
+}
+function renderChips() {
+  const wrap = $("chips"); wrap.innerHTML = "";
+  CATS.forEach(([key, label]) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", key === fc.cat);
+    b.innerHTML = `${label}<small>${idsFor(key).length}</small>`;
+    b.addEventListener("click", () => { fc.cat = key; buildOrder(false); setFlipped(false, true); renderChips(); renderCard(); save(); });
+    wrap.appendChild(b);
+  });
+}
+function renderCard() {
+  const it = DATA[fc.order[fc.pos]];
+  const w = $("f-word"); w.textContent = it.ar; w.className = "word ar " + sizeClass(it.ar);
+  $("b-ar").textContent = it.ar; $("b-mean").textContent = it.tr; $("b-note").textContent = it.n;
+  updateCounter();
+}
+function save() { store.cat = fc.cat; store.order = fc.order; store.pos = fc.pos; persist(); }
+function setFlipped(v, instant) {
+  fc.flipped = v;
+  if (instant) { inner.style.transition = "none"; drag.classList.toggle("flipped", v); void inner.offsetWidth; inner.style.transition = ""; }
+  else drag.classList.toggle("flipped", v);
+}
+function flip() { setFlipped(!fc.flipped, false); }
+
+let busy = false;
+function nextCard() {
+  if (busy) return;
+  const advance = () => {
+    fc.pos = (fc.pos + 1) % fc.order.length;
+    if (fc.pos === 0) toast("Liste bitti, baştan başlıyoruz");
+    setFlipped(false, true); renderCard(); save();
+  };
+  if (reduceMotion) { drag.style.transform = ""; advance(); return; }
+  busy = true;
+  drag.style.transition = "transform .24s ease-in, opacity .24s ease-in";
+  drag.style.transform = "translateX(115%) rotate(10deg)";
+  drag.style.opacity = "0";
+  setTimeout(() => {
+    advance();
+    drag.style.transition = "none";
+    drag.style.transform = "translateX(-36px) scale(.96)";
+    void drag.offsetWidth;
+    drag.style.transition = "transform .32s cubic-bezier(.2,.75,.2,1), opacity .32s";
+    drag.style.transform = "";
+    drag.style.opacity = "1";
+    setTimeout(() => { busy = false; }, 320);
+  }, 240);
+}
+
+// swipe gestures: left = flip to back, right = next word
+const THRESHOLD = 60;
+let sx = 0, sy = 0, dx = 0, active = false, moved = false;
+drag.addEventListener("pointerdown", e => {
+  if (busy || (e.pointerType === "mouse" && e.button !== 0)) return;
+  active = true; moved = false; dx = 0; sx = e.clientX; sy = e.clientY;
+  try { drag.setPointerCapture(e.pointerId); } catch (err) {}
+  drag.style.transition = "none";
+});
+drag.addEventListener("pointermove", e => {
+  if (!active) return;
+  dx = e.clientX - sx; const dy = e.clientY - sy;
+  if (!moved) { if (Math.abs(dx) < 8) return; if (Math.abs(dy) > Math.abs(dx)) { active = false; return; } moved = true; }
+  drag.style.transform = `translateX(${dx}px) rotate(${dx / 24}deg)`;
+  tagBack.style.opacity = Math.min(1, Math.max(0, -dx / THRESHOLD));
+  tagNext.style.opacity = Math.min(1, Math.max(0, dx / THRESHOLD));
+});
+function endDrag() {
+  if (!active) return; active = false;
+  tagBack.style.opacity = 0; tagNext.style.opacity = 0;
+  drag.style.transition = "transform .3s cubic-bezier(.2,.75,.2,1)";
+  if (!moved) { drag.style.transform = ""; flip(); return; }
+  if (dx >= THRESHOLD) { nextCard(); return; }
+  drag.style.transform = "";
+  if (dx <= -THRESHOLD) flip();
+}
+drag.addEventListener("pointerup", endDrag);
+drag.addEventListener("pointercancel", () => { active = false; tagBack.style.opacity = 0; tagNext.style.opacity = 0; drag.style.transition = "transform .3s"; drag.style.transform = ""; });
+drag.addEventListener("keydown", e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); } });
+document.addEventListener("keydown", e => {
+  if (tab !== "cards" || e.target.closest("button")) return;
+  if (e.key === "ArrowLeft") flip();
+  if (e.key === "ArrowRight") nextCard();
+});
+$("btn-flip").addEventListener("click", flip);
+$("btn-next").addEventListener("click", nextCard);
+$("btn-shuffle").addEventListener("click", () => { buildOrder(true); setFlipped(false, true); renderCard(); save(); toast("Kartlar karıştırıldı"); });
+
+// ---- quiz ----
+const qz = { stage: "start", count: COUNTS.includes(store.count) ? store.count : 10, list: [], pos: 0, ok: 0, bad: 0, wrong: [], answered: false };
+
+function renderCountChips() {
+  const wrap = $("count-chips"); wrap.innerHTML = "";
+  COUNTS.forEach(n => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", n === qz.count);
+    b.textContent = `${n} soru`;
+    b.addEventListener("click", () => { qz.count = n; store.count = n; persist(); renderCountChips(); });
+    wrap.appendChild(b);
+  });
+  const last = store.last;
+  $("last-result").textContent = last && last.total ? `Son quiz: ${last.total} sorudan ${last.ok} doğru.` : "";
+}
+function showStage(s) {
+  qz.stage = s;
+  $("q-start").hidden = s !== "start"; $("q-play").hidden = s !== "play"; $("q-end").hidden = s !== "end";
+  updateCounter();
+}
+function startQuiz(list) {
+  qz.list = list; qz.pos = 0; qz.ok = 0; qz.bad = 0; qz.wrong = [];
+  showStage("play"); renderQuestion();
+}
+function renderQuestion() {
+  qz.answered = false;
+  const it = DATA[qz.list[qz.pos]];
+  const w = $("q-word"); w.textContent = it.ar; w.className = "word ar " + sizeClass(it.ar);
+  const v = $("verdict"); v.className = "verdict"; v.innerHTML = "";
+  $("q-pos").textContent = `Soru ${qz.pos + 1} / ${qz.list.length}`;
+  $("q-ok").textContent = qz.ok; $("q-bad").textContent = qz.bad;
+  $("q-bar").style.width = `${(qz.pos / qz.list.length) * 100}%`;
+  $("feedback").hidden = true; $("btn-qnext").hidden = true;
+  const opts = shuffled([{ t: it.tr, ok: true }, { t: it.d[0], ok: false }, { t: it.d[1], ok: false }]);
+  const wrap = $("opts"); wrap.innerHTML = "";
+  opts.forEach(o => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "opt"; b.dataset.ok = o.ok ? "1" : "0";
+    b.innerHTML = `<span></span><span class="mark" aria-hidden="true"></span>`;
+    b.firstChild.textContent = o.t;
+    b.addEventListener("click", () => choose(b, it));
+    wrap.appendChild(b);
+  });
+  updateCounter();
+  $("view-quiz").parentElement.scrollTop = 0;
+}
+function choose(btn, it) {
+  if (qz.answered) return; qz.answered = true;
+  const right = btn.dataset.ok === "1";
+  const all = [...$("opts").children];
+  all.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.ok === "1") { b.classList.add("correct"); b.querySelector(".mark").innerHTML = ICON_OK; }
+    else if (b === btn) { b.classList.add("wrong"); b.querySelector(".mark").innerHTML = ICON_BAD; }
+    else b.classList.add("dim");
+  });
+  const v = $("verdict");
+  v.innerHTML = right ? ICON_OK : ICON_BAD;
+  v.className = "verdict show " + (right ? "ok" : "bad");
+  if (right) qz.ok++; else { qz.bad++; qz.wrong.push(qz.list[qz.pos]); try { navigator.vibrate && navigator.vibrate(90); } catch (e) {} }
+  $("q-ok").textContent = qz.ok; $("q-bad").textContent = qz.bad;
+  $("q-bar").style.width = `${((qz.pos + 1) / qz.list.length) * 100}%`;
+  const fb = $("feedback");
+  fb.className = "feedback " + (right ? "ok" : "bad");
+  fb.innerHTML = "";
+  const head = document.createElement("b"); head.textContent = right ? "Doğru" : `Yanlış. Doğru cevap: ${it.tr}`;
+  const note = document.createElement("span"); note.textContent = it.n;
+  fb.append(head, note); fb.hidden = false;
+  const nx = $("btn-qnext");
+  nx.textContent = qz.pos + 1 < qz.list.length ? "Sonraki soru" : "Sonucu gör";
+  nx.hidden = false;
+  setTimeout(() => nx.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" }), 60);
+}
+function finishQuiz() {
+  const total = qz.list.length;
+  store.last = { ok: qz.ok, total }; persist();
+  $("end-title").textContent = `${total} sorudan ${qz.ok}’${suffix(qz.ok)} doğru bildin.`;
+  $("end-sub").textContent = qz.bad === 0 ? "Hiç yanlışın yok. Daha fazla soruyla tekrar deneyebilirsin." : `Yanlış yaptığın ${qz.bad} kelime aşağıda. Onları tekrar çözebilirsin.`;
+  const rv = $("review"); rv.innerHTML = "";
+  qz.wrong.forEach(i => {
+    const row = document.createElement("div");
+    const a = document.createElement("span"); a.className = "ar"; a.textContent = DATA[i].ar;
+    const t = document.createElement("span"); t.textContent = DATA[i].tr;
+    row.append(a, t); rv.appendChild(row);
+  });
+  rv.hidden = qz.wrong.length === 0;
+  $("btn-retry").hidden = qz.wrong.length === 0;
+  showStage("end");
+  $("view-quiz").parentElement.scrollTop = 0;
+}
+// Türkçe sayı eki: 8’ini, 3’ünü, 10’unu, 0’ını ...
+function suffix(n) {
+  const last = n % 10, tens = n % 100;
+  if (n === 0) return "ını";
+  if (last === 0) { const m = { 10: "unu", 20: "sini", 30: "unu", 40: "ını", 50: "sini", 60: "ını", 70: "ini", 80: "ini", 90: "ını" }; return m[tens] || (n === 100 ? "ünü" : "unu"); }
+  const m = { 1: "ini", 2: "sini", 3: "ünü", 4: "ünü", 5: "ini", 6: "sını", 7: "sini", 8: "ini", 9: "unu" };
+  return m[last];
+}
+$("btn-start").addEventListener("click", () => startQuiz(shuffled(DATA.map((_, i) => i)).slice(0, qz.count)));
+$("btn-qnext").addEventListener("click", () => { if (qz.pos + 1 < qz.list.length) { qz.pos++; renderQuestion(); } else finishQuiz(); });
+$("btn-retry").addEventListener("click", () => startQuiz(shuffled(qz.wrong)));
+$("btn-new").addEventListener("click", () => { renderCountChips(); showStage("start"); });
+
+// ---- init ----
+initCards();
+renderCountChips();
+showStage("start");
+setTab(tab);
+
+// ---- çevrimdışı çalışma ----
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+}
+</script>
+</body>
+</html>

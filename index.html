@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0F8C84">
-<title>İklim Ünitesi Kelime Kartları</title>
+<title>Arapça A2 Kelime Kartları</title>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="İklim Kartları">
+<meta name="apple-mobile-web-app-title" content="Arapça Kartlar">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -139,9 +139,14 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
 .q-actions{position:sticky;bottom:0;z-index:2;background:var(--bg);padding:12px 0 4px;margin-top:auto}
 .btn:disabled{opacity:.45;cursor:default}
 .top-right{display:flex;align-items:center;gap:10px;flex:none}
+.units{display:flex;gap:4px;margin:0 18px 6px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;flex:none}
+.unit{flex:1;border:0;background:none;color:var(--muted);border-radius:10px;padding:8px 6px;font-size:14px;font-weight:600;cursor:pointer}
+.unit[aria-pressed="true"]{background:var(--firuze);color:var(--on-firuze)}
+.unit:focus-visible{outline:3px solid var(--firuze);outline-offset:2px}
+.panel .label{font-size:14px;color:var(--muted);margin:4px 0 -6px}
 .install-pill{border:1px solid var(--line);background:var(--surface);color:var(--firuze);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
 .ver{font-size:12px;opacity:.7}
-#count-chips{flex-wrap:wrap;overflow:visible}
+#count-chips,#scope-chips{flex-wrap:wrap;overflow:visible}
 .panel{display:flex;flex-direction:column;gap:14px;padding:18px 2px}
 .panel h2{font-size:24px;font-weight:600;line-height:1.3;margin:0}
 .panel p{margin:0;color:var(--muted);line-height:1.6}
@@ -182,7 +187,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
 <body>
 
 <header class="top">
-  <div class="brand"><span class="ar">المَنَاخ</span><span>2. ünite kelimeleri</span></div>
+  <div class="brand"><span class="ar" id="unit-ar">المَنَاخ</span><span id="unit-tr">2. ünite kelimeleri</span></div>
   <div class="top-right">
     <button class="install-pill" id="btn-install-pill" type="button" hidden>Yükle</button>
     <div class="counter" id="counter" aria-live="polite"></div>
@@ -193,6 +198,11 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
   <p id="install-text">Bu uygulamayı telefonuna yükleyebilirsin.</p>
   <button class="btn primary" id="btn-install" type="button">Yükle</button>
   <button class="x" id="btn-install-close" type="button" aria-label="Kapat">×</button>
+</div>
+
+<div class="units" role="group" aria-label="Ünite">
+  <button class="unit" type="button" data-u="2" aria-pressed="false">2. Ünite</button>
+  <button class="unit" type="button" data-u="3" aria-pressed="false">3. Ünite</button>
 </div>
 
 <main>
@@ -228,11 +238,14 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
   <section class="view" id="view-quiz" aria-label="Quiz" hidden>
     <div id="q-start" class="panel">
       <h2>Kaç soru çözmek istersin?</h2>
-      <p>Sorular 100 kelimenin arasından karışık gelir. Her soruda üç seçenek var.</p>
+      <p>Sorular seçtiğin ünitenin kelimelerinden karışık gelir. Her soruda üç seçenek var.</p>
+      <p class="label">Hangi kelimelerden?</p>
+      <div class="chips" id="scope-chips" role="group" aria-label="Kelimeler"></div>
+      <p class="label">Kaç soru?</p>
       <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
       <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
       <p id="last-result"></p>
-      <p class="ver">Sürüm 4</p>
+      <p class="ver">Sürüm 5</p>
     </div>
 
     <div id="q-play" hidden>
@@ -291,7 +304,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
 
 <script>
 // [arapça, doğru anlam, çeldirici 1, çeldirici 2, not, grup]
-const RAW = [
+const RAW2 = [
 ["سَاحِل","sahil, kıyı","bulut","körfez","Çoğulu: سَوَاحِل. Türkçedeki “sahil”.","cografya"],
 ["شَاطِئ","kıyı, plaj","köprü","ada","Çoğulu: شَوَاطِئ. سَاحِل ile eş anlamlı.","cografya"],
 ["دَافِئ","ılık","nemli","kuru","تَدْفِئَة ve مِدْفَأَة ile aynı kök (د ف ء).","iklim"],
@@ -393,8 +406,115 @@ const RAW = [
 ["دَرَجَةُ الحَرَارَةِ العُظْمَى","en yüksek sıcaklık","en düşük sıcaklık","yıllık sıcaklık","العُظْمَى yerine الكُبْرَى (Kübra) da denir.","iklim"],
 ["الأَرْصَادُ الجَوِّيَّةُ","meteoroloji","hava durumu","yağış ölçümü","رَصَد = gözlem. Türkçedeki “rasathane” ile aynı kök.","iklim"]
 ];
-const DATA = RAW.map(r => ({ar:r[0], tr:r[1], d:[r[2], r[3]], n:r[4], c:r[5]}));
-const CATS = [["all","Hepsi"],["fiil","Fiiller"],["cografya","Coğrafya"],["iklim","İklim ve hava"],["zaman","Mevsimler ve aylar"],["tafdil","Karşılaştırma"],["ifade","İfadeler"]];
+const RAW3 = [
+["حَضَارَة","medeniyet","kale","tapınak","Çoğulu: حَضَارَات. Kökü ح ض ر, “hazır” ile aynı. Aslı “yerleşik hayat” demektir.","eser"],
+["أَثَر","eser, kalıntı","sütun","saray","Çoğulu: آثَار. Türkçedeki “eser” ve “âsâr”.","eser"],
+["عَمُود","sütun","kapı","duvar","Çoğulu: أَعْمِدَة. Türkçedeki “amut”.","eser"],
+["مَعْبَد","tapınak","tiyatro","müze","Çoğulu: مَعَابِد. “İbadet” ile aynı kök: ibadet yeri.","eser"],
+["مَسْرَح","tiyatro","tapınak","mezar","Çoğulu: مَسَارِح. Oyuncuların sahneye çıktığı yer.","eser"],
+["قَلْعَة","kale","saray","köprü","Çoğulu: قِلَاع. Türkçedeki “kale”.","eser"],
+["قَصْر","saray","kale","pazar","Çoğulu: قُصُور. Türkçedeki “kasır”. الأُقْصُر = saraylar.","eser"],
+["مُدَرَّج","amfitiyatro","merdiven","mezarlık","Basamak basamak oturma yeri. دَرَجَة (basamak, derece) ile aynı kök.","eser"],
+["مَقْبَرَة","mezarlık","müze","tapınak","Çoğulu: مَقَابِر. Türkçedeki kabir ve makber.","eser"],
+["مَتْحَف","müze","tapınak","saray","Değerli eserlerin sergilendiği yer. تُحْفَة (tuhfe, hediye) ile aynı kök.","eser"],
+["بَوَّابَة","büyük kapı","sütun","cadde","Çoğulu: بَوَّابَات. بَاب (kapı) ile aynı kök.","eser"],
+["مَعْلَم","önemli yapı, simge yer","kale","tapınak","Çoğulu: مَعَالِم. “Alamet” ile aynı kök.","eser"],
+["شَارِع","cadde","kapı","meydan","Çoğulu: شَوَارِع.","eser"],
+["الأَبْنِيَة","binalar","sütunlar","caddeler","Tekili: بِنَاء. Türkçedeki “bina”.","eser"],
+["الخَزْنَة","hazine (binası)","kale","mezar","Petra’nın en ünlü yapısı. Türkçedeki “hazine”.","eser"],
+["الأَهْرَامَات","piramitler","tapınaklar","saraylar","Tekili: هَرَم. Mısır’daki piramitler.","eser"],
+["أَبُو الهَوْل","Sfenks","firavun","piramit","Piramitlerin yanındaki aslan gövdeli dev heykel.","eser"],
+["سُورُ الصِّينِ العَظِيمُ","Çin Seddi","İpek Yolu","Çin Sarayı","سُور = sur, duvar. Türkçedeki “sur”.","eser"],
+["المَسْجِدُ الأُمَوِيُّ","Emevi Camii","Ayasofya","Kâbe","Şam’daki tarihî cami.","eser"],
+["جَامِع","büyük cami","pazar","okul","جَامِعُ السُّلْطَانِ أَحْمَدَ = Sultanahmet Camii.","eser"],
+["تَنْتَشِرُ","yayılır","çevreler","içerir","Mazisi: اِنْتَشَرَ. Türkçedeki neşir ve intişar.","fiil"],
+["تُحِيطُ بِـ","çevreler, kuşatır","yayılır","uzaktır","Mazisi: أَحَاطَ. Türkçedeki ihata ve muhit.","fiil"],
+["تَطَوَّرَ","gelişti","yayıldı","bitti","Muzarisi: يَتَطَوَّرُ. Türkçedeki “tavır” ile aynı kök.","fiil"],
+["تَبْعُدُ عَنْ","...e uzaklıktadır","...e yakındır","...i çevreler","Mazisi: بَعُدَ. Zıttı: تَقْتَرِبُ مِنْ. Türkçedeki “ebat”.","fiil"],
+["تَقْتَرِبُ مِنْ","...e yakındır, yaklaşır","...den uzaklaşır","...i içerir","Mazisi: اِقْتَرَبَ. Türkçedeki akraba ve takriben ile aynı kök.","fiil"],
+["تَحْتَوِي عَلَى","içerir","çevreler","oluşur","Mazisi: اِحْتَوَى. Türkçedeki “muhteva”.","fiil"],
+["تَتَكَوَّنُ مِنْ","...den oluşur","...i içerir","...e döner","Mazisi: تَكَوَّنَ. Türkçedeki “tekevvün”.","fiil"],
+["يَمُرُّ","geçer","durur","döner","Mazisi: مَرَّ. Türkçedeki “mürur”.","fiil"],
+["يَعُودُ إِلَى","...e dayanır, ...e aittir","...den uzaklaşır","...i geçer","Mazisi: عَادَ. Bir eserin ait olduğu dönemi anlatır.","fiil"],
+["يَزُورُ","ziyaret eder","izler","yaşar","Mazisi: زَارَ. Türkçedeki “ziyaret”.","fiil"],
+["يَعْرِفُ","bilir, tanır","sever","görür","Mazisi: عَرَفَ. Türkçedeki “marifet”.","fiil"],
+["سَمَّى","adlandırdı","sevdi","yaptı","Muzarisi: يُسَمِّي. Meçhulü: تُسَمَّى (adlandırılır).","fiil"],
+["تُعْتَبَرُ","...sayılır, kabul edilir","...gösterilir","...yapılır","Türkçedeki “itibar” ile aynı kök.","fiil"],
+["نَشَأَتْ","doğdu, ortaya çıktı","bitti","yayıldı","Muzarisi: تَنْشَأُ. Türkçedeki “neşet etmek”.","fiil"],
+["بَدَأَتْ","başladı","bitti","gelişti","Muzarisi: تَبْدَأُ. Türkçedeki ibtida ve mübtedi.","fiil"],
+["اِنْتَهَتْ","bitti, sona erdi","başladı","yayıldı","Muzarisi: تَنْتَهِي. Türkçedeki “nihayet”.","fiil"],
+["يَدْفِنُ","gömer","yapar","ziyaret eder","Mazisi: دَفَنَ. Türkçedeki “defin”.","fiil"],
+["مَنْحُوتَة فِي","...e oyulmuş","...den yapılmış","...e yayılmış","نَحَتَ = yonttu. Türkçedeki nahit ve nahhat. Eş anlamlısı: مَحْفُورَة.","fiil"],
+["مَمْلَكَة","krallık","başkent","il","Çoğulu: مَمَالِك. Türkçedeki “memleket”.","tarih"],
+["مَحَطَّة","durak, istasyon","pazar","başkent","مَحَطَّة تِجَارِيَّة = ticaret durağı, kervanların konakladığı yer.","tarih"],
+["عَاصِمَة","başkent","krallık","il","Petra, Nebatîlerin başkentiydi.","tarih"],
+["طَرِيقُ الحَرِيرِ","İpek Yolu","Baharat Yolu","Kral Yolu","حَرِير = ipek. Tedmür ve Petra’dan geçerdi.","tarih"],
+["مُحَافَظَة","il, vilayet","başkent","bölge","Arap ülkelerinde il. Türkçedeki “muhafaza” ile aynı kök.","tarih"],
+["ضِفَاف","nehir kıyıları","dağlar","vadiler","Tekili: ضِفَّة. عَلَى ضِفَافِ النِّيلِ = Nil kıyısında.","tarih"],
+["نَهْرُ النِّيلِ","Nil Nehri","Fırat Nehri","Dicle Nehri","نَهْر = nehir. Luksor Nil kıyısındadır.","tarih"],
+["وَادِي المُلُوكِ","Krallar Vadisi","Krallar Sarayı","Krallar Yolu","وَادِي = vadi. Luksor’daki firavun mezarları buradadır.","tarih"],
+["دَوْلَةُ الأَنْبَاطِ","Nebatî Devleti","Emevi Devleti","Roma Devleti","Başkenti Petra olan eski Arap devleti.","tarih"],
+["بِلَادُ الرَّافِدَيْنِ","Mezopotamya","Anadolu","Arap Yarımadası","Kelime anlamı “iki nehrin ülkesi” (Dicle ve Fırat).","tarih"],
+["الفَتْرَةُ الأُمَوِيَّةُ","Emevi dönemi","Osmanlı dönemi","Abbasi dönemi","فَتْرَة = dönem. Türkçedeki “fetret”.","tarih"],
+["عَهْد","dönem, devir","krallık","başkent","Eş anlamlısı: عَصْر. فِي عَهْدِ المَلِكَةِ زَنُوبِيَا = Kraliçe Zenobia döneminde.","tarih"],
+["عَصْر","çağ, devir","yüzyıl","yıl","Türkçedeki “asır”. عَهْد ile eş anlamlı.","tarih"],
+["قَبْلَ المِيلَادِ","milattan önce","milattan sonra","hicretten önce","مِيلَاد = doğum. Türkçedeki “milat”.","tarih"],
+["مَلِك","kral","prens","tüccar","Çoğulu: مُلُوك. Dişili: مَلِكَة (kraliçe). Türkçedeki “melik”.","tarih"],
+["المَلِكَات","kraliçeler","prensler","krallıklar","Tekili: مَلِكَة. Türkçedeki “melike”.","tarih"],
+["الأُمَرَاء","prensler, emirler","krallar","askerler","Tekili: أَمِير. Türkçedeki “emir”.","tarih"],
+["المُؤَرِّخُونَ","tarihçiler","turistler","oyuncular","Tekili: مُؤَرِّخ. تَارِيخ ile aynı kök.","tarih"],
+["السُّيَّاح","turistler","tüccarlar","tarihçiler","Tekili: سَائِح. Türkçedeki seyyah ve seyahat.","tarih"],
+["التِّجَارَة","ticaret","tarım","sanat","Türkçedeki “ticaret”. تِجَارِيّ = ticari.","tarih"],
+["الآلِهَة","ilahlar, tanrılar","krallar","rahipler","Tekili: إِلَه. Türkçedeki “ilah”.","tarih"],
+["المُمَثِّلُونَ","oyuncular","seyirciler","şarkıcılar","Tekili: مُمَثِّل. Türkçedeki “temsil” ile aynı kök.","tarih"],
+["العَدُوّ","düşman","dost","komşu","Türkçedeki “adavet” ile aynı kök.","tarih"],
+["جَزِيرَةُ قُبْرُصَ","Kıbrıs Adası","Girit Adası","Rodos Adası","تُحِيطُ المِيَاهُ جَزِيرَةَ قُبْرُصَ مِنْ كُلِّ الجِهَاتِ = Kıbrıs’ı her taraftan su çevreler.","tarih"],
+["قَدِيمَة","eski","yeni","geniş","Zıttı: جَدِيدَة. Türkçedeki “kadim”.","sifat"],
+["جَدِيدَة","yeni","eski","dar","Zıttı: قَدِيمَة. Türkçedeki “cedit”.","sifat"],
+["وَاسِعَة","geniş","dar","uzak","Zıttı: ضَيِّقَة. Türkçedeki “vüsat”.","sifat"],
+["ضَيِّقَة","dar","geniş","kısa","Zıttı: وَاسِعَة. Osmanlıcadaki “ziykınefes” (nefes darlığı) ile aynı kök.","sifat"],
+["أَقْبَح","daha çirkin","daha güzel","daha eski","Zıttı: أَجْمَل. قَبِيح = çirkin. Türkçedeki “kabahat” ile aynı kök.","sifat"],
+["مَشْهُورَة","meşhur, ünlü","gizli","yeni","Eş anlamlısı: مَعْرُوفَة. Türkçedeki “meşhur”.","sifat"],
+["مَعْرُوفَة","bilinen, tanınmış","bilinmeyen","yakın","Eş anlamlısı: مَشْهُورَة. Türkçedeki “maruf”.","sifat"],
+["مَحْفُورَة","kazılmış, oyulmuş","boyanmış","yıkılmış","Eş anlamlısı: مَنْحُوتَة. Türkçedeki “hafriyat” ile aynı kök.","sifat"],
+["أَثَرِيَّة","antik, tarihî eserlerle ilgili","ticari","modern","أَثَر kelimesinden. مَدِينَةٌ أَثَرِيَّةٌ = antik şehir.","sifat"],
+["تَارِيخِيَّة","tarihî","ticari","yeni","Türkçedeki “tarihî”.","sifat"],
+["تِجَارِيَّة","ticari","tarihî","dinî","مَحَطَّةٌ تِجَارِيَّةٌ = ticaret durağı.","sifat"],
+["رَائِعَة","muhteşem, harika","sıradan","eski","الآثَارُ الرَّائِعَةُ = muhteşem eserler.","sifat"],
+["الشَّتَوِيَّة","kışlık","yazlık","baharlık","شِتَاء (kış) kelimesinden gelir.","sifat"],
+["الوَرْدِيّ","pembe, gül rengi","kırmızı","turuncu","وَرْد = gül. Petra’ya المَدِينَةُ الوَرْدِيَّةُ denir.","sifat"],
+["أَقْدَم","daha eski, en eski","daha yeni","daha büyük","İsm-i tafdil: قَدِيم → أَقْدَم.","sifat"],
+["أَشْهَر","daha ünlü, en ünlü","daha eski","daha güzel","İsm-i tafdil: مَشْهُور → أَشْهَر.","sifat"],
+["أَهَمّ","daha önemli, en önemli","daha büyük","daha eski","مُهِمّ → أَهَمّ. مِنْ أَهَمِّ المُدُنِ = en önemli şehirlerden biri.","sifat"],
+["أَكْبَر","daha büyük, en büyük","daha küçük","daha eski","كَبِير → أَكْبَر. اللهُ أَكْبَرُ.","sifat"],
+["سَامِيَة","yüce","sıradan","eski","أَخْلَاقٌ سَامِيَةٌ = yüce ahlak.","sifat"],
+["عَرُوسُ الصَّحْرَاءِ","Çölün Gelini","Çölün Kalbi","Pembe Şehir","Tedmür’ün lakabı. عَرُوس = gelin, Türkçedeki “arus”.","ifade"],
+["المَدِينَةُ الوَرْدِيَّةُ","Pembe Şehir","Çölün Gelini","Kış Şehri","Petra’nın lakabı.","ifade"],
+["عَجَائِبُ الدُّنْيَا السَّبْعِ","dünyanın yedi harikası","dünyanın yedi kıtası","yedi büyük şehir","Petra bunlardan biri. Türkçedeki “acayip” bu çoğuldan gelir.","ifade"],
+["المَدِينَةُ الشَّتَوِيَّةُ","kış şehri","kış sarayı","kışlık ev","Luksor, ılık kışı nedeniyle böyle anılır.","ifade"],
+["مُنْذُ قَدِيمِ الزَّمَانِ","eski zamanlardan beri","son zamanlarda","gelecekte","مُنْذُ = -den beri. Türkçedeki kadim ve zaman.","ifade"],
+["لِكَثْرَةِ","...in çokluğu nedeniyle","...in azlığı nedeniyle","...e rağmen","كَثْرَة = çokluk. Türkçedeki “kesret”.","ifade"],
+["مِسَاحَة","alan, yüzölçümü","mesafe","bölge","مِسَاحَةٌ وَاسِعَةٌ = geniş alan.","ifade"],
+["الاِسْتِمْتَاع","keyfini çıkarma","izleme","dinlenme","Türkçedeki “temettü” ile aynı kök. لِلِاسْتِمْتَاعِ = keyfini çıkarmak için.","ifade"],
+["مُشَاهَدَة","izleme, görme","ziyaret","keşif","Türkçedeki “müşahede”.","ifade"],
+["عُمْر","yaş, ömür","tarih","dönem","عُمْرُهَا أَكْثَرُ مِنْ ٢٣٠٠ سَنَةٍ = 2300 yıldan daha eski.","ifade"],
+["مَكَانَة","itibar, konum","alan","şehir","Türkçedeki “mekân” ile aynı kök.","ifade"],
+["أَهَمِّيَّة","önem","büyüklük","eskilik","مُهِمّ ile aynı kök. Türkçedeki “ehemmiyet”.","ifade"],
+["بِسُهُولَةٍ","kolayca","zorlukla","yavaşça","سَهْل = kolay. Türkçedeki “suhulet”.","ifade"],
+["مَسْؤُولٌ عَنْ","...den sorumlu","...den uzak","...e bağlı","Türkçedeki “mesul”.","ifade"],
+["أَدَوَات","araçlar, aletler","eserler","binalar","Tekili: أَدَاة. Türkçedeki “edevat”.","ifade"],
+["أَخْلَاق","ahlak","adetler","eserler","Türkçedeki “ahlak”.","ifade"],
+["سُوقُ المِهَنِ اليَدَوِيَّةِ","el sanatları çarşısı","balık pazarı","kitap fuarı","سُوق = çarşı, مِهَن = meslekler, يَدَوِيّ = el ile yapılan.","ifade"],
+["مَحَلّ","dükkân","ev","yol","Çoğulu: مَحَلَّات. Türkçedeki “mahal” ile aynı kök.","ifade"],
+["الجِهَات","yönler, taraflar","şehirler","adalar","Tekili: جِهَة. Türkçedeki “cihet”. مِنْ كُلِّ الجِهَاتِ = her taraftan.","ifade"]
+];
+const mk = (r, u) => ({ar:r[0], tr:r[1], d:[r[2], r[3]], n:r[4], c:r[5], u});
+const DATA = [...RAW2.map(r => mk(r, 2)), ...RAW3.map(r => mk(r, 3))];
+const CATS_BY_UNIT = {
+  2: [["all","Hepsi"],["fiil","Fiiller"],["cografya","Coğrafya"],["iklim","İklim ve hava"],["zaman","Mevsimler ve aylar"],["tafdil","Karşılaştırma"],["ifade","İfadeler"]],
+  3: [["all","Hepsi"],["eser","Eserler ve yapılar"],["fiil","Fiiller"],["tarih","Yerler ve tarih"],["sifat","Sıfatlar"],["ifade","İfadeler"]]
+};
+const UNIT_INFO = { 2: { ar: "المَنَاخ", tr: "2. ünite kelimeleri" }, 3: { ar: "الحَضَارَات", tr: "3. ünite kelimeleri" } };
 const COUNTS = [10, 25, 50, 100];
 const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const ICON_BAD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
@@ -406,6 +526,10 @@ const KEY = "iklim-kelime-v1";
 let store = {};
 try { store = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { store = {}; }
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+if (!store.units || typeof store.units !== "object") store.units = {};
+if (!store.units[2] && Array.isArray(store.order)) store.units[2] = { cat: store.cat, order: store.order, pos: store.pos };
+delete store.cat; delete store.order; delete store.pos;
+let unit = store.unit === 2 ? 2 : 3;
 
 function shuffled(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function sizeClass(text) { const len = text.replace(/[\u064B-\u0652]/g, "").length; return len > 20 ? "xlong" : len > 11 ? "long" : ""; }
@@ -434,20 +558,31 @@ const fc = { cat: "all", order: [], pos: 0, flipped: false };
 const drag = $("drag"), inner = $("inner");
 const tagBack = drag.querySelector(".to-back"), tagNext = drag.querySelector(".to-next");
 
-function idsFor(cat) { return DATA.map((_, i) => i).filter(i => cat === "all" || DATA[i].c === cat); }
+function idsFor(cat) { return DATA.map((_, i) => i).filter(i => DATA[i].u === unit && (cat === "all" || DATA[i].c === cat)); }
 function buildOrder(shuffle) { const ids = idsFor(fc.cat); fc.order = shuffle ? shuffled(ids) : ids; fc.pos = 0; }
 
 function initCards() {
-  fc.cat = CATS.some(c => c[0] === store.cat) ? store.cat : "all";
+  const st = store.units[unit] || {};
+  fc.cat = CATS_BY_UNIT[unit].some(c => c[0] === st.cat) ? st.cat : "all";
   const valid = idsFor(fc.cat);
-  if (Array.isArray(store.order) && store.order.length === valid.length && store.order.every(i => valid.includes(i))) {
-    fc.order = store.order; fc.pos = Math.min(Math.max(0, store.pos | 0), fc.order.length - 1);
+  if (Array.isArray(st.order) && st.order.length === valid.length && st.order.every(i => valid.includes(i))) {
+    fc.order = st.order; fc.pos = Math.min(Math.max(0, st.pos | 0), fc.order.length - 1);
   } else buildOrder(false);
   renderChips(); renderCard();
 }
+function renderUnit() {
+  $("unit-ar").textContent = UNIT_INFO[unit].ar; $("unit-tr").textContent = UNIT_INFO[unit].tr;
+  document.querySelectorAll(".unit").forEach(b => b.setAttribute("aria-pressed", Number(b.dataset.u) === unit));
+}
+function setUnit(u) {
+  if (u === unit) return;
+  unit = u; store.unit = u; persist();
+  setFlipped(false, true); renderUnit(); initCards(); renderScopeChips();
+}
+document.querySelectorAll(".unit").forEach(b => b.addEventListener("click", () => setUnit(Number(b.dataset.u))));
 function renderChips() {
   const wrap = $("chips"); wrap.innerHTML = "";
-  CATS.forEach(([key, label]) => {
+  CATS_BY_UNIT[unit].forEach(([key, label]) => {
     const b = document.createElement("button");
     b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", key === fc.cat);
     b.innerHTML = `${label}<small>${idsFor(key).length}</small>`;
@@ -461,7 +596,7 @@ function renderCard() {
   $("b-ar").textContent = it.ar; $("b-mean").textContent = it.tr; $("b-note").textContent = it.n;
   updateCounter();
 }
-function save() { store.cat = fc.cat; store.order = fc.order; store.pos = fc.pos; persist(); }
+function save() { store.units[unit] = { cat: fc.cat, order: fc.order, pos: fc.pos }; persist(); }
 function setFlipped(v, instant) {
   fc.flipped = v;
   if (instant) { inner.style.transition = "none"; drag.classList.toggle("flipped", v); void inner.offsetWidth; inner.style.transition = ""; }
@@ -533,8 +668,18 @@ $("btn-next").addEventListener("click", nextCard);
 $("btn-shuffle").addEventListener("click", () => { buildOrder(true); setFlipped(false, true); renderCard(); save(); toast("Kartlar karıştırıldı"); });
 
 // ---- quiz ----
-const qz = { stage: "start", count: COUNTS.includes(store.count) ? store.count : 10, list: [], pos: 0, ok: 0, bad: 0, wrong: [], answered: false };
+const qz = { stage: "start", scope: store.scope === "both" ? "both" : "unit", count: COUNTS.includes(store.count) ? store.count : 10, list: [], pos: 0, ok: 0, bad: 0, wrong: [], answered: false };
 
+function renderScopeChips() {
+  const wrap = $("scope-chips"); wrap.innerHTML = "";
+  [["unit", `Sadece ${unit}. ünite`], ["both", "2. ve 3. ünite birlikte"]].forEach(([key, label]) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", key === qz.scope);
+    b.textContent = label;
+    b.addEventListener("click", () => { qz.scope = key; store.scope = key; persist(); renderScopeChips(); });
+    wrap.appendChild(b);
+  });
+}
 function renderCountChips() {
   const wrap = $("count-chips"); wrap.innerHTML = "";
   COUNTS.forEach(n => {
@@ -630,7 +775,7 @@ function suffix(n) {
   const m = { 1: "ini", 2: "sini", 3: "ünü", 4: "ünü", 5: "ini", 6: "sını", 7: "sini", 8: "ini", 9: "unu" };
   return m[last];
 }
-$("btn-start").addEventListener("click", () => startQuiz(shuffled(DATA.map((_, i) => i)).slice(0, qz.count)));
+$("btn-start").addEventListener("click", () => { const pool = DATA.map((_, i) => i).filter(i => qz.scope === "both" || DATA[i].u === unit); startQuiz(shuffled(pool).slice(0, qz.count)); });
 function quizNext() {
   if (!qz.answered) { toast("Önce bir seçenek seç ya da “Cevabı göster”e bas"); return; }
   if (qz.pos + 1 < qz.list.length) { qz.pos++; renderQuestion(); } else finishQuiz();
@@ -675,10 +820,12 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight") quizNext();
 });
 $("btn-retry").addEventListener("click", () => startQuiz(shuffled(qz.wrong)));
-$("btn-new").addEventListener("click", () => { renderCountChips(); showStage("start"); });
+$("btn-new").addEventListener("click", () => { renderScopeChips(); renderCountChips(); showStage("start"); });
 
 // ---- init ----
+renderUnit();
 initCards();
+renderScopeChips();
 renderCountChips();
 showStage("start");
 setTab(tab);

@@ -1,7 +1,7 @@
 {
-  "name": "Arapça A2 Kelime Kartları",
-  "short_name": "Arapça Kartlar",
-  "description": "Miftahu’l-Arabiyye A2 için kelime kartları ve quiz",
+  "name": "Arapça Kelimeler",
+  "short_name": "Arapça Kelimeler",
+  "description": "Miftahu’l-Arabiyye A2 kelime kartları ve quiz",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0F8C84">
-<title>Arapça A2 Kelime Kartları</title>
+<title>Arapça Kelimeler</title>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Arapça Kartlar">
+<meta name="apple-mobile-web-app-title" content="Arapça Kelimeler">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -246,7 +246,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
       <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
       <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
       <p id="last-result"></p>
-      <p class="ver">Sürüm 6</p>
+      <p class="ver">Sürüm 7</p>
     </div>
 
     <div id="q-play" hidden>
@@ -509,14 +509,230 @@ const RAW3 = [
 ["مَحَلّ","dükkân","ev","yol","Çoğulu: مَحَلَّات. Türkçedeki “mahal” ile aynı kök.","ifade"],
 ["الجِهَات","yönler, taraflar","şehirler","adalar","Tekili: جِهَة. Türkçedeki “cihet”. مِنْ كُلِّ الجِهَاتِ = her taraftan.","ifade"]
 ];
+const RAW2B = [
+["بَرْد","soğuk, soğukluk","sıcaklık","nem","Zıttı: حَرَارَة. بَارِد (soğuk) ile aynı kök.","iklim"],
+["مُشْمِس","güneşli","bulutlu","sisli","شَمْس (güneş) kelimesinden. Türkçedeki “şems” ile aynı kök.","iklim"],
+["مُعَدَّلُ الحَرَارَةِ","ortalama sıcaklık","en yüksek sıcaklık","sıcaklık farkı","مُعَدَّل = ortalama. مُتَوَسِّط ile eş anlamlı.","iklim"],
+["ضَبَاب","sis","bulut","duman","Sıfatı: ضَبَابِيّ (sisli).","iklim"],
+["ضَبَابِيّ","sisli","bulutlu","rüzgârlı","ضَبَاب (sis) kelimesinin sonuna ـِيّ eklenmiş.","iklim"],
+["عَاصِف","fırtınalı","sisli","yağmurlu","عَاصِفَة (fırtına) ile aynı kök. الجَوُّ عَاصِفٌ = hava fırtınalı.","iklim"],
+["مُثْلِج","karlı","buzlu","bulutlu","“Muslic” okunur. ثَلْج (kar) ile aynı kök.","iklim"],
+["مَاطِر","yağmurlu","karlı","güneşli","مُمْطِر ile eş anlamlı. مَطَر = yağmur.","iklim"],
+["ثَلْج","kar","buz","dolu","Çoğulu: ثُلُوج. يَتَسَاقَطُ الثَّلْجُ = kar yağar.","iklim"],
+["غَيْمَة","bulut","sis","yağmur damlası","Çoğulu: غُيُوم. غَائِم (bulutlu) ile aynı kök.","iklim"],
+["رِيَاح","rüzgârlar","bulutlar","dalgalar","Tekili: رِيح. Akılsız çoğul olduğu için fiili dişil gelir: تَهُبُّ الرِّيَاحُ.","iklim"],
+["أَمْطَارٌ غَزِيرَةٌ","şiddetli yağmur","hafif yağmur","yağmur bulutu","غَزِير = bol, çok. Türkçedeki “gazir” (bol).","iklim"],
+["ثُلُوجٌ كَثِيفَةٌ","yoğun kar","hafif kar","eriyen kar","كَثِيف = yoğun. Türkçedeki “kesif”.","iklim"],
+["رِيَاحٌ شَدِيدَةٌ","şiddetli rüzgâr","hafif rüzgâr","sıcak rüzgâr","شَدِيد = şiddetli. Türkçedeki “şiddet” ile aynı kök.","iklim"],
+["غَائِمٌ جُزْئِيّاً","parçalı bulutlu","çok bulutlu","açık","جُزْئِيّاً = kısmen. Türkçedeki “cüz, cüzî”.","iklim"],
+["زَخَّاتُ المَطَرِ","sağanak yağış","yağmur bulutu","yağmur suyu","Kısa süren ve aralıklı yağış.","iklim"],
+["هُبُوبُ الرِّيَاحِ","rüzgârın esmesi","rüzgârın durması","rüzgâr yönü","هَبَّ – يَهُبُّ = esti, eser.","iklim"],
+["دَرَجَةُ الحَرَارَةِ الدُّنْيَا","en düşük sıcaklık","en yüksek sıcaklık","ortalama sıcaklık","الصُّغْرَى ile eş anlamlı. دُنْيَا = en alçak.","iklim"],
+["النَّشْرَةُ الجَوِّيَّةُ","hava durumu bülteni","haber bülteni","meteoroloji binası","نَشْرَة = bülten. Türkçedeki “neşriyat” ile aynı kök.","iklim"],
+["حَالَةُ الجَوِّ","hava durumu","iklim türü","hava sıcaklığı","حَالَة = durum, Türkçedeki “hâl”.","iklim"],
+["أَوْرَاقُ الأَشْجَارِ","ağaç yaprakları","ağaç dalları","ağaç kökleri","Tekili: وَرَقَة. Türkçedeki “varak” (yaprak).","iklim"],
+["المُعْتَادَة","alışılmış, normal","beklenmedik","en yüksek","Türkçedeki “mutat” (alışılmış).","iklim"],
+["النَّهَار","gündüz","gece","sabah","Zıttı: اللَّيْل. Türkçedeki “leyl ü nehar”.","zaman"],
+["اللَّيْل","gece","gündüz","akşam","Zıttı: النَّهَار. Kadir gecesi: لَيْلَةُ القَدْرِ.","zaman"],
+["أَوَّل","ilk, baş","son","orta","Zıttı: آخِر. Türkçedeki “evvel”.","zaman"],
+["مُنْتَصَف","orta, yarı","son","baş","نِصْف (yarım) ile aynı kök. مُنْتَصَفُ الشَّهْرِ = ayın ortası.","zaman"],
+["آخِر","son","ilk","orta","Zıttı: أَوَّل. Türkçedeki “ahir”.","zaman"],
+["أُسْبُوع","hafta","ay","yıl","Çoğulu: أَسَابِيع.","zaman"],
+["وَقْت","vakit, zaman","yıl","gün","Çoğulu: أَوْقَات. Türkçedeki “vakit”.","zaman"],
+["سَنَة","yıl","ay","hafta","Çoğulu: سَنَوَات. Türkçedeki “sene”.","zaman"],
+["شَهْر","ay","hafta","mevsim","Çoğulu: شُهُور ve أَشْهُر.","zaman"],
+["غَداً","yarın","dün","bugün","الغَد = yarın (isim).","zaman"],
+["أَمْسِ","dün","yarın","bugün","Hep kesra ile okunur: أَمْسِ.","zaman"],
+["السَّنَةُ القَادِمَةُ","gelecek yıl","geçen yıl","bu yıl","القَادِمَة = gelen, gelecek.","zaman"],
+["الأَحَد","pazar","pazartesi","cumartesi","أَحَد = bir. Haftanın birinci günü sayılır.","zaman"],
+["الاِثْنَيْن","pazartesi","salı","pazar","اِثْنَانِ = iki. Haftanın ikinci günü.","zaman"],
+["الثُّلَاثَاء","salı","çarşamba","pazartesi","ثَلَاثَة = üç.","zaman"],
+["الأَرْبِعَاء","çarşamba","perşembe","salı","أَرْبَعَة = dört.","zaman"],
+["الخَمِيس","perşembe","cuma","çarşamba","خَمْسَة = beş.","zaman"],
+["الجُمُعَة","cuma","cumartesi","perşembe","Türkçedeki “cuma”.","zaman"],
+["السَّبْت","cumartesi","pazar","cuma","Türkçedeki “Ashab-ı Sebt”teki sebt.","zaman"],
+["مُحَرَّم","Muharrem","Safer","Recep","Hicri takvimin 1. ayı.","zaman"],
+["صَفَر","Safer","Muharrem","Şaban","Hicri takvimin 2. ayı.","zaman"],
+["رَبِيعٌ الأَوَّلُ","Rebiülevvel","Rebiülahir","Ramazan","Hicri takvimin 3. ayı. Mevlid kandili bu aydadır.","zaman"],
+["رَبِيعٌ الآخِرُ","Rebiülahir","Rebiülevvel","Cemaziyelahir","Hicri takvimin 4. ayı.","zaman"],
+["جُمَادَى الأُولَى","Cemaziyelevvel","Cemaziyelahir","Rebiülevvel","Hicri takvimin 5. ayı.","zaman"],
+["جُمَادَى الآخِرَةُ","Cemaziyelahir","Cemaziyelevvel","Rebiülahir","Hicri takvimin 6. ayı.","zaman"],
+["رَجَب","Recep","Şaban","Şevval","Hicri takvimin 7. ayı.","zaman"],
+["شَعْبَان","Şaban","Recep","Ramazan","Hicri takvimin 8. ayı.","zaman"],
+["رَمَضَان","Ramazan","Şevval","Şaban","Hicri takvimin 9. ayı, oruç ayı.","zaman"],
+["شَوَّال","Şevval","Ramazan","Zilkade","Hicri takvimin 10. ayı. Ramazan bayramı bu ayın ilk günüdür.","zaman"],
+["ذُو القَعْدَةِ","Zilkade","Zilhicce","Şevval","Hicri takvimin 11. ayı.","zaman"],
+["ذُو الحِجَّةِ","Zilhicce","Zilkade","Muharrem","Hicri takvimin 12. ayı, hac ayı.","zaman"],
+["الثَّانِي","ikinci","üçüncü","birinci","Türkçedeki “sani” (Kânunusani).","sayi"],
+["الثَّالِث","üçüncü","dördüncü","ikinci","ثَلَاثَة (üç) kelimesinden.","sayi"],
+["الرَّابِع","dördüncü","beşinci","üçüncü","أَرْبَعَة (dört) kelimesinden.","sayi"],
+["الخَامِس","beşinci","altıncı","dördüncü","خَمْسَة (beş) kelimesinden.","sayi"],
+["السَّادِس","altıncı","yedinci","beşinci","سِتَّة (altı) kelimesinden.","sayi"],
+["السَّابِع","yedinci","sekizinci","altıncı","سَبْعَة (yedi) kelimesinden.","sayi"],
+["الثَّامِن","sekizinci","dokuzuncu","yedinci","ثَمَانِيَة (sekiz) kelimesinden.","sayi"],
+["التَّاسِع","dokuzuncu","onuncu","sekizinci","تِسْعَة (dokuz) kelimesinden.","sayi"],
+["العَاشِر","onuncu","dokuzuncu","birinci","عَشَرَة (on) kelimesinden. Aşure günü: Muharremin onuncu günü.","sayi"],
+["اِسْتَمَرَّ – يَسْتَمِرُّ","devam etti – devam eder","durdu – durur","başladı – başlar","Mastarı: اِسْتِمْرَار. Türkçedeki “istimrar”. Zıttı: تَوَقَّفَ.","fiil"],
+["اِنْخَفَضَ – يَنْخَفِضُ","düştü, alçaldı","yükseldi","devam etti","Mastarı: اِنْخِفَاض. Türkçedeki “inhifaz”. Zıttı: اِرْتَفَعَ.","fiil"],
+["تَسَاقَطَ – يَتَسَاقَطُ","döküldü, (kar) yağdı","eridi","esti","تَتَسَاقَطُ الأَوْرَاقُ = yapraklar dökülür. Türkçedeki “sukut” ile aynı kök.","fiil"],
+["تَوَقَّفَ – يَتَوَقَّفُ","durdu – durur","devam etti","başladı","Zıttı: اِسْتَمَرَّ. Türkçedeki “tevakkuf”.","fiil"],
+["هَطَلَ – يَهْطُلُ","(yağmur) yağdı – yağar","esti – eser","dondu – donar","Mastarı: هُطُول (yağış). يَهْطُلُ المَطَرُ = yağmur yağar.","fiil"],
+["اِنْتَقَلَ – يَنْتَقِلُ","taşındı, geçti","kaldı","bindi","Mastarı: اِنْتِقَال. Türkçedeki “intikal” ve “nakil”.","fiil"],
+["بَقِيَ – يَبْقَى","kaldı – kalır","gitti – gider","geldi – gelir","Türkçedeki “baki” ve “beka”.","fiil"],
+["أَصْبَحَ – يُصْبِحُ","oldu, hâline geldi","başladı","kaldı","صُبْح (sabah) ile aynı kök. يُصْبِحُ الجَوُّ بَارِداً = hava soğuk olur.","fiil"],
+["سَافَرَ – يُسَافِرُ","yolculuk etti – eder","döndü – döner","kaldı – kalır","Mastarı: سَفَر. Türkçedeki “sefer, seferber”.","fiil"],
+["اِزْدَحَمَ – يَزْدَحِمُ","kalabalıklaştı","boşaldı","yayıldı","Mastarı: اِزْدِحَام. Türkçedeki “izdiham”.","fiil"],
+["قَضَى – يَقْضِي","(vakit) geçirdi – geçirir","harcadı – harcar","bekledi – bekler","نَقْضِي أُسْبُوعَيْنِ = iki hafta geçiririz. Türkçedeki “kaza” ile aynı kök.","fiil"],
+["نَسِيَ – يَنْسَى","unuttu – unutur","hatırladı – hatırlar","öğrendi – öğrenir","Mastarı: نِسْيَان. Türkçedeki “nisyan”.","fiil"],
+["تَذَكَّرَ – يَتَذَكَّرُ","hatırladı – hatırlar","unuttu – unutur","anlattı – anlatır","Türkçedeki “tezkere” ve “zikir” ile aynı kök.","fiil"],
+["مَارَسَ – يُمَارِسُ","(spor, hobi) yaptı – yapar","izledi – izler","sevdi – sever","Mastarı: مُمَارَسَة. أُمَارِسُ الرِّيَاضَةَ = spor yaparım.","fiil"],
+["تَسَلَّقَ – يَتَسَلَّقُ","tırmandı – tırmanır","indi – iner","kaydı – kayar","تَسَلُّقُ الجِبَالِ = dağcılık.","fiil"],
+["فَضَّلَ – يُفَضِّلُ ... عَلَى","...i ...e tercih etti / eder","...i ...den ayırdı","...i ...e benzetti","أُفَضِّلُ الصَّيْفَ عَلَى الشِّتَاءِ = yazı kışa tercih ederim. Türkçedeki “fazilet” ile aynı kök.","fiil"],
+["العُمْرَة","umre","hac","bayram","نَوَيْتُ العُمْرَةَ = umreye niyet ettim.","gunluk"],
+["مَلَابِسُ الإِحْرَامِ","ihram giysileri","kışlık giysiler","bayramlık giysiler","Türkçedeki “ihram”.","gunluk"],
+["اِزْدِحَامٌ شَدِيدٌ","yoğun kalabalık","az kalabalık","sessizlik","Türkçedeki “izdiham”.","gunluk"],
+["بَرّاً وَبَحْراً وَجَوّاً","karadan, denizden ve havadan","sabah, öğle ve akşam","kuzeyden, güneyden ve batıdan","أُسَافِرُ بَرّاً = karadan yolculuk ederim.","gunluk"],
+["الحَافِلَة","otobüs","tren","gemi","Çoğulu: حَافِلَات.","gunluk"],
+["القِطَار","tren","otobüs","uçak","Türkçedeki “katar”.","gunluk"],
+["السَّفِينَة","gemi","kayık","uçak","Çoğulu: سُفُن. Türkçedeki “sefine”.","gunluk"],
+["الطَّائِرَة","uçak","gemi","tren","طَارَ (uçtu) kelimesinden. Türkçedeki “tayyare”.","gunluk"],
+["أَدَوَاتُ النَّظَافَةِ","temizlik malzemeleri","okul malzemeleri","mutfak eşyaları","Türkçedeki “nezafet” (temizlik).","gunluk"],
+["فُرْشَاةُ الأَسْنَانِ","diş fırçası","diş macunu","tarak","أَسْنَان = dişler (tekili سِنّ).","gunluk"],
+["قَصَّاصَةُ الأَظَافِرِ","tırnak makası","diş fırçası","tarak","أَظَافِر = tırnaklar.","gunluk"],
+["الشَّمْسِيَّة","şemsiye","şapka","çanta","Türkçedeki “şemsiye”, شَمْس (güneş) kelimesinden.","gunluk"],
+["حَقِيبَة","çanta, valiz","şemsiye","kutu","Çoğulu: حَقَائِب.","gunluk"],
+["تَقَبَّلَ اللهُ","Allah kabul etsin","Allah korusun","Allah razı olsun","Cevabı: مِنَّا وَمِنْكُمْ (bizden ve sizden).","gunluk"],
+["حَجّاً مَبْرُوراً","Haccın kabul olsun","Hayırlı yolculuklar","Geçmiş olsun","Tamamı: حَجّاً مَبْرُوراً وَسَعْياً مَشْكُوراً.","gunluk"],
+["مُدَّةُ السَّفَرِ","yolculuk süresi","yolculuk tarihi","yolculuk aracı","مُدَّة = süre, Türkçedeki “müddet”.","gunluk"],
+["مَوْعِدُ السَّفَرِ","yolculuk tarihi","yolculuk süresi","yolculuk yeri","مَوْعِد = randevu, belirlenen zaman. Türkçedeki “vade” ile aynı kök.","gunluk"],
+["هِوَايَة","hobi","meslek","ödev","Çoğulu: هِوَايَات. هِوَايَتِي المُفَضَّلَةُ = en sevdiğim hobi.","gunluk"],
+["نَشَاط","enerji, hareketlilik","tembellik","yorgunluk","Zıttı: كَسَل.","gunluk"],
+["كَسَل","tembellik","enerji","mutluluk","Zıttı: نَشَاط. Türkçedeki “kesel” (miskinlik).","gunluk"],
+["سَعَادَة","mutluluk","hüzün","yorgunluk","Zıttı: حُزْن. Türkçedeki “saadet”.","gunluk"],
+["حُزْن","hüzün","mutluluk","korku","Zıttı: سَعَادَة. Türkçedeki “hüzün”.","gunluk"],
+["صَيْدُ السَّمَكِ","balık tutma","balık pazarı","balık yemeği","صَيْد = av. Türkçedeki “sayd”.","gunluk"],
+["التَّصْوِير","fotoğrafçılık","resim yapma","yazı yazma","Türkçedeki “tasvir”.","gunluk"],
+["تَسَلُّقُ الجِبَالِ","dağcılık","dağ yolu","dağ evi","تَسَلَّقَ (tırmandı) fiilinin mastarı.","gunluk"],
+["المَشْي","yürüyüş","koşu","yüzme","Zıttı: الرَّكْض. مَشَى – يَمْشِي = yürüdü – yürür.","gunluk"],
+["الرَّكْض","koşu","yürüyüş","atlama","Zıttı: المَشْي.","gunluk"],
+["أَوْقَاتُ الفَرَاغِ","boş zamanlar","iş saatleri","tatil günleri","فَرَاغ = boşluk.","gunluk"],
+["العُطْلَة","tatil","iş","okul","يَوْمُ عُطْلَةٍ = tatil günü. Türkçedeki “tatil” ile aynı kök.","gunluk"],
+["مُمْتِعَة","zevkli, keyifli","sıkıcı","yorucu","الاِسْتِمْتَاع ile aynı kök.","gunluk"],
+["مُتَشَابِه","benzer","farklı","aynı","Zıttı: مُخْتَلِف. Türkçedeki “müteşabih”.","gunluk"],
+["رِحْلَة","gezi, yolculuk","tatil","ziyaret","Türkçedeki “rihlet” ile aynı kök.","gunluk"],
+["الشَّبَكَةُ العَنْكَبُوتِيَّةُ","internet","telefon ağı","televizyon","Kelime anlamı “örümcek ağı”. عَنْكَبُوت = örümcek (Ankebut suresi).","gunluk"],
+["مُذِيع","spiker, sunucu","yazar","izleyici","Hava durumunu sunan kişi: مُذِيعُ النَّشْرَةِ الجَوِّيَّةِ.","gunluk"]
+];
+const RAW3B = [
+["مَقْهًى","kafe, kahvehane","pastane","lokanta","قَهْوَة (kahve) ile aynı kök.","sehir"],
+["سُوقُ الخُضْرَوَاتِ","sebze pazarı","balık pazarı","kapalı çarşı","سُوق = pazar, çarşı.","sehir"],
+["مَرْكَزُ الشُّرْطَةِ","karakol","postane","belediye","Eş anlamlısı: قِسْمُ الشُّرْطَةِ.","sehir"],
+["مَكْتَبٌ عَقَارِيٌّ","emlak ofisi","döviz bürosu","seyahat acentesi","عَقَار = mülk, Türkçedeki “akar”.","sehir"],
+["مَوْقِفُ الحَافِلَاتِ","otobüs durağı","otopark","tren istasyonu","مَوْقِف = durak, Türkçedeki “vakfe” ile aynı kök.","sehir"],
+["مَرْكَزُ التَّسَوُّقِ","alışveriş merkezi","semt pazarı","şehir merkezi","تَسَوُّق = alışveriş. سُوق ile aynı kök.","sehir"],
+["خِدْمَات","hizmetler","dükkânlar","binalar","Tekili: خِدْمَة. Türkçedeki “hizmet”.","sehir"],
+["صَيْدَلِيَّة","eczane","hastane","fırın","Çoğulu: صَيْدَلِيَّات.","sehir"],
+["مُسْتَشْفَى","hastane","eczane","okul","شِفَاء (şifa) ile aynı kök.","sehir"],
+["مَخْبَز","fırın","mutfak","pastane","خُبْز = ekmek.","sehir"],
+["الدُّكَّان","dükkân","depo","ev","Türkçedeki “dükkân”.","sehir"],
+["بَقَّالَة","bakkal","kasap","fırın","Türkçedeki “bakkal”.","sehir"],
+["مَحَلُّ جِزَارَةٍ","kasap dükkânı","balıkçı","bakkal","جَزَّار = kasap.","sehir"],
+["حَدِيقَة","park, bahçe","orman","meydan","Çoğulu: حَدَائِق. Türkçedeki “hadika”.","sehir"],
+["الجِيرَان","komşular","akrabalar","arkadaşlar","Tekili: جَار. Türkçedeki “civar” ile aynı kök.","sehir"],
+["زُقَاق","dar sokak","geniş cadde","meydan","Türkçedeki “sokak” bu kelimeden gelir.","sehir"],
+["مَكْتَبُ البَرِيدِ","postane","emlak ofisi","banka","بَرِيد = posta.","sehir"],
+["مَصْرِف","banka","postane","pazar","Çoğulu: مَصَارِف. Türkçedeki “masraf” ile aynı kök.","sehir"],
+["صَرَّاف","sarraf, para çekme makinesi","kasiyer","postacı","Türkçedeki “sarraf”. مَكْتَبُ الصِّرَافَةِ = döviz bürosu.","sehir"],
+["السُّوقُ الأَثَرِيُّ","tarihî çarşı","sebze pazarı","alışveriş merkezi","أَثَرِيّ = antik, tarihî.","sehir"],
+["السِّفَارَة","büyükelçilik","postane","belediye","Çoğulu: سِفَارَات. Türkçedeki “sefaret”.","sehir"],
+["الطَّابِق","kat","oda","daire","الطَّابِقُ الأَوَّلُ = birinci kat. Türkçedeki “tabaka” ile aynı kök.","sehir"],
+["شَقَّة","daire (ev)","kat","bina","Çoğulu: شُقَق.","sehir"],
+["ضَيْف","misafir","komşu","turist","Çoğulu: ضُيُوف. Türkçedeki “ziyafet” ile aynı kök.","sehir"],
+["مُزْدَحِم","kalabalık","sakin","temiz","Zıttı: هَادِئ. Türkçedeki “izdiham” ile aynı kök.","sehir"],
+["هَادِئ","sakin, sessiz","kalabalık","gürültülü","Zıttı: مُزْدَحِم. Mastarı: هُدُوء (sakinlik).","sehir"],
+["مُقَابِل","karşısında","arkasında","yanında","Türkçedeki “mukabil”.","yon"],
+["خَلْفَ","arkasında","önünde","üstünde","Türkçedeki “halef” ile aynı kök.","yon"],
+["أَمَامَ","önünde","arkasında","altında","Türkçedeki “imam” ile aynı kök (öndeki kişi).","yon"],
+["فَوْقَ","üstünde","altında","yanında","Türkçedeki “fevkalade”.","yon"],
+["تَحْتَ","altında","üstünde","önünde","تَحْتَ الصِّفْرِ = sıfırın altında.","yon"],
+["جَانِب","yanında","karşısında","arkasında","Türkçedeki “canib” (taraf).","yon"],
+["حَوْلَ","etrafında","içinde","üstünde","Türkçedeki “havali” (çevre) ile aynı kök.","yon"],
+["فِي الزَّاوِيَةِ","köşede","ortada","kapıda","زَاوِيَة = köşe. Türkçedeki “zaviye”.","yon"],
+["بَيْنَ","arasında","yanında","karşısında","Türkçedeki “beynelmilel”.","yon"],
+["قُرْبَ","yakınında","uzağında","karşısında","Eş anlamlısı: قَرِيبٌ مِنْ.","yon"],
+["قَرِيبٌ مِنْ","...e yakın","...den uzak","...in yanında","Zıttı: بَعِيدٌ عَنْ.","yon"],
+["بَعِيدٌ عَنْ","...den uzak","...e yakın","...in önünde","Zıttı: قَرِيبٌ مِنْ.","yon"],
+["إِلَى اليَمِينِ","sağa","sola","düz","يَمِين = sağ. Türkçedeki “yemin” ile aynı kök.","yon"],
+["إِلَى اليَسَارِ","sola","sağa","geriye","Zıttı: إِلَى اليَمِينِ.","yon"],
+["مُبَاشَرَةً","doğrudan, dümdüz","sağa","biraz sonra","اِذْهَبْ مُبَاشَرَةً = dümdüz git.","yon"],
+["بِدَايَة","başlangıç","son","orta","Zıttı: نِهَايَة. Türkçedeki “bidayet”.","yon"],
+["نِهَايَة","son","başlangıç","köşe","نِهَايَةُ الشَّارِعِ = caddenin sonu. Türkçedeki “nihayet”.","yon"],
+["اِتِّجَاه","yön","yol","köşe","Türkçedeki “teveccüh” ile aynı kök.","yon"],
+["ذَهَبَ – يَذْهَبُ","gitti – gider","geldi – gelir","bindi – biner","Emri: اِذْهَبْ (git).","fiil"],
+["رَكِبَ – يَرْكَبُ","bindi – biner","indi – iner","yürüdü – yürür","Emri: اِرْكَبْ. Türkçedeki “merkep” ve “rikap” ile aynı kök.","fiil"],
+["قَطَعَ – يَقْطَعُ","(yolu) geçti, kesti","çıktı","döndü","Emri: اِقْطَعِ الشَّارِعَ (caddeyi geç). Türkçedeki “kat'i” ile aynı kök.","fiil"],
+["صَعِدَ – يَصْعَدُ","yukarı çıktı – çıkar","indi – iner","geçti – geçer","Zıttı: نَزَلَ. Emri: اِصْعَدْ.","fiil"],
+["نَزَلَ – يَنْزِلُ","indi – iner","çıktı – çıkar","bindi – biner","Zıttı: صَعِدَ. Emri: اِنْزِلْ. Türkçedeki “nüzul”.","fiil"],
+["اِتَّجَهَ – يَتَّجِهُ","yöneldi – yönelir","durdu – durur","döndü – döner","Emri: اِتَّجِهْ إِلَى اليَمِينِ (sağa yönel).","fiil"],
+["مَشَى – يَمْشِي","yürüdü – yürür","koştu – koşar","bindi – biner","Emri: اِمْشِ.","fiil"],
+["اِسْتَغْرَقَ – يَسْتَغْرِقُ","(zaman) sürdü – sürer","bitti – biter","başladı – başlar","يَسْتَغْرِقُ الطَّرِيقُ نِصْفَ سَاعَةٍ = yol yarım saat sürer.","fiil"],
+["اِشْتَهَرَ – يَشْتَهِرُ بِـ","...ile meşhur oldu / olur","...e benzedi","...den oluştu","تَشْتَهِرُ تُرْكِيَا بِالبُنْدُقِ = Türkiye fındığıyla meşhurdur.","fiil"],
+["بُرْج","kule","köprü","duvar","Çoğulu: أَبْرَاج. Türkçedeki “burç”. بُرْجُ غَلَطَةَ = Galata Kulesi.","eser"],
+["تِمْثَال","heykel","tablo","sütun","Çoğulu: تَمَاثِيل. Türkçedeki “timsal”. تِمْثَالُ الحُرِّيَّةِ = Özgürlük Heykeli.","eser"],
+["مِئْذَنَة","minare","kubbe","kule","Çoğulu: مَآذِن. أَذَان (ezan) ile aynı kök.","eser"],
+["السُّوقُ المُغَطَّى","Kapalıçarşı","sebze pazarı","Mısır Çarşısı","مُغَطًّى = üstü kapalı.","eser"],
+["خَانُ الخَلِيلِيِّ","Han el-Halili (Kahire çarşısı)","Kahire Kalesi","Ezher Camii","Kahire’nin meşhur tarihî çarşısı. خَان = han.","eser"],
+["التَّوْأَم","ikiz","üçüz","kardeş","بُرْجَا كُوالالُمْبُورَ التَّوْأَمُ = Kuala Lumpur İkiz Kuleleri.","eser"],
+["تَلَّة","tepe","dağ","vadi","Çoğulu: تِلَال.","tarih"],
+["غَابَة","orman","bahçe","çöl","Çoğulu: غَابَات.","tarih"],
+["بِحَار","denizler","okyanuslar","nehirler","Tekili: بَحْر. Türkçedeki “bahir”, “Bahr-i Muhit”.","tarih"],
+["مُحِيط","okyanus","deniz","göl","Çoğulu: مُحِيطَات. المُحِيطُ الأَطْلَسِيُّ = Atlas Okyanusu.","tarih"],
+["مَسْكُونَة","yerleşim olan, meskûn","terk edilmiş","yıkılmış","أَقْدَمُ مَدِينَةٍ مَسْكُونَةٍ = en eski yerleşim şehri.","sifat"],
+["فِرْعَوْنِيَّة","firavunlara ait","Romalılara ait","Osmanlılara ait","آثَارٌ فِرْعَوْنِيَّةٌ = Firavun dönemi eserleri (Kahire).","sifat"],
+["سَاحِلِيَّة","kıyı (şehri)","dağlık","çöl","مَدِينَةٌ سَاحِلِيَّةٌ = kıyı şehri. سَاحِل ile aynı kök.","sifat"],
+["صِنَاعِيّ","yapay, sanayi","doğal","tarihî","Zıttı: طَبِيعِيّ. Türkçedeki “sanayi”.","sifat"],
+["مَدِينَةُ التِّلَالِ السَّبْعَةِ","Yedi Tepeli Şehir (İstanbul)","Bin Minareli Şehir","Pembe Şehir","Kitapta İstanbul’un eski adı olarak geçer. تِلَال = tepeler.","ifade"],
+["مَدِينَةُ المَآذِنِ","Minareler Şehri (İstanbul)","Yedi Tepeli Şehir","Çölün Gelini","Kitapta İstanbul’un bugünkü lakabı. مَآذِن = minareler (tekili مِئْذَنَة).","ifade"],
+["مَدِينَةُ الأَلْفِ مِئْذَنَةٍ","Bin Minareli Şehir (Kahire)","Yedi Tepeli Şehir","Kış Şehri","Kitapta Kahire için kullanılır.","ifade"],
+["جَوْهَرَةُ الشَّرْقِ","Doğu'nun İncisi (Kahire)","Çölün Gelini","Pembe Şehir","جَوْهَرَة = mücevher, Türkçedeki “cevher”.","ifade"],
+["الأَمَاكِنُ السِّيَاحِيَّةُ","turistik yerler","tarihî kalıntılar","alışveriş yerleri","سِيَاحِيّ = turistik, سَائِح (turist) ile aynı kök.","ifade"],
+["الوَطَنُ العَرَبِيُّ","Arap dünyası","Arap Yarımadası","Arap dili","وَطَن = vatan.","ulke"],
+["الدُّوَل","devletler, ülkeler","şehirler","kıtalar","Tekili: دَوْلَة. Türkçedeki “düvel”.","ulke"],
+["عَدَدُ السُّكَّانِ","nüfus","yüzölçümü","şehir sayısı","عَدَد = sayı, Türkçedeki “aded”.","ulke"],
+["كِيلُومِتْرٌ مُرَبَّعٌ","kilometrekare","kilometre","metrekare","مُرَبَّع = kare, Türkçedeki “murabba”. Kısaltması: كم٢.","ulke"],
+["لُغَةٌ رَسْمِيَّةٌ","resmî dil","yabancı dil","eski dil","رَسْمِيّ = resmî.","ulke"],
+["لَهَجَات","lehçeler","diller","harfler","Tekili: لَهْجَة. Türkçedeki “lehçe”.","ulke"],
+["مَصَادِرُ طَبِيعِيَّةٌ","doğal kaynaklar","doğal güzellikler","doğal afetler","مَصْدَر = kaynak, Türkçedeki “masdar”.","ulke"],
+["النَّفْط","petrol","gaz","kömür","البِتْرُول ile eş anlamlı. Türkçedeki “neft”.","ulke"],
+["الغَاز","gaz","petrol","demir","الغَازُ الطَّبِيعِيُّ = doğalgaz.","ulke"],
+["الفَحْم","kömür","demir","gaz","Doğal kaynaklardan biri.","ulke"],
+["الحَدِيد","demir","kömür","bakır","Hadid suresi = Demir suresi.","ulke"],
+["الزِّرَاعَة","tarım","ticaret","sanayi","Çoğulu: زِرَاعَات. Türkçedeki “ziraat”.","ulke"],
+["القُطْن","pamuk","yün","ipek","Türkçedeki “kutnu” (bir kumaş türü) buradan.","ulke"],
+["القَمْح","buğday","arpa","mısır","Ekmeğin yapıldığı tahıl.","ulke"],
+["الذُّرَة","mısır (bitki)","buğday","pirinç","Dikkat: ülke olan Mısır مِصْر'dır.","ulke"],
+["الزَّيْتُون","zeytin","incir","üzüm","Türkçedeki “zeytin”. Tîn suresinde geçer.","ulke"],
+["الأَرُزّ","pirinç","buğday","mısır","Dikkat: الأَرْز (sedir ağacı) ile karıştırma.","ulke"],
+["البُنْدُق","fındık","ceviz","badem","Türkçedeki “fındık” buradan gelir.","ulke"],
+["المَنْسُوجَات","dokumalar, tekstil","boyalar","halılar","Türkçedeki “mensucat”.","ulke"],
+["فَرَنْسَا","Fransa","İtalya","İspanya","Başkenti: بَارِيس.","ulke"],
+["إِيطَالِيَا","İtalya","Fransa","Yunanistan","Başkenti: رُومَا.","ulke"],
+["الأُرْدُنّ","Ürdün","Suriye","Lübnan","Başkenti: عَمَّان. Petra buradadır.","ulke"],
+["مِصْر","Mısır","Libya","Sudan","Başkenti: القَاهِرَة. Luksor buradadır.","ulke"],
+["الصِّين","Çin","Japonya","Hindistan","سُورُ الصِّينِ العَظِيمُ buradadır.","ulke"],
+["السُّعُودِيَّة","Suudi Arabistan","Yemen","Umman","Mekke ve Medine buradadır.","ulke"],
+["الوِلَايَاتُ المُتَّحِدَةُ الأَمْرِيكِيَّةُ","Amerika Birleşik Devletleri","Birleşik Krallık","Birleşik Arap Emirlikleri","تِمْثَالُ الحُرِّيَّةِ buradadır.","ulke"],
+["المَغْرِب","Fas","Cezayir","Tunus","Kelime anlamı “batı”. Başkenti: الرِّبَاط.","ulke"],
+["الجَزَائِر","Cezayir","Fas","Libya","Kelime anlamı “adalar”.","ulke"]
+];
 const mk = (r, u) => ({ar:r[0], tr:r[1], d:[r[2], r[3]], n:r[4], c:r[5], u});
-const DATA = [...RAW2.map(r => mk(r, 2)), ...RAW3.map(r => mk(r, 3))];
+const DATA = [...RAW2.map(r => mk(r, 2)), ...RAW3.map(r => mk(r, 3)), ...RAW2B.map(r => mk(r, 2)), ...RAW3B.map(r => mk(r, 3))];
 const CATS_BY_UNIT = {
-  2: [["all","Hepsi"],["fiil","Fiiller"],["cografya","Coğrafya"],["iklim","İklim ve hava"],["zaman","Mevsimler ve aylar"],["tafdil","Karşılaştırma"],["ifade","İfadeler"]],
-  3: [["all","Hepsi"],["eser","Eserler ve yapılar"],["fiil","Fiiller"],["tarih","Yerler ve tarih"],["sifat","Sıfatlar"],["ifade","İfadeler"]]
+  2: [["all","Hepsi"],["iklim","İklim ve hava"],["zaman","Takvim ve zaman"],["fiil","Fiiller"],["cografya","Coğrafya"],["gunluk","Seyahat ve hobiler"],["sayi","Sıra sayıları"],["tafdil","Karşılaştırma"],["ifade","İfadeler"]],
+  3: [["all","Hepsi"],["eser","Eserler ve yapılar"],["sehir","Şehirde yerler"],["yon","Yön ve konum"],["fiil","Fiiller"],["tarih","Yerler ve tarih"],["ulke","Ülkeler ve kaynaklar"],["sifat","Sıfatlar"],["ifade","İfadeler"]]
 };
 const UNIT_INFO = { 2: { ar: "المَنَاخ", tr: "2. ünite kelimeleri" }, 3: { ar: "الحَضَارَات", tr: "3. ünite kelimeleri" } };
-const COUNTS = [10, 25, 50, 100];
+const COUNTS = [10, 25, 50, 100, 200];
 const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const ICON_BAD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -577,8 +793,9 @@ function initCards() {
   const st = store.units[unit] || {};
   fc.cat = CATS_BY_UNIT[unit].some(c => c[0] === st.cat) ? st.cat : "all";
   const valid = idsFor(fc.cat);
-  if (Array.isArray(st.order) && st.order.length === valid.length && st.order.every(i => valid.includes(i))) {
-    fc.order = st.order; fc.pos = Math.min(Math.max(0, st.pos | 0), fc.order.length - 1);
+  if (Array.isArray(st.order) && st.order.length && st.order.every(i => valid.includes(i))) {
+    const missing = valid.filter(i => !st.order.includes(i));
+    fc.order = st.order.concat(missing); fc.pos = Math.min(Math.max(0, st.pos | 0), fc.order.length - 1);
   } else buildOrder(false);
   renderChips(); renderCard();
 }

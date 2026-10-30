@@ -103,6 +103,9 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
 .btn{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:16px;padding:14px 12px;font-size:16px;font-weight:500;cursor:pointer;min-height:52px}
 .btn.primary{background:var(--firuze);border-color:var(--firuze);color:var(--on-firuze)}
 .btn.ghost{flex:0 0 auto;padding-inline:16px;color:var(--muted)}
+.btn.icon{flex:0 0 52px;padding:0;display:grid;place-items:center}
+.btn.icon svg{width:22px;height:22px}
+#view-cards .row .btn{padding-inline:6px;min-width:0}
 .btn:focus-visible,.chip:focus-visible,.opt:focus-visible,.tab:focus-visible,.drag:focus-visible{outline:3px solid var(--firuze);outline-offset:3px}
 
 /* quiz */
@@ -174,7 +177,8 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
 .s-controls{display:flex;gap:10px;flex:none}
 .s-controls .btn{min-height:60px;display:flex;align-items:center;justify-content:center;gap:4px;padding:12px 6px;font-size:15px;min-width:0}
 .s-controls .btn svg{width:22px;height:22px;flex:none}
-.s-play{flex:1.5!important;font-size:18px!important;font-weight:600!important}
+.s-play{flex:1.1!important}
+.s-play svg{width:34px!important;height:34px!important}
 
 .s-hint{font-size:13px;color:var(--muted);text-align:center;margin:10px 0 0;flex:none}
 .s-full{flex:0 0 60px!important}
@@ -271,7 +275,8 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
       <span>Sağa kaydır: sonraki<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </div>
     <div class="row">
-      <button class="btn ghost" id="btn-shuffle" type="button">Karıştır</button>
+      <button class="btn ghost icon" id="btn-shuffle" type="button" aria-label="Karıştır" title="Karıştır"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h4v4M4 20l16-16M20 16v4h-4M15 15l5 5M4 4l5 5"/></svg></button>
+      <button class="btn" id="btn-prev" type="button">Önceki</button>
       <button class="btn" id="btn-flip" type="button">Çevir</button>
       <button class="btn primary" id="btn-next" type="button">Sonraki</button>
     </div>
@@ -302,7 +307,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
     </div>
     <button class="s-exit" id="s-exit" type="button" aria-label="Tam ekrandan çık"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="s-paused" id="s-paused" aria-hidden="true">Durduruldu. Devam etmek için dokun.</div>
-    <p class="s-hint">Sağdaki düğmeyle yatay tam ekrana geçebilirsin. Durdurmak ya da devam etmek için karta dokun.</p>
+    <p class="s-hint">Tam ekran için en sağdaki düğmeye bas. Durdurmak için karta dokun.</p>
   </section>
 
   <!-- Quiz -->
@@ -316,7 +321,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
       <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
       <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
       <p id="last-result"></p>
-      <p class="ver">Sürüm 10</p>
+      <p class="ver">Sürüm 12</p>
     </div>
 
     <div id="q-play" hidden>
@@ -912,22 +917,24 @@ function setFlipped(v, instant) {
 function flip() { setFlipped(!fc.flipped, false); }
 
 let busy = false;
-function nextCard() {
+function nextCard() { moveCard(1); }
+function prevCard() { moveCard(-1); }
+function moveCard(step) {
   if (busy) return;
   const advance = () => {
-    fc.pos = (fc.pos + 1) % fc.order.length;
-    if (fc.pos === 0) toast("Liste bitti, baştan başlıyoruz");
+    fc.pos = (fc.pos + step + fc.order.length) % fc.order.length;
+    if (step > 0 && fc.pos === 0) toast("Liste bitti, baştan başlıyoruz");
     setFlipped(false, true); renderCard(); save();
   };
   if (reduceMotion) { drag.style.transform = ""; advance(); return; }
   busy = true;
   drag.style.transition = "transform .24s ease-in, opacity .24s ease-in";
-  drag.style.transform = "translateX(115%) rotate(10deg)";
+  drag.style.transform = step > 0 ? "translateX(115%) rotate(10deg)" : "translateX(-115%) rotate(-10deg)";
   drag.style.opacity = "0";
   setTimeout(() => {
     advance();
     drag.style.transition = "none";
-    drag.style.transform = "translateX(-36px) scale(.96)";
+    drag.style.transform = step > 0 ? "translateX(-36px) scale(.96)" : "translateX(36px) scale(.96)";
     void drag.offsetWidth;
     drag.style.transition = "transform .32s cubic-bezier(.2,.75,.2,1), opacity .32s";
     drag.style.transform = "";
@@ -972,10 +979,11 @@ document.addEventListener("keydown", e => {
 });
 $("btn-flip").addEventListener("click", flip);
 $("btn-next").addEventListener("click", nextCard);
+$("btn-prev").addEventListener("click", prevCard);
 $("btn-shuffle").addEventListener("click", () => { buildOrder(true); setFlipped(false, true); renderCard(); save(); toast("Kartlar karıştırıldı"); });
 
 // ---- slideshow: front and back are shown for a few seconds each, then the next word ----
-const SPEEDS = [3, 4, 5];
+const SPEEDS = [3, 5];
 const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
 const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>';
 const sl = { playing: false, back: false, timer: null, dur: SPEEDS.includes(store.slideDur) ? store.slideDur : 3 };
@@ -1021,8 +1029,9 @@ function slMove(step) {
 }
 function updatePlayBtn() {
   const b = $("s-play");
-  b.innerHTML = sl.playing ? ICON_PAUSE + "Durdur" : ICON_PLAY + "Başlat";
+  b.innerHTML = sl.playing ? ICON_PAUSE : ICON_PLAY;
   b.setAttribute("aria-pressed", sl.playing);
+  b.setAttribute("aria-label", sl.playing ? "Durdur" : "Oynat");
 }
 const LANDSCAPE = window.matchMedia("(orientation: landscape) and (max-height: 600px), (orientation: landscape) and (pointer: coarse)");
 function goFullscreen(on) {

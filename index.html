@@ -157,6 +157,25 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
 .review .ar{font-size:22px;line-height:1.7}
 .review span:last-child{color:var(--muted);text-align:right;font-size:15px}
 
+/* slideshow */
+.scard{position:relative;width:100%;max-width:440px;max-height:540px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.scard.flipped .inner{transform:rotateY(180deg)}
+.scard .word{font-size:clamp(52px,17vw,92px)}
+.scard .word.long{font-size:clamp(36px,10.5vw,58px)}
+.scard .word.xlong{font-size:clamp(28px,8.5vw,44px)}
+.scard .back .small-ar{font-size:30px}
+.scard .back .mean{font-size:clamp(32px,9vw,48px)}
+.scard .back .note{font-size:16px}
+.s-bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 6px 10px;flex:none}
+.s-bar i{display:block;height:100%;width:0;background:var(--firuze)}
+.s-bar i.run{animation:sfill linear forwards}
+@keyframes sfill{from{width:0}to{width:100%}}
+.s-speed{justify-content:center;flex-wrap:wrap;overflow:visible}
+.s-controls{display:flex;gap:10px;flex:none}
+.s-controls .btn{min-height:60px;display:flex;align-items:center;justify-content:center;gap:4px;padding:12px 6px;font-size:15px;min-width:0}
+.s-controls .btn svg{width:22px;height:22px;flex:none}
+.s-play{flex:1.5!important;font-size:18px!important;font-weight:600!important}
+
 /* install bar */
 .install-bar{display:flex;align-items:center;gap:10px;margin:2px 18px 6px;padding:10px 8px 10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;font-size:14px;line-height:1.45;flex:none}
 .install-bar p{margin:0;flex:1}
@@ -172,7 +191,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
 .q-hints{padding:0 6px 12px;margin-top:-4px}
 
 /* tabs */
-.tabs{flex:none;position:relative;z-index:20;display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-top:1px solid var(--line);padding:6px 14px}
+.tabs{flex:none;position:relative;z-index:20;display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--surface);border-top:1px solid var(--line);padding:6px 14px}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:7px 0;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-radius:14px}
 .tab svg{width:24px;height:24px}
 .tab[aria-selected="true"]{color:var(--firuze)}
@@ -235,6 +254,30 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
     </div>
   </section>
 
+  <!-- Slideshow -->
+  <section class="view" id="view-slide" aria-label="Slayt" hidden>
+    <div class="chips" id="s-chips" role="group" aria-label="Kelime grubu"></div>
+    <div class="stage">
+      <div class="scard" id="scard" role="button" tabindex="0" aria-label="Slayt kartı. Dokununca durur ya da devam eder.">
+        <div class="inner" id="sinner">
+          <div class="face front"><div class="word ar" id="s-word"></div></div>
+          <div class="face back">
+            <div class="small-ar ar" id="s-ar"></div>
+            <div class="mean" id="s-mean"></div>
+            <div class="note" id="s-note"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="s-bar"><i id="s-bar"></i></div>
+    <div class="chips s-speed" id="s-speed" role="group" aria-label="Her yüzün ekranda kalma süresi"></div>
+    <div class="s-controls">
+      <button class="btn" id="s-prev" type="button" aria-label="Önceki kelime"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Önceki</button>
+      <button class="btn primary s-play" id="s-play" type="button" aria-pressed="false"></button>
+      <button class="btn" id="s-next" type="button" aria-label="Sonraki kelime">Sonraki<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
   <!-- Quiz -->
   <section class="view" id="view-quiz" aria-label="Quiz" hidden>
     <div id="q-start" class="panel">
@@ -246,7 +289,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
       <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
       <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
       <p id="last-result"></p>
-      <p class="ver">Sürüm 7</p>
+      <p class="ver">Sürüm 8</p>
     </div>
 
     <div id="q-play" hidden>
@@ -294,6 +337,10 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
   <button class="tab" role="tab" id="tab-cards" aria-selected="true" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="6" width="13" height="15" rx="2.5"/><path d="M8 3.5h10a2.5 2.5 0 0 1 2.5 2.5v12"/></svg>
     Kartlar
+  </button>
+  <button class="tab" role="tab" id="tab-slide" aria-selected="false" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M10 9.3v5.4l4.6-2.7z" fill="currentColor"/></svg>
+    Slayt
   </button>
   <button class="tab" role="tab" id="tab-quiz" aria-selected="false" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg>
@@ -765,20 +812,19 @@ let toastTimer;
 function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 1800); }
 
 // ---- tabs ----
-let tab = store.tab === "quiz" ? "quiz" : "cards";
+let tab = ["quiz", "slide"].includes(store.tab) ? store.tab : "cards";
 function setTab(t) {
+  if (tab === "slide" && t !== "slide") slPause();
   tab = t; store.tab = t; persist();
-  $("tab-cards").setAttribute("aria-selected", t === "cards");
-  $("tab-quiz").setAttribute("aria-selected", t === "quiz");
-  $("view-cards").hidden = t !== "cards";
-  $("view-quiz").hidden = t !== "quiz";
+  ["cards", "slide", "quiz"].forEach(k => { $("tab-" + k).setAttribute("aria-selected", t === k); $("view-" + k).hidden = t !== k; });
+  if (t === "cards") { setFlipped(false, true); renderCard(); }
+  if (t === "slide") renderSlide();
   updateCounter();
 }
-$("tab-cards").addEventListener("click", () => setTab("cards"));
-$("tab-quiz").addEventListener("click", () => setTab("quiz"));
+["cards", "slide", "quiz"].forEach(k => $("tab-" + k).addEventListener("click", () => setTab(k)));
 
 function updateCounter() {
-  $("counter").textContent = tab === "cards" ? `${fc.pos + 1} / ${fc.order.length}` : (qz.stage === "play" ? `${qz.pos + 1} / ${qz.list.length}` : "");
+  $("counter").textContent = (tab === "cards" || tab === "slide") ? `${fc.pos + 1} / ${fc.order.length}` : (qz.stage === "play" ? `${qz.pos + 1} / ${qz.list.length}` : "");
 }
 
 // ---- flashcards ----
@@ -806,17 +852,22 @@ function renderUnit() {
 function setUnit(u) {
   if (u === unit) return;
   unit = u; store.unit = u; persist();
-  setFlipped(false, true); renderUnit(); initCards(); renderScopeChips();
+  slPause(); setFlipped(false, true); renderUnit(); initCards(); renderScopeChips(); renderSlide();
 }
 document.querySelectorAll(".unit").forEach(b => b.addEventListener("click", () => setUnit(Number(b.dataset.u))));
 function renderChips() {
-  const wrap = $("chips"); wrap.innerHTML = "";
-  CATS_BY_UNIT[unit].forEach(([key, label]) => {
-    const b = document.createElement("button");
-    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", key === fc.cat);
-    b.innerHTML = `${label}<small>${idsFor(key).length}</small>`;
-    b.addEventListener("click", () => { fc.cat = key; buildOrder(false); setFlipped(false, true); renderChips(); renderCard(); save(); });
-    wrap.appendChild(b);
+  ["chips", "s-chips"].forEach(id => {
+    const wrap = $(id); wrap.innerHTML = "";
+    CATS_BY_UNIT[unit].forEach(([key, label]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", key === fc.cat);
+      b.innerHTML = `${label}<small>${idsFor(key).length}</small>`;
+      b.addEventListener("click", () => {
+        fc.cat = key; buildOrder(false); setFlipped(false, true); renderChips(); renderCard(); save();
+        if (tab === "slide") { renderSlide(); slSchedule(); }
+      });
+      wrap.appendChild(b);
+    });
   });
 }
 function renderCard() {
@@ -895,6 +946,81 @@ document.addEventListener("keydown", e => {
 $("btn-flip").addEventListener("click", flip);
 $("btn-next").addEventListener("click", nextCard);
 $("btn-shuffle").addEventListener("click", () => { buildOrder(true); setFlipped(false, true); renderCard(); save(); toast("Kartlar karıştırıldı"); });
+
+// ---- slideshow: front and back are shown for a few seconds each, then the next word ----
+const SPEEDS = [2, 3, 5];
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>';
+const sl = { playing: false, back: false, timer: null, dur: SPEEDS.includes(store.slideDur) ? store.slideDur : 2 };
+const scard = $("scard"), sinner = $("sinner"), sbar = $("s-bar");
+let wakeLock = null;
+async function keepAwake(on) {
+  try {
+    if (on && "wakeLock" in navigator && !wakeLock) {
+      wakeLock = await navigator.wakeLock.request("screen");
+      wakeLock.addEventListener("release", () => { wakeLock = null; });
+    } else if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) {}
+}
+function slFlip(v, instant) {
+  sl.back = v;
+  if (instant) { sinner.style.transition = "none"; scard.classList.toggle("flipped", v); void sinner.offsetWidth; sinner.style.transition = ""; }
+  else scard.classList.toggle("flipped", v);
+}
+function renderSlide() {
+  const it = DATA[fc.order[fc.pos]];
+  const w = $("s-word"); w.textContent = it.ar; w.className = "word ar " + sizeClass(it.ar);
+  $("s-ar").textContent = it.ar; $("s-mean").textContent = it.tr; richText($("s-note"), it.n);
+  slFlip(false, true); updateCounter();
+}
+function runBar() {
+  sbar.classList.remove("run"); void sbar.offsetWidth;
+  if (sl.playing) { sbar.style.animationDuration = sl.dur + "s"; sbar.classList.add("run"); }
+}
+function slSchedule() {
+  clearTimeout(sl.timer);
+  if (!sl.playing) return;
+  runBar();
+  sl.timer = setTimeout(slTick, sl.dur * 1000);
+}
+function slTick() {
+  if (!sl.back) { slFlip(true, false); slSchedule(); }
+  else slMove(1);
+}
+function slMove(step) {
+  fc.pos = (fc.pos + step + fc.order.length) % fc.order.length;
+  if (step > 0 && fc.pos === 0) toast("Liste bitti, baştan başlıyoruz");
+  renderSlide(); save(); slSchedule();
+}
+function updatePlayBtn() {
+  const b = $("s-play");
+  b.innerHTML = sl.playing ? ICON_PAUSE + "Durdur" : ICON_PLAY + "Başlat";
+  b.setAttribute("aria-pressed", sl.playing);
+}
+function slPlay() { sl.playing = true; keepAwake(true); updatePlayBtn(); slSchedule(); }
+function slPause() { sl.playing = false; clearTimeout(sl.timer); keepAwake(false); updatePlayBtn(); runBar(); }
+function slToggle() { sl.playing ? slPause() : slPlay(); }
+function renderSpeedChips() {
+  const wrap = $("s-speed"); wrap.innerHTML = "";
+  SPEEDS.forEach(n => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", n === sl.dur);
+    b.textContent = `${n} saniye`;
+    b.addEventListener("click", () => { sl.dur = n; store.slideDur = n; persist(); renderSpeedChips(); slSchedule(); });
+    wrap.appendChild(b);
+  });
+}
+$("s-play").addEventListener("click", slToggle);
+$("s-prev").addEventListener("click", () => slMove(-1));
+$("s-next").addEventListener("click", () => slMove(1));
+scard.addEventListener("click", slToggle);
+scard.addEventListener("keydown", e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); slToggle(); } });
+document.addEventListener("keydown", e => {
+  if (tab !== "slide" || e.target.closest("button")) return;
+  if (e.key === "ArrowLeft") slMove(-1);
+  if (e.key === "ArrowRight") slMove(1);
+});
+document.addEventListener("visibilitychange", () => { if (document.hidden && sl.playing) slPause(); });
 
 // ---- quiz ----
 const qz = { stage: "start", scope: store.scope === "both" ? "both" : "unit", count: COUNTS.includes(store.count) ? store.count : 10, list: [], pos: 0, ok: 0, bad: 0, wrong: [], answered: false };
@@ -1054,6 +1180,9 @@ $("btn-new").addEventListener("click", () => { renderScopeChips(); renderCountCh
 // ---- init ----
 renderUnit();
 initCards();
+renderSpeedChips();
+updatePlayBtn();
+renderSlide();
 renderScopeChips();
 renderCountChips();
 showStage("start");

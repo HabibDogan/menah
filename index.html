@@ -176,6 +176,26 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
 .s-controls .btn svg{width:22px;height:22px;flex:none}
 .s-play{flex:1.5!important;font-size:18px!important;font-weight:600!important}
 
+.s-hint{font-size:13px;color:var(--muted);text-align:center;margin:10px 0 0;flex:none}
+@media (orientation: landscape) and (max-height: 600px), (orientation: landscape) and (pointer: coarse) {
+  .s-hint{display:none}
+  body.sl-playing .top, body.sl-playing .units, body.sl-playing .install-bar, body.sl-playing .tabs,
+  body.sl-playing #s-chips, body.sl-playing .s-speed, body.sl-playing .s-controls { display:none !important }
+  body.sl-playing main{padding:0 env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);overflow:hidden}
+  body.sl-playing #view-slide{max-width:none}
+  body.sl-playing #view-slide .stage{padding:0;min-height:0}
+  body.sl-playing .scard{max-width:none;max-height:none;height:100%}
+  body.sl-playing .scard .face{border-radius:0;box-shadow:none;padding:4vh 6vw}
+  body.sl-playing .scard .front::after{inset:2.5vh 2vw;border-radius:16px}
+  body.sl-playing .scard .word{font-size:min(24vh,13vw);line-height:1.6}
+  body.sl-playing .scard .word.long{font-size:min(15vh,8.5vw)}
+  body.sl-playing .scard .word.xlong{font-size:min(11vh,6.5vw)}
+  body.sl-playing .scard .back .small-ar{font-size:min(9vh,5vw)}
+  body.sl-playing .scard .back .mean{font-size:min(14vh,7vw)}
+  body.sl-playing .scard .back .note{font-size:min(5.5vh,2.8vw);max-width:60ch;margin-top:2vh}
+  body.sl-playing .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radius:0;height:5px;z-index:5}
+}
+
 /* install bar */
 .install-bar{display:flex;align-items:center;gap:10px;margin:2px 18px 6px;padding:10px 8px 10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;font-size:14px;line-height:1.45;flex:none}
 .install-bar p{margin:0;flex:1}
@@ -276,6 +296,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
       <button class="btn primary s-play" id="s-play" type="button" aria-pressed="false"></button>
       <button class="btn" id="s-next" type="button" aria-label="Sonraki kelime">Sonraki<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
+    <p class="s-hint">Telefonu yan çevirirsen oynarken kart bütün ekranı kaplar. Durdurmak için karta dokun.</p>
   </section>
 
   <!-- Quiz -->
@@ -289,7 +310,7 @@ main{flex:1;min-height:0;overflow-y:auto;padding:4px 18px 12px;display:flex;flex
       <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
       <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
       <p id="last-result"></p>
-      <p class="ver">Sürüm 8</p>
+      <p class="ver">Sürüm 9</p>
     </div>
 
     <div id="q-play" hidden>
@@ -948,10 +969,10 @@ $("btn-next").addEventListener("click", nextCard);
 $("btn-shuffle").addEventListener("click", () => { buildOrder(true); setFlipped(false, true); renderCard(); save(); toast("Kartlar karıştırıldı"); });
 
 // ---- slideshow: front and back are shown for a few seconds each, then the next word ----
-const SPEEDS = [2, 3, 5];
+const SPEEDS = [3, 4, 5];
 const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
 const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>';
-const sl = { playing: false, back: false, timer: null, dur: SPEEDS.includes(store.slideDur) ? store.slideDur : 2 };
+const sl = { playing: false, back: false, timer: null, dur: SPEEDS.includes(store.slideDur) ? store.slideDur : 3 };
 const scard = $("scard"), sinner = $("sinner"), sbar = $("s-bar");
 let wakeLock = null;
 async function keepAwake(on) {
@@ -997,8 +1018,16 @@ function updatePlayBtn() {
   b.innerHTML = sl.playing ? ICON_PAUSE + "Durdur" : ICON_PLAY + "Başlat";
   b.setAttribute("aria-pressed", sl.playing);
 }
-function slPlay() { sl.playing = true; keepAwake(true); updatePlayBtn(); slSchedule(); }
-function slPause() { sl.playing = false; clearTimeout(sl.timer); keepAwake(false); updatePlayBtn(); runBar(); }
+const LANDSCAPE = window.matchMedia("(orientation: landscape) and (max-height: 600px), (orientation: landscape) and (pointer: coarse)");
+function goFullscreen(on) {
+  try {
+    if (on && LANDSCAPE.matches && document.fullscreenEnabled && !document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+    if (!on && document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  } catch (e) {}
+}
+LANDSCAPE.addEventListener && LANDSCAPE.addEventListener("change", e => { if (!e.matches) goFullscreen(false); });
+function slPlay() { sl.playing = true; document.body.classList.add("sl-playing"); goFullscreen(true); keepAwake(true); updatePlayBtn(); slSchedule(); }
+function slPause() { sl.playing = false; document.body.classList.remove("sl-playing"); goFullscreen(false); clearTimeout(sl.timer); keepAwake(false); updatePlayBtn(); runBar(); }
 function slToggle() { sl.playing ? slPause() : slPlay(); }
 function renderSpeedChips() {
   const wrap = $("s-speed"); wrap.innerHTML = "";

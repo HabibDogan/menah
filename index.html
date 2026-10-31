@@ -203,6 +203,48 @@ body.sl-cover .scard .back .mean{font-size:min(14vh,7vw)}
 body.sl-cover .scard .back .note{font-size:min(5.5vh,2.8vw);max-width:60ch;margin-top:2vh}
 body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radius:0;height:5px;z-index:5}
 
+/* speech */
+.speak{position:absolute;left:16px;bottom:16px;z-index:3;width:54px;height:54px;border-radius:50%;border:0;background:rgba(255,255,255,.2);color:#fff;display:grid;place-items:center;cursor:pointer}
+.speak svg{width:28px;height:28px}
+.speak:active{background:rgba(255,255,255,.35)}
+.speak.on{background:rgba(255,255,255,.4)}
+.tile .speak{left:12px;bottom:12px;width:46px;height:46px}
+.tile .speak svg{width:24px;height:24px}
+.icon-btn{border:1px solid var(--line);background:var(--surface);color:var(--firuze);border-radius:999px;width:38px;height:34px;display:grid;place-items:center;cursor:pointer;flex:none}
+.icon-btn svg{width:20px;height:20px}
+.sheet-back{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:40}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--surface);color:var(--ink);border-radius:22px 22px 0 0;padding:20px 20px calc(18px + env(safe-area-inset-bottom,0px));max-height:85%;overflow:auto;box-shadow:0 -10px 30px -10px rgba(0,0,0,.4)}
+.sheet h3{margin:0 0 12px;font-size:20px}
+.sheet .field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);margin-bottom:12px}
+.sheet select{font:inherit;font-size:16px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.sheet .note{font-size:14px;color:var(--muted);line-height:1.5;margin:0 0 12px}
+.sheet .sw{display:flex;align-items:center;gap:12px;font-size:16px;padding:10px 0}
+.sheet .sw input{width:22px;height:22px;accent-color:var(--firuze)}
+.sheet .row{margin-top:10px}
+.sheet .label{font-size:14px;color:var(--muted);margin:6px 0 4px}
+
+/* matching */
+.mtabs{display:flex;gap:4px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;flex:none;margin:2px 0 10px}
+.mtab{flex:1;border:0;background:none;color:var(--muted);border-radius:10px;padding:9px 4px;font-size:14px;font-weight:600;cursor:pointer;min-width:0}
+.mtab[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.m-head{text-align:center;margin:0 0 10px;flex:none}
+.m-head .ar{display:block;font-size:22px;line-height:1.7;color:var(--ink)}
+.m-sub{font-size:14px;color:var(--muted)}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:none}
+.mcol{display:flex;flex-direction:column;gap:10px;min-width:0}
+.mh{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:19px;font-weight:700;color:var(--firuze);text-align:center;line-height:1.6}
+.mitem{min-height:62px;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:16px;padding:6px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:background .15s,border-color .15s;font:inherit}
+.mitem .m-ar{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:22px;line-height:1.6;font-weight:600;direction:rtl}
+.mitem .m-gl{display:none;font-size:13px;color:var(--muted);line-height:1.3;text-align:center}
+.mitem.sel{border-color:var(--firuze);background:color-mix(in srgb,var(--firuze) 15%,var(--surface))}
+.mitem.done{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 17%,var(--surface));cursor:default}
+.mitem.done .m-gl{display:block}
+.mitem.bad{border-color:var(--bad);animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.m-status{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:var(--muted);margin:14px 2px 4px;flex:none;font-variant-numeric:tabular-nums}
+.m-src{font-size:12.5px;color:var(--muted);text-align:center;margin:0 0 10px;flex:none}
+#view-match .row .btn{padding-inline:6px;min-width:0}
+
 /* install bar */
 .install-bar{display:flex;align-items:center;gap:10px;margin:2px 18px 6px;padding:10px 8px 10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;font-size:14px;line-height:1.45;flex:none}
 .install-bar p{margin:0;flex:1}
@@ -218,7 +260,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
 .q-hints{padding:0 6px 12px;margin-top:-4px}
 
 /* tabs */
-.tabs{flex:none;position:relative;z-index:20;display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--surface);border-top:1px solid var(--line);padding:6px 14px}
+.tabs{flex:none;position:relative;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-top:1px solid var(--line);padding:6px 8px}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:7px 0;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-radius:14px}
 .tab svg{width:24px;height:24px}
 .tab[aria-selected="true"]{color:var(--firuze)}
@@ -236,6 +278,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
 <header class="top">
   <div class="brand"><span class="ar" id="unit-ar">المَنَاخ</span><span id="unit-tr">2. ünite kelimeleri</span></div>
   <div class="top-right">
+    <button class="icon-btn" id="btn-sound" type="button" aria-label="Ses ayarları" title="Ses ayarları"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button>
     <button class="install-pill" id="btn-install-pill" type="button" hidden>Yükle</button>
     <div class="counter" id="counter" aria-live="polite"></div>
   </div>
@@ -261,7 +304,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
         <div class="tag to-back">Anlamı</div>
         <div class="tag to-next">Sonraki</div>
         <div class="inner" id="inner">
-          <div class="face front"><div class="word ar" id="f-word"></div></div>
+          <div class="face front"><div class="word ar" id="f-word"></div><button class="speak" id="f-speak" type="button" aria-label="Arapçasını dinle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button></div>
           <div class="face back">
             <div class="small-ar ar" id="b-ar"></div>
             <div class="mean" id="b-mean"></div>
@@ -288,7 +331,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
     <div class="stage">
       <div class="scard" id="scard" role="button" tabindex="0" aria-label="Slayt kartı. Dokununca durur ya da devam eder.">
         <div class="inner" id="sinner">
-          <div class="face front"><div class="word ar" id="s-word"></div></div>
+          <div class="face front"><div class="word ar" id="s-word"></div><button class="speak" id="s-speak" type="button" aria-label="Arapçasını dinle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button></div>
           <div class="face back">
             <div class="small-ar ar" id="s-ar"></div>
             <div class="mean" id="s-mean"></div>
@@ -310,6 +353,27 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
     <p class="s-hint">Tam ekran için en sağdaki düğmeye bas. Durdurmak için karta dokun.</p>
   </section>
 
+  <!-- Matching -->
+  <section class="view" id="view-match" aria-label="Eşleştir" hidden>
+    <div class="mtabs" role="group" aria-label="Alıştırma türü">
+      <button class="mtab" type="button" data-t="muradif">Müradif</button>
+      <button class="mtab" type="button" data-t="zit">Zıd</button>
+      <button class="mtab" type="button" data-t="cem">Müfred-Cem</button>
+    </div>
+    <div class="m-head"><span class="ar" id="m-ar"></span><span class="m-sub" id="m-tr"></span></div>
+    <div class="mgrid">
+      <div class="mcol" id="m-colb"></div>
+      <div class="mcol" id="m-cola"></div>
+    </div>
+    <div class="m-status"><span id="m-page"></span><span id="m-score"></span></div>
+    <p class="m-src" id="m-src"></p>
+    <div class="row">
+      <button class="btn" id="m-prev" type="button">Önceki sayfa</button>
+      <button class="btn ghost icon" id="m-shuffle" type="button" aria-label="Yeniden karıştır" title="Yeniden karıştır"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h4v4M4 20l16-16M20 16v4h-4M15 15l5 5M4 4l5 5"/></svg></button>
+      <button class="btn" id="m-next" type="button">Sonraki sayfa</button>
+    </div>
+  </section>
+
   <!-- Quiz -->
   <section class="view" id="view-quiz" aria-label="Quiz" hidden>
     <div id="q-start" class="panel">
@@ -321,7 +385,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
       <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
       <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
       <p id="last-result"></p>
-      <p class="ver">Sürüm 13</p>
+      <p class="ver">Sürüm 16</p>
     </div>
 
     <div id="q-play" hidden>
@@ -339,6 +403,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
         <div class="tag to-back">Cevap</div>
         <div class="tag to-next">Sonraki</div>
         <div class="word ar" id="q-word"></div>
+        <button class="speak" id="q-speak" type="button" aria-label="Arapçasını dinle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button>
         <div class="verdict" id="verdict" aria-hidden="true"></div>
       </div>
       <div class="hints q-hints">
@@ -378,9 +443,30 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg>
     Quiz
   </button>
+  <button class="tab" role="tab" id="tab-match" aria-selected="false" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="5.5" cy="7" r="2.3"/><circle cx="5.5" cy="17" r="2.3"/><circle cx="18.5" cy="7" r="2.3"/><circle cx="18.5" cy="17" r="2.3"/><path d="M7.8 7.6l8.4 8.8M7.8 16.4l8.4-8.8"/></svg>
+    Eşleştir
+  </button>
 </nav>
 
 <div class="toast" id="toast" role="status"></div>
+
+<div class="sheet-back" id="sheet-back" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <h3 id="sheet-title">Ses ayarları</h3>
+  <label class="field">Okuyucu
+    <select id="voice-sel"></select>
+  </label>
+  <p class="note" id="voice-note"></p>
+  <p class="label">Okuma hızı</p>
+  <div class="chips" id="rate-chips" role="group" aria-label="Okuma hızı"></div>
+  <label class="sw"><input type="checkbox" id="auto-slide"> Slaytta kelimeyi otomatik oku</label>
+  <label class="sw"><input type="checkbox" id="auto-cards"> Kartlarda yeni kelimeyi otomatik oku</label>
+  <div class="row">
+    <button class="btn" id="voice-test" type="button">Dinle</button>
+    <button class="btn primary" id="sheet-close" type="button">Tamam</button>
+  </div>
+</div>
 
 <script>
 // [arapça, doğru anlam, çeldirici 1, çeldirici 2, not, grup]
@@ -967,19 +1053,116 @@ function sizeClass(text) { const len = text.replace(/[\u064B-\u0652]/g, "").leng
 let toastTimer;
 function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 1800); }
 
+// ---- speech (Arabic, front side only) ----
+if (!store.sound || typeof store.sound !== "object") store.sound = {};
+const snd = store.sound;
+if (typeof snd.rate !== "number") snd.rate = 0.85;
+if (typeof snd.autoSlide !== "boolean") snd.autoSlide = true;
+if (typeof snd.autoCards !== "boolean") snd.autoCards = false;
+const HAS_TTS = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+const MALE_HINT = /(male|erkek|maged|majed|naayf|hamed|tarik|shakir|fahed)/i;
+const FEMALE_HINT = /(female|kadın|laila|hoda|salma|zariyah|amira|mariam|sana|hala|zeina)/i;
+let arVoices = [], noVoiceWarned = false;
+function pickVoice() {
+  if (!arVoices.length) return null;
+  return arVoices.find(v => v.voiceURI === snd.voice)
+    || arVoices.find(v => MALE_HINT.test(v.name))
+    || arVoices.find(v => !FEMALE_HINT.test(v.name))
+    || arVoices[0];
+}
+function loadVoices() {
+  if (!HAS_TTS) return;
+  arVoices = speechSynthesis.getVoices().filter(v => /^ar([-_]|$)/i.test(v.lang));
+  renderVoiceSelect();
+}
+if (HAS_TTS) { loadVoices(); speechSynthesis.addEventListener && speechSynthesis.addEventListener("voiceschanged", loadVoices); }
+function ttsText(t) {
+  return t.replace(/ـ/g, "").replace(/…|\.{2,}/g, " ").replace(/\s+–\s+/g, "، ").replace(/\s+/g, " ").trim();
+}
+function speak(text, onend) {
+  const done = () => { if (onend) { const f = onend; onend = null; f(); } };
+  if (!HAS_TTS) { toast("Bu cihazda seslendirme desteklenmiyor"); done(); return; }
+  if (!arVoices.length) loadVoices();
+  if (!arVoices.length && !noVoiceWarned) { noVoiceWarned = true; toast("Arapça ses bulunamadı, Ses ayarlarına bak"); }
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(ttsText(text));
+    const v = pickVoice();
+    if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "ar-SA";
+    u.rate = snd.rate; u.pitch = 1;
+    u.onend = done; u.onerror = done;
+    speechSynthesis.speak(u);
+    setTimeout(done, 6000);
+  } catch (e) { done(); }
+}
+function stopSpeak() { try { HAS_TTS && speechSynthesis.cancel(); } catch (e) {} }
+function isSpeaking() { try { return HAS_TTS && speechSynthesis.speaking; } catch (e) { return false; } }
+function renderVoiceSelect() {
+  const sel = $("voice-sel"); if (!sel) return;
+  sel.innerHTML = "";
+  if (!HAS_TTS) {
+    const o = document.createElement("option"); o.textContent = "Bu ekranda seslendirme yok"; sel.appendChild(o); sel.disabled = true;
+    $("voice-note").textContent = "Bu ekran telefonun okuma sesine erişemiyor. Uygulamayı telefona yüklediğin simgeden ya da Chrome’dan açarsan sesler burada listelenir.";
+    return;
+  }
+  if (!arVoices.length) {
+    const o = document.createElement("option"); o.textContent = "Arapça ses bulunamadı"; sel.appendChild(o); sel.disabled = true;
+    $("voice-note").textContent = "Telefonunda Arapça okuma sesi yüklü değil gibi görünüyor. Telefonun ayarlarında “Metin okuma” (Text-to-speech) bölümünden Google’ın Arapça sesini indirebilirsin.";
+    return;
+  }
+  sel.disabled = false;
+  const cur = pickVoice();
+  arVoices.forEach((v, i) => {
+    const o = document.createElement("option");
+    o.value = v.voiceURI;
+    o.textContent = `Ses ${i + 1}: ${v.name}${MALE_HINT.test(v.name) ? " (erkek)" : ""}`;
+    if (cur && v.voiceURI === cur.voiceURI) o.selected = true;
+    sel.appendChild(o);
+  });
+  $("voice-note").textContent = arVoices.length > 1
+    ? "Telefonunda birden fazla Arapça ses var. Her birini seçip “Dinle”ye basarak erkek sesi bul."
+    : "Telefonunda tek bir Arapça ses var. Başka ses eklemek için telefonun “Metin okuma” ayarlarına bakabilirsin.";
+}
+function renderRateChips() {
+  const wrap = $("rate-chips"); wrap.innerHTML = "";
+  [[0.85, "Normal"], [0.65, "Yavaş"]].forEach(([r, label]) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", Math.abs(snd.rate - r) < 0.01);
+    b.textContent = label;
+    b.addEventListener("click", () => { snd.rate = r; persist(); renderRateChips(); });
+    wrap.appendChild(b);
+  });
+}
+function openSheet() {
+  loadVoices(); renderVoiceSelect(); renderRateChips();
+  $("auto-slide").checked = snd.autoSlide; $("auto-cards").checked = snd.autoCards;
+  $("sheet").hidden = false; $("sheet-back").hidden = false;
+  if (tab === "slide" && sl.playing) slPause();
+}
+function closeSheet() { $("sheet").hidden = true; $("sheet-back").hidden = true; }
+$("btn-sound").addEventListener("click", openSheet);
+$("sheet-close").addEventListener("click", closeSheet);
+$("sheet-back").addEventListener("click", closeSheet);
+$("voice-sel").addEventListener("change", e => { snd.voice = e.target.value; persist(); });
+$("auto-slide").addEventListener("change", e => { snd.autoSlide = e.target.checked; persist(); });
+$("auto-cards").addEventListener("change", e => { snd.autoCards = e.target.checked; persist(); });
+$("voice-test").addEventListener("click", () => speak("مَرْحَباً، هَذَا صَوْتُ القِرَاءَةِ العَرَبِيَّةِ"));
+
 // ---- tabs ----
-let tab = ["quiz", "slide"].includes(store.tab) ? store.tab : "cards";
+let tab = ["quiz", "slide", "match"].includes(store.tab) ? store.tab : "cards";
 function setTab(t) {
   if (tab === "slide" && t !== "slide") { slPause(); if (isFull()) leaveFull(); }
   tab = t; store.tab = t; persist();
-  ["cards", "slide", "quiz"].forEach(k => { $("tab-" + k).setAttribute("aria-selected", t === k); $("view-" + k).hidden = t !== k; });
+  ["cards", "slide", "quiz", "match"].forEach(k => { $("tab-" + k).setAttribute("aria-selected", t === k); $("view-" + k).hidden = t !== k; });
   if (t === "cards") { setFlipped(false, true); renderCard(); }
   if (t === "slide") renderSlide();
+  if (t === "match") renderMatch();
   updateCounter(); updateCover();
 }
-["cards", "slide", "quiz"].forEach(k => $("tab-" + k).addEventListener("click", () => setTab(k)));
+["cards", "slide", "quiz", "match"].forEach(k => $("tab-" + k).addEventListener("click", () => setTab(k)));
 
 function updateCounter() {
+  if (tab === "match") { $("counter").textContent = mt.count ? `${mt.pi + 1} / ${mt.count}` : ""; return; }
   $("counter").textContent = (tab === "cards" || tab === "slide") ? `${fc.pos + 1} / ${fc.order.length}` : (qz.stage === "play" ? `${qz.pos + 1} / ${qz.list.length}` : "");
 }
 
@@ -1008,7 +1191,7 @@ function renderUnit() {
 function setUnit(u) {
   if (u === unit) return;
   unit = u; store.unit = u; persist();
-  slPause(); setFlipped(false, true); renderUnit(); initCards(); renderScopeChips(); renderSlide();
+  slPause(); setFlipped(false, true); renderUnit(); initCards(); renderScopeChips(); renderSlide(); if (tab === "match") renderMatch();
 }
 document.querySelectorAll(".unit").forEach(b => b.addEventListener("click", () => setUnit(Number(b.dataset.u))));
 function renderChips() {
@@ -1049,6 +1232,7 @@ function moveCard(step) {
     fc.pos = (fc.pos + step + fc.order.length) % fc.order.length;
     if (step > 0 && fc.pos === 0) toast("Liste bitti, baştan başlıyoruz");
     setFlipped(false, true); renderCard(); save();
+    if (snd.autoCards) speak(DATA[fc.order[fc.pos]].ar);
   };
   if (reduceMotion) { drag.style.transform = ""; advance(); return; }
   busy = true;
@@ -1071,6 +1255,7 @@ function moveCard(step) {
 const THRESHOLD = 60;
 let sx = 0, sy = 0, dx = 0, active = false, moved = false;
 drag.addEventListener("pointerdown", e => {
+  if (e.target.closest(".speak")) return;
   if (busy || (e.pointerType === "mouse" && e.button !== 0)) return;
   active = true; moved = false; dx = 0; sx = e.clientX; sy = e.clientY;
   try { drag.setPointerCapture(e.pointerId); } catch (err) {}
@@ -1104,6 +1289,7 @@ document.addEventListener("keydown", e => {
 $("btn-flip").addEventListener("click", flip);
 $("btn-next").addEventListener("click", nextCard);
 $("btn-prev").addEventListener("click", prevCard);
+$("f-speak").addEventListener("click", e => { e.stopPropagation(); speak(DATA[fc.order[fc.pos]].ar); });
 $("btn-shuffle").addEventListener("click", () => { buildOrder(true); setFlipped(false, true); renderCard(); save(); toast("Kartlar karıştırıldı"); });
 
 // ---- slideshow: front and back are shown for a few seconds each, then the next word ----
@@ -1142,14 +1328,18 @@ function slSchedule() {
   runBar();
   sl.timer = setTimeout(slTick, sl.dur * 1000);
 }
+let slWait = 0;
 function slTick() {
-  if (!sl.back) { slFlip(true, false); slSchedule(); }
-  else slMove(1);
+  if (!sl.back) {
+    if (isSpeaking() && slWait < 16) { slWait++; sl.timer = setTimeout(slTick, 250); return; }
+    slWait = 0; slFlip(true, false); slSchedule();
+  } else slMove(1);
 }
+function slSpeakFront() { if (sl.playing && snd.autoSlide && !sl.back) speak(DATA[fc.order[fc.pos]].ar); }
 function slMove(step) {
   fc.pos = (fc.pos + step + fc.order.length) % fc.order.length;
   if (step > 0 && fc.pos === 0) toast("Liste bitti, baştan başlıyoruz");
-  renderSlide(); save(); slSchedule();
+  renderSlide(); save(); slSchedule(); slSpeakFront();
 }
 function updatePlayBtn() {
   const b = $("s-play");
@@ -1182,8 +1372,8 @@ function leaveFull() {
   updateCover();
 }
 document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && isFull()) leaveFull(); });
-function slPlay() { sl.playing = true; document.body.classList.add("sl-playing"); if (!isFull()) goFullscreen(true); keepAwake(true); updatePlayBtn(); updateCover(); slSchedule(); }
-function slPause() { sl.playing = false; document.body.classList.remove("sl-playing"); if (!isFull()) goFullscreen(false); clearTimeout(sl.timer); keepAwake(false); updatePlayBtn(); updateCover(); runBar(); }
+function slPlay() { sl.playing = true; document.body.classList.add("sl-playing"); if (!isFull()) goFullscreen(true); keepAwake(true); updatePlayBtn(); updateCover(); slSchedule(); slSpeakFront(); }
+function slPause() { stopSpeak(); sl.playing = false; document.body.classList.remove("sl-playing"); if (!isFull()) goFullscreen(false); clearTimeout(sl.timer); keepAwake(false); updatePlayBtn(); updateCover(); runBar(); }
 function slToggle() { sl.playing ? slPause() : slPlay(); }
 function renderSpeedChips() {
   const wrap = $("s-speed"); wrap.innerHTML = "";
@@ -1201,6 +1391,7 @@ $("s-exit").addEventListener("click", e => { e.stopPropagation(); slPause(); lea
 $("s-prev").addEventListener("click", () => slMove(-1));
 $("s-next").addEventListener("click", () => slMove(1));
 scard.addEventListener("click", slToggle);
+$("s-speak").addEventListener("click", e => { e.stopPropagation(); speak(DATA[fc.order[fc.pos]].ar); });
 scard.addEventListener("keydown", e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); slToggle(); } });
 document.addEventListener("keydown", e => {
   if (tab !== "slide" || e.target.closest("button")) return;
@@ -1327,6 +1518,7 @@ function revealAnswer() {
   choose(null, DATA[qz.list[qz.pos]]);
 }
 $("btn-qnext").addEventListener("click", quizNext);
+$("q-speak").addEventListener("click", e => { e.stopPropagation(); if (qz.list.length) speak(DATA[qz.list[qz.pos]].ar); });
 $("btn-reveal").addEventListener("click", revealAnswer);
 
 // quiz swipe: left = show answer (counts as wrong), right = next question
@@ -1363,6 +1555,179 @@ document.addEventListener("keydown", e => {
 });
 $("btn-retry").addEventListener("click", () => startQuiz(shuffled(qz.wrong)));
 $("btn-new").addEventListener("click", () => { renderScopeChips(); renderCountChips(); showStage("start"); });
+
+const MATCH = {
+  muradif: [
+    [2,"لَيْسَ فِيهَا زِرَاعَاتٌ","قَاحِلَة","içinde ekin yok","çorak","Okuma kitabı 1. ünite"],
+    [2,"غَالِي الثَّمَنِ","بَاهِظ","pahalı","çok pahalı","Okuma kitabı 1. ünite"],
+    [2,"يُحَضِّرُ","يُجَهِّزُ","hazırlar","hazırlar, donatır","Okuma kitabı 1. ünite"],
+    [2,"تَطْهُو","تَطْبُخُ","pişirir","pişirir","Okuma kitabı 1. ünite"],
+    [2,"أَكْوَاخ","بُيُوت","kulübeler","evler","Okuma kitabı 1. ünite"],
+    [2,"دَافِئ","مُعْتَدِل","ılık","ılıman","Okuma kitabı 2. ünite"],
+    [2,"المَنَاخ","الطَّقْس","iklim","hava durumu","Okuma kitabı 2. ünite"],
+    [2,"مُتَغَيِّر","مُتَقَلِّب","değişken","değişken, inişli çıkışlı","Okuma kitabı 2. ünite"],
+    [2,"تُشْرِفُ عَلَى","تُطِلُّ عَلَى","-e bakar","-e bakar, nazırdır","Okuma kitabı 2. ünite"],
+    [2,"شَاطِئ","سَاحِل","kıyı, plaj","sahil","Okuma kitabı 2. ünite"],
+    [3,"وَسَط","قَلْب","orta","kalp, merkez","Okuma kitabı 3. ünite"],
+    [3,"عَهْد","عَصْر","dönem","çağ, asır","Okuma kitabı 3. ünite"],
+    [3,"مَنْحُوتَة","مَحْفُورَة","oyulmuş","kazılmış","Okuma kitabı 3. ünite"],
+    [3,"دَافِئ","مُعْتَدِل","ılık","ılıman","Okuma kitabı 3. ünite"],
+    [3,"مَشْهُورَة","مَعْرُوفَة","meşhur","tanınmış","Okuma kitabı 3. ünite"]
+  ],
+  zit: [
+    [2,"بَاهِظ","رَخِيص","çok pahalı","ucuz","Okuma kitabı 1. ünite"],
+    [2,"مَطْبُوخ","نَيِّء","pişmiş","çiğ","Okuma kitabı 1. ünite"],
+    [2,"ثَقِيل","خَفِيف","ağır","hafif","Okuma kitabı 1. ünite"],
+    [2,"أَشْعَلَ","أَطْفَأَ","yaktı","söndürdü","Okuma kitabı 1. ünite"],
+    [2,"تَدْفِئَة","تَبْرِيد","ısıtma","soğutma","Okuma kitabı 1. ünite"],
+    [2,"يَلْبَسُ","يَخْلَعُ","giyer","çıkarır","Okuma kitabı 1. ünite"],
+    [2,"اِسْتَمَرَّ","تَوَقَّفَ","devam etti","durdu","Konuşma kitabı 1. ünite"],
+    [2,"مُرْتَفِع","مُنْخَفِض","yüksek","düşük","Konuşma kitabı 1. ünite"],
+    [2,"أَوَّل","آخِر","ilk","son","Konuşma kitabı 1. ünite"],
+    [2,"بَرْد","حَرَارَة","soğukluk","sıcaklık","Konuşma kitabı 1. ünite"],
+    [2,"نَشَاط","كَسَل","enerji","tembellik","Konuşma kitabı 1. ünite"],
+    [2,"مُخْتَلِف","مُتَشَابِه","farklı","benzer","Konuşma kitabı 1. ünite"],
+    [2,"المَشْي","الرَّكْض","yürüyüş","koşu","Konuşma kitabı 1. ünite"],
+    [2,"سَعَادَة","حُزْن","mutluluk","hüzün","Konuşma kitabı 1. ünite"],
+    [3,"قَدِيمَة","جَدِيدَة","eski","yeni","Okuma kitabı 3. ünite"],
+    [3,"وَاسِعَة","ضَيِّقَة","geniş","dar","Okuma kitabı 3. ünite"],
+    [3,"تَبْعُدُ عَنْ","تَقْتَرِبُ مِنْ","...e uzaktır","...e yakındır","Okuma kitabı 3. ünite"],
+    [3,"كَثِير","قَلِيل","çok","az","Okuma kitabı 3. ünite"],
+    [3,"أَجْمَل","أَقْبَح","daha güzel","daha çirkin","Okuma kitabı 3. ünite"],
+    [3,"أَوَّل","آخِر","ilk","son","Konuşma kitabı 2. ünite"],
+    [3,"يَمِين","يَسَار","sağ","sol","Konuşma kitabı 2. ünite"],
+    [3,"شَمَال","جَنُوب","kuzey","güney","Konuşma kitabı 2. ünite"],
+    [3,"بِدَايَة","نِهَايَة","başlangıç","son","Konuşma kitabı 2. ünite"],
+    [3,"صَعِدَ","نَزَلَ","çıktı","indi","Konuşma kitabı 2. ünite"],
+    [3,"شَرْق","غَرْب","doğu","batı","Konuşma kitabı 2. ünite"],
+    [3,"طَبِيعِيّ","صِنَاعِيّ","doğal","yapay","Konuşma kitabı 2. ünite"],
+    [3,"حَارّ","بَارِد","sıcak","soğuk","Konuşma kitabı 2. ünite"]
+  ],
+  cem: [
+    [2,"جَمَاعَة","جَمَاعَات","topluluk","topluluklar","Okuma kitabı 1. ünite"],
+    [2,"مِنْطَقَة","مَنَاطِق","bölge","bölgeler","Okuma kitabı 1. ünite"],
+    [2,"شَعْب","شُعُوب","halk","halklar","Okuma kitabı 1. ünite"],
+    [2,"صَيَّاد","صَيَّادُونَ","avcı","avcılar","Okuma kitabı 1. ünite"],
+    [2,"كُوخ","أَكْوَاخ","kulübe","kulübeler","Okuma kitabı 1. ünite"],
+    [2,"خَيْمَة","خِيَام","çadır","çadırlar","Okuma kitabı 1. ünite"],
+    [2,"جَزِيرَة","جُزُر","ada","adalar","Okuma kitabı 2. ünite"],
+    [2,"مَوْقِع","مَوَاقِع","konum","konumlar","Okuma kitabı 2. ünite"],
+    [2,"سَاحِل","سَوَاحِل","sahil","sahiller","Okuma kitabı 2. ünite"],
+    [2,"دَرَجَة","دَرَجَات","derece","dereceler","Okuma kitabı 2. ünite"],
+    [2,"شَهْر","أَشْهُر","ay","aylar (شُهُور da olur)","Okuma kitabı 2. ünite"],
+    [2,"كَمِّيَّة","كَمِّيَّات","miktar","miktarlar","Okuma kitabı 2. ünite"],
+    [2,"عَاصِفَة","عَوَاصِف","fırtına","fırtınalar","Okuma kitabı 2. ünite"],
+    [2,"سَيْل","سُيُول","sel","seller","Okuma kitabı 2. ünite"],
+    [2,"سَنَة","سَنَوَات","yıl","yıllar","Konuşma kitabı 1. ünite"],
+    [2,"فَصْل","فُصُول","mevsim","mevsimler","Konuşma kitabı 1. ünite"],
+    [2,"مَطَر","أَمْطَار","yağmur","yağmurlar","Konuşma kitabı 1. ünite"],
+    [2,"ثَلْج","ثُلُوج","kar","karlar","Konuşma kitabı 1. ünite"],
+    [2,"غَيْمَة","غُيُوم","bulut","bulutlar","Konuşma kitabı 1. ünite"],
+    [2,"وَقْت","أَوْقَات","vakit","vakitler","Konuşma kitabı 1. ünite"],
+    [2,"أُسْبُوع","أَسَابِيع","hafta","haftalar","Konuşma kitabı 1. ünite"],
+    [3,"مَقْبَرَة","مَقَابِر","mezarlık","mezarlıklar","Okuma kitabı 3. ünite"],
+    [3,"أَثَر","آثَار","eser","eserler","Okuma kitabı 3. ünite"],
+    [3,"مَمْلَكَة","مَمَالِك","krallık","krallıklar","Okuma kitabı 3. ünite"],
+    [3,"عَمُود","أَعْمِدَة","sütun","sütunlar","Okuma kitabı 3. ünite"],
+    [3,"مَعْبَد","مَعَابِد","tapınak","tapınaklar","Okuma kitabı 3. ünite"],
+    [3,"قَلْعَة","قِلَاع","kale","kaleler","Okuma kitabı 3. ünite"],
+    [3,"مَحَطَّة","مَحَطَّات","durak","duraklar","Okuma kitabı 3. ünite"],
+    [3,"مَعْلَم","مَعَالِم","önemli yapı","önemli yapılar","Okuma kitabı 3. ünite"],
+    [3,"حَضَارَة","حَضَارَات","medeniyet","medeniyetler","Okuma kitabı 3. ünite"],
+    [3,"مَكْتَب","مَكَاتِب","ofis, büro","ofisler","Konuşma kitabı 2. ünite"],
+    [3,"مَصْرِف","مَصَارِف","banka","bankalar","Konuşma kitabı 2. ünite"],
+    [3,"زَاوِيَة","زَوَايَا","köşe","köşeler","Konuşma kitabı 2. ünite"],
+    [3,"أَوَّل","أَوَائِل","ilk","ilkler","Konuşma kitabı 2. ünite"],
+    [3,"آخِر","أَوَاخِر","son","sonlar","Konuşma kitabı 2. ünite"],
+    [3,"مَكَان","أَمَاكِن","yer","yerler","Konuşma kitabı 2. ünite"],
+    [3,"جَامِع","جَوَامِع","büyük cami","camiler","Konuşma kitabı 2. ünite"],
+    [3,"بُرْج","أَبْرَاج","kule","kuleler","Konuşma kitabı 2. ünite"],
+    [3,"قَصْر","قُصُور","saray","saraylar","Konuşma kitabı 2. ünite"],
+    [3,"مَتْحَف","مَتَاحِف","müze","müzeler","Konuşma kitabı 2. ünite"],
+    [3,"تَلَّة","تِلَال","tepe","tepeler","Konuşma kitabı 2. ünite"],
+    [3,"هَرَم","أَهْرَام","piramit","piramitler","Konuşma kitabı 2. ünite"],
+    [3,"قَارَّة","قَارَّات","kıta","kıtalar","Konuşma kitabı 2. ünite"],
+    [3,"بَحْر","بِحَار","deniz","denizler","Konuşma kitabı 2. ünite"],
+    [3,"مُحِيط","مُحِيطَات","okyanus","okyanuslar","Konuşma kitabı 2. ünite"],
+    [3,"مِسَاحَة","مِسَاحَات","alan","alanlar","Konuşma kitabı 2. ünite"],
+    [3,"زِرَاعَة","زِرَاعَات","tarım","tarım ürünleri","Konuşma kitabı 2. ünite"]
+  ]
+};
+const MATCH_INFO = {
+  muradif: { ar: "صِلْ بَيْنَ الكَلِمَةِ وَمُرَادِفِهَا", tr: "Her kelimeyi eş anlamlısıyla eşleştir.", ha: "الكَلِمَة", hb: "مُرَادِفُهَا" },
+  zit: { ar: "صِلْ بَيْنَ الكَلِمَةِ وَضِدِّهَا", tr: "Her kelimeyi zıt anlamlısıyla eşleştir.", ha: "الكَلِمَة", hb: "ضِدُّهَا" },
+  cem: { ar: "صِلْ بَيْنَ المُفْرَدِ وَالجَمْعِ", tr: "Her tekili çoğuluyla eşleştir.", ha: "المُفْرَد", hb: "الجَمْع" }
+};
+const PAIR_COLORS = ["#1C9A54", "#2563EB", "#DB2777", "#EA580C", "#7C3AED"];
+if (!store.match || typeof store.match !== "object") store.match = {};
+if (!store.match.pages || typeof store.match.pages !== "object") store.match.pages = {};
+const mt = { type: MATCH_INFO[store.match.type] ? store.match.type : "muradif", sel: null, done: 0, pairs: [], pi: 0, count: 0 };
+function matchPages() {
+  const list = MATCH[mt.type].filter(p => p[0] === unit);
+  const pages = [];
+  for (let i = 0; i < list.length; i += 5) pages.push(list.slice(i, i + 5));
+  const last = pages[pages.length - 1];
+  if (last && last.length < 5 && list.length >= 5) {
+    for (const p of list) {
+      if (last.length >= 5) break;
+      if (!last.some(q => q === p || q[1] === p[1] || q[2] === p[2])) last.push(p);
+    }
+  }
+  return pages;
+}
+function matchItem(p, i, side) {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "mitem"; b.dataset.i = i; b.dataset.side = side;
+  const ar = document.createElement("span"); ar.className = "m-ar"; ar.lang = "ar"; ar.textContent = side === "a" ? p[1] : p[2];
+  const gl = document.createElement("span"); gl.className = "m-gl"; gl.textContent = side === "a" ? p[3] : p[4];
+  b.append(ar, gl);
+  b.addEventListener("click", () => matchPick(b));
+  return b;
+}
+function renderMatch() {
+  const info = MATCH_INFO[mt.type];
+  document.querySelectorAll(".mtab").forEach(b => b.setAttribute("aria-pressed", b.dataset.t === mt.type));
+  $("m-ar").textContent = info.ar; $("m-tr").textContent = info.tr;
+  const pages = matchPages(), key = unit + "-" + mt.type;
+  mt.count = pages.length;
+  let pi = store.match.pages[key] | 0; if (pi >= pages.length || pi < 0) pi = 0;
+  mt.pi = pi; mt.pairs = pages[pi] || []; mt.sel = null; mt.done = 0;
+  const ca = $("m-cola"), cb = $("m-colb");
+  ca.innerHTML = `<div class="mh">${info.ha}</div>`; cb.innerHTML = `<div class="mh">${info.hb}</div>`;
+  shuffled(mt.pairs.map((_, i) => i)).forEach(i => ca.appendChild(matchItem(mt.pairs[i], i, "a")));
+  shuffled(mt.pairs.map((_, i) => i)).forEach(i => cb.appendChild(matchItem(mt.pairs[i], i, "b")));
+  $("m-page").textContent = mt.count ? `Sayfa ${mt.pi + 1} / ${mt.count}` : "Bu ünitede bu tür alıştırma yok";
+  $("m-src").textContent = mt.pairs.length ? "Kaynak: " + [...new Set(mt.pairs.map(p => p[5]))].join(" ve ") : "";
+  $("m-next").classList.remove("primary");
+  matchScore(); updateCounter();
+}
+function matchScore() { $("m-score").textContent = mt.pairs.length ? `${mt.done} / ${mt.pairs.length} eşleşti` : ""; }
+function matchPick(btn) {
+  if (btn.classList.contains("done")) return;
+  const sel = mt.sel;
+  if (!sel) { mt.sel = btn; btn.classList.add("sel"); return; }
+  if (sel === btn) { btn.classList.remove("sel"); mt.sel = null; return; }
+  if (sel.dataset.side === btn.dataset.side) { sel.classList.remove("sel"); mt.sel = btn; btn.classList.add("sel"); return; }
+  sel.classList.remove("sel"); mt.sel = null;
+  if (sel.dataset.i === btn.dataset.i) {
+    const c = PAIR_COLORS[mt.done % PAIR_COLORS.length];
+    [sel, btn].forEach(x => { x.classList.add("done"); x.style.setProperty("--pc", c); x.setAttribute("aria-disabled", "true"); });
+    mt.done++; matchScore();
+    if (mt.done === mt.pairs.length) { toast("Tebrikler, sayfa tamamlandı"); $("m-next").classList.add("primary"); }
+  } else {
+    [sel, btn].forEach(x => { x.classList.remove("bad"); void x.offsetWidth; x.classList.add("bad"); setTimeout(() => x.classList.remove("bad"), 450); });
+    try { navigator.vibrate && navigator.vibrate(60); } catch (e) {}
+  }
+}
+function matchGo(step) {
+  if (!mt.count) return;
+  store.match.pages[unit + "-" + mt.type] = (mt.pi + step + mt.count) % mt.count; persist();
+  renderMatch();
+}
+document.querySelectorAll(".mtab").forEach(b => b.addEventListener("click", () => { mt.type = b.dataset.t; store.match.type = mt.type; persist(); renderMatch(); }));
+$("m-prev").addEventListener("click", () => matchGo(-1));
+$("m-next").addEventListener("click", () => matchGo(1));
+$("m-shuffle").addEventListener("click", renderMatch);
 
 // ---- init ----
 renderUnit();

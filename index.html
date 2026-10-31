@@ -251,9 +251,13 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
 :root[data-theme="dark"]{--hl:#FF922B}
 .bk-mean,.bk-sent{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;transition:opacity .25s ease}
 .bk-sent{display:none}
-.drag.page3 .bk-mean{display:none}
-.drag.page3 .bk-sent{display:flex;animation:fadein .3s ease}
-.drag.page3 .back{background:var(--surface);color:var(--ink)}
+.drag.page3 .bk-mean,.scard.page3 .bk-mean{display:none}
+.drag.page3 .bk-sent,.scard.page3 .bk-sent{display:flex;animation:fadein .3s ease}
+.drag.page3 .back,.scard.page3 .back{background:var(--surface);color:var(--ink)}
+body.sl-cover .scard .sent-ar{font-size:min(11vh,6vw);line-height:1.8}
+body.sl-cover .scard .sent-tr{font-size:min(5.5vh,2.8vw);max-width:60ch;margin-top:2vh}
+body.sl-cover .scard .sent-label{font-size:min(4.5vh,2.2vw)}
+body.sl-cover .scard .dots{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .sent-label{font-size:13px;color:var(--muted);letter-spacing:.02em;margin-bottom:10px}
 .sent-ar{font-family:"Noto Naskh Arabic","Amiri",serif;direction:rtl;text-align:center;font-size:clamp(24px,6.8vw,32px);line-height:1.9}
@@ -359,11 +363,19 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
         <div class="inner" id="sinner">
           <div class="face front"><div class="word ar" id="s-word"></div><button class="speak" id="s-speak" type="button" aria-label="Arapçasını dinle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button></div>
           <div class="face back">
-            <div class="small-ar ar" id="s-ar"></div>
-            <div class="mean" id="s-mean"></div>
-            <div class="note" id="s-note"></div>
+            <div class="bk-mean">
+              <div class="small-ar ar" id="s-ar"></div>
+              <div class="mean" id="s-mean"></div>
+              <div class="note" id="s-note"></div>
+            </div>
+            <div class="bk-sent">
+              <div class="sent-label">Örnek cümle</div>
+              <div class="sent-ar" id="s-sent" lang="ar"></div>
+              <div class="sent-tr" id="s-sent-tr"></div>
+            </div>
           </div>
         </div>
+        <div class="dots" id="s-dots" aria-hidden="true"><i></i><i></i><i></i></div>
       </div>
     </div>
     <div class="s-bar"><i id="s-bar"></i></div>
@@ -411,7 +423,7 @@ body.sl-cover .s-bar{position:fixed;left:0;right:0;bottom:0;margin:0;border-radi
       <div class="chips" id="count-chips" role="group" aria-label="Soru sayısı"></div>
       <button class="btn primary" id="btn-start" type="button">Quiz’i başlat</button>
       <p id="last-result"></p>
-      <p class="ver">Sürüm 19</p>
+      <p class="ver">Sürüm 20</p>
     </div>
 
     <div id="q-play" hidden>
@@ -1347,7 +1359,7 @@ $("btn-shuffle").addEventListener("click", () => { buildOrder(true); setFlipped(
 const SPEEDS = [3, 5];
 const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
 const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>';
-const sl = { idx: 0, playing: false, back: false, timer: null, dur: SPEEDS.includes(store.slideDur) ? store.slideDur : 3 };
+const sl = { idx: 0, phase: 0, playing: false, back: false, timer: null, dur: SPEEDS.includes(store.slideDur) ? store.slideDur : 3 };
 const scard = $("scard"), sinner = $("sinner"), sbar = $("s-bar");
 let wakeLock = null;
 async function keepAwake(on) {
@@ -1358,11 +1370,17 @@ async function keepAwake(on) {
     } else if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
   } catch (e) {}
 }
+// slayt kartının üç aşaması: 0 = Arapça, 1 = anlam, 2 = örnek cümle
 function slFlip(v, instant) {
-  sl.back = v;
+  sl.back = v; sl.phase = v ? 1 : 0;
+  if (!v) scard.classList.remove("page3");
   if (instant) { sinner.style.transition = "none"; scard.classList.toggle("flipped", v); void sinner.offsetWidth; sinner.style.transition = ""; }
   else scard.classList.toggle("flipped", v);
+  slDots();
 }
+function slSentence() { sl.phase = 2; scard.classList.add("page3"); slDots(); }
+function slDots() { document.querySelectorAll("#s-dots i").forEach((d, i) => d.classList.toggle("on", i === (sl.phase || 0))); }
+function slPhaseDur() { return sl.phase === 2 ? sl.dur * 1.5 : sl.dur; }
 // Slayt her zaman Besmele ile başlar, Hamdele ile biter.
 // sl.idx: 0 = Besmele, 1..N = kelimeler, N+1 = Hamdele
 const SL_START = { ar: "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ", tr: "Rahmân ve Rahîm olan Allah’ın adıyla", n: "" };
@@ -1380,25 +1398,28 @@ function renderSlide() {
   const it = slItem();
   const w = $("s-word"); w.textContent = it.ar; w.className = "word ar " + sizeClass(it.ar);
   $("s-ar").textContent = it.ar; $("s-mean").textContent = it.tr; richText($("s-note"), it.n || "");
+  renderSentence($("s-sent"), it.s || ""); $("s-sent-tr").textContent = it.st || "";
+  $("s-dots").style.visibility = it.s ? "" : "hidden";
   slFlip(false, true); updateCounter();
 }
 function slRestart() { sl.idx = 0; renderSlide(); }
 function runBar() {
   sbar.classList.remove("run"); void sbar.offsetWidth;
-  if (sl.playing) { sbar.style.animationDuration = sl.dur + "s"; sbar.classList.add("run"); }
+  if (sl.playing) { sbar.style.animationDuration = slPhaseDur() + "s"; sbar.classList.add("run"); }
 }
 function slSchedule() {
   clearTimeout(sl.timer);
   if (!sl.playing) return;
   runBar();
-  sl.timer = setTimeout(slTick, sl.dur * 1000);
+  sl.timer = setTimeout(slTick, slPhaseDur() * 1000);
 }
 let slWait = 0;
 function slTick() {
   if (!sl.back) {
     if (isSpeaking() && slWait < 16) { slWait++; sl.timer = setTimeout(slTick, 250); return; }
     slWait = 0; slFlip(true, false); slSchedule();
-  } else slMove(1);
+  } else if (sl.phase === 1 && slItem().s) { slSentence(); slSchedule(); }
+  else slMove(1);
 }
 function slSpeakFront() { if (sl.playing && snd.autoSlide && !sl.back) speak(slItem().ar); }
 function slMove(step) {

@@ -353,6 +353,8 @@ body[data-screen="quiz"] .tabs,body[data-screen="test"] .tabs{display:none!impor
 .fb-sent{display:block;font-size:22px;line-height:1.9;text-align:right}
 .fb-sent .hl{color:var(--hl);font-weight:700}
 .fb-tr{display:block;color:var(--muted);font-size:14.5px}
+.fb-wrong{color:var(--bad)}
+.voice-warn{background:var(--bad-soft);color:var(--ink);border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.5;margin:0 0 10px}
 
 /* bildiğim kelimeler */
 .known-btn{position:absolute;right:16px;top:16px;z-index:3;width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .15s,color .15s}
@@ -418,7 +420,7 @@ body[data-screen="quiz"] .tabs,body[data-screen="test"] .tabs{display:none!impor
     <div class="h-foot">
       <button id="home-settings" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Ayarlar</button>
       <button id="home-install" type="button" hidden>Telefona yükle</button>
-      <span class="ver">Sürüm 25</span>
+      <span class="ver">Sürüm 28</span>
     </div>
   </div>
 </div>
@@ -666,7 +668,7 @@ const RAW2 = [
 ["سَاحِل","sahil, kıyı","bulut","körfez","Çoğulu: سَوَاحِل. Türkçedeki “sahil”.","cografya"],
 ["شَاطِئ","kıyı, plaj","köprü","ada","Çoğulu: شَوَاطِئ. سَاحِل ile eş anlamlı.","cografya"],
 ["دَافِئ","ılık","nemli","kuru","تَدْفِئَة ve مِدْفَأَة ile aynı kök (د ف ء).","iklim"],
-["مَنَاخ","iklim","günlük hava durumu","mevsim","Uzun süreli hava özellikleri. Günlük hava ise الطَّقْس.","iklim"],
+["مَنَاخ","iklim","yağış miktarı","mevsim","Uzun süreli hava özellikleri. Günlük hava ise الطَّقْس.","iklim"],
 ["مُعْتَدِل","ılıman","değişken","yağmurlu","Türkçedeki “mutedil”. Kökü ع د ل.","iklim"],
 ["جَافّ","kuru","sıcak","açık","الجَفَاف = kuraklık. يُجَفِّفُ ile aynı kök.","iklim"],
 ["رَطِب","nemli","ılık","soğuk","الرُّطُوبَة, Türkçedeki “rutubet”.","iklim"],
@@ -727,7 +729,7 @@ const RAW2 = [
 ["كَمِّيَّة","miktar","derece","ortalama","Türkçedeki “kemiyet” (nicelik).","iklim"],
 ["الأَمْطَار","yağmurlar, yağış","seller","fırtınalar","Tekili: مَطَر.","iklim"],
 ["سَنَوِيّاً","yıllık olarak","aylık olarak","genellikle","Türkçedeki “senevi”. سَنَة = yıl.","iklim"],
-["الطَّقْس","hava (durumu)","iklim","sıcaklık","Günlük hava. Uzun süreli olanı مَنَاخ.","iklim"],
+["الطَّقْس","hava (durumu)","rüzgâr","sıcaklık","Günlük hava. Uzun süreli olanı مَنَاخ.","iklim"],
 ["تَكْثُرُ","çoğalır, sık görülür","azalır","değişir","Mazisi: كَثُرَ. Türkçedeki kesret, ekseriyet.","fiil"],
 ["صَحْرَاوِيّ","çöle ait","dağlık","denize ait","صَحْرَاء, Türkçedeki “sahra”.","iklim"],
 ["الجَفَاف","kuraklık","ılımanlık","nem","جَافّ (kuru) kelimesinin mastarı.","iklim"],
@@ -755,14 +757,14 @@ const RAW2 = [
 ["غَائِم","bulutlu","yağmurlu","karlı","غَيْم = bulut.","iklim"],
 ["ثَابِت","sabit, değişmez","değişken","ılıman","Zıttı: مُتَغَيِّر.","iklim"],
 ["تُشْرِفُ عَلَى","-e bakar","-i sınırlar","-e ulaşır","تُطِلُّ عَلَى ile eş anlamlı. Örnek: Trabzon Karadeniz’e bakar.","fiil"],
-["الهَوَاء","hava (soluduğumuz)","rüzgâr","gökyüzü","Türkçedeki “hava”.","iklim"],
+["الهَوَاء","hava (soluduğumuz)","toprak","gökyüzü","Türkçedeki “hava”.","iklim"],
 ["الصِّفْر","sıfır","derece","yüz","Türkçedeki “sıfır”. تَحْتَ الصِّفْرِ = sıfırın altında.","iklim"],
 ["تَرْتَفِعُ","yükselir","alçalır","erir","Türkçedeki “irtifa” ile aynı kök. Zıttı: تَنْخَفِضُ.","fiil"],
 ["تَقْرِيباً","yaklaşık","sadece","genellikle","Türkçedeki “takriben”.","ifade"],
 ["الرُّطُوبَة","nem","kuraklık","sıcaklık","Türkçedeki “rutubet”. رَطِب = nemli.","iklim"],
 ["دَرَجَةُ الحَرَارَةِ الصُّغْرَى","en düşük sıcaklık","en yüksek sıcaklık","ortalama sıcaklık","الصُّغْرَى = en küçük. Zıttı: العُظْمَى veya الكُبْرَى.","iklim"],
 ["دَرَجَةُ الحَرَارَةِ العُظْمَى","en yüksek sıcaklık","en düşük sıcaklık","yıllık sıcaklık","العُظْمَى yerine الكُبْرَى (Kübra) da denir.","iklim"],
-["الأَرْصَادُ الجَوِّيَّةُ","meteoroloji","hava durumu","yağış ölçümü","رَصَد = gözlem. Türkçedeki “rasathane” ile aynı kök.","iklim"]
+["الأَرْصَادُ الجَوِّيَّةُ","meteoroloji","astronomi","yağış ölçümü","رَصَد = gözlem. Türkçedeki “rasathane” ile aynı kök.","iklim"]
 ];
 const RAW3 = [
 ["حَضَارَة","medeniyet","kale","tapınak","Çoğulu: حَضَارَات. Kökü ح ض ر, “hazır” ile aynı. Aslı “yerleşik hayat” demektir.","eser"],
@@ -852,7 +854,7 @@ const RAW3 = [
 ["المَدِينَةُ الشَّتَوِيَّةُ","kış şehri","kış sarayı","kışlık ev","Luksor, ılık kışı nedeniyle böyle anılır.","ifade"],
 ["مُنْذُ قَدِيمِ الزَّمَانِ","eski zamanlardan beri","son zamanlarda","gelecekte","مُنْذُ = -den beri. Türkçedeki kadim ve zaman.","ifade"],
 ["لِكَثْرَةِ","...in çokluğu nedeniyle","...in azlığı nedeniyle","...e rağmen","كَثْرَة = çokluk. Türkçedeki “kesret”.","ifade"],
-["مِسَاحَة","alan, yüzölçümü","mesafe","bölge","مِسَاحَةٌ وَاسِعَةٌ = geniş alan.","ifade"],
+["مِسَاحَة","alan, yüzölçümü","mesafe","nüfus","مِسَاحَةٌ وَاسِعَةٌ = geniş alan.","ifade"],
 ["الاِسْتِمْتَاع","keyfini çıkarma","izleme","dinlenme","Türkçedeki “temettü” ile aynı kök. لِلِاسْتِمْتَاعِ = keyfini çıkarmak için.","ifade"],
 ["مُشَاهَدَة","izleme, görme","ziyaret","keşif","Türkçedeki “müşahede”.","ifade"],
 ["عُمْر","yaş, ömür","tarih","dönem","عُمْرُهَا أَكْثَرُ مِنْ ٢٣٠٠ سَنَةٍ = 2300 yıldan daha eski.","ifade"],
@@ -873,9 +875,9 @@ const RAW2B = [
 ["ضَبَاب","sis","bulut","duman","Sıfatı: ضَبَابِيّ (sisli).","iklim"],
 ["ضَبَابِيّ","sisli","bulutlu","rüzgârlı","ضَبَاب (sis) kelimesinin sonuna ـِيّ eklenmiş.","iklim"],
 ["عَاصِف","fırtınalı","sisli","yağmurlu","عَاصِفَة (fırtına) ile aynı kök. الجَوُّ عَاصِفٌ = hava fırtınalı.","iklim"],
-["مُثْلِج","karlı","buzlu","bulutlu","“Muslic” okunur. ثَلْج (kar) ile aynı kök.","iklim"],
+["مُثْلِج","karlı","rüzgârlı","bulutlu","“Muslic” okunur. ثَلْج (kar) ile aynı kök.","iklim"],
 ["مَاطِر","yağmurlu","karlı","güneşli","مُمْطِر ile eş anlamlı. مَطَر = yağmur.","iklim"],
-["ثَلْج","kar","buz","dolu","Çoğulu: ثُلُوج. يَتَسَاقَطُ الثَّلْجُ = kar yağar.","iklim"],
+["ثَلْج","kar","yağmur","dolu","Çoğulu: ثُلُوج. يَتَسَاقَطُ الثَّلْجُ = kar yağar.","iklim"],
 ["غَيْمَة","bulut","sis","yağmur damlası","Çoğulu: غُيُوم. غَائِم (bulutlu) ile aynı kök.","iklim"],
 ["رِيَاح","rüzgârlar","bulutlar","dalgalar","Tekili: رِيح. Akılsız çoğul olduğu için fiili dişil gelir: تَهُبُّ الرِّيَاحُ.","iklim"],
 ["أَمْطَارٌ غَزِيرَةٌ","şiddetli yağmur","hafif yağmur","yağmur bulutu","غَزِير = bol, çok. Türkçedeki “gazir” (bol).","iklim"],
@@ -939,7 +941,7 @@ const RAW2B = [
 ["أَصْبَحَ – يُصْبِحُ","oldu, hâline geldi","başladı","kaldı","صُبْح (sabah) ile aynı kök. يُصْبِحُ الجَوُّ بَارِداً = hava soğuk olur.","fiil"],
 ["سَافَرَ – يُسَافِرُ","yolculuk etti – eder","döndü – döner","kaldı – kalır","Mastarı: سَفَر. Türkçedeki “sefer, seferber”.","fiil"],
 ["اِزْدَحَمَ – يَزْدَحِمُ","kalabalıklaştı","boşaldı","yayıldı","Mastarı: اِزْدِحَام. Türkçedeki “izdiham”.","fiil"],
-["قَضَى – يَقْضِي","(vakit) geçirdi – geçirir","harcadı – harcar","bekledi – bekler","نَقْضِي أُسْبُوعَيْنِ = iki hafta geçiririz. Türkçedeki “kaza” ile aynı kök.","fiil"],
+["قَضَى – يَقْضِي","(vakit) geçirdi – geçirir","kazandı – kazanır","bekledi – bekler","نَقْضِي أُسْبُوعَيْنِ = iki hafta geçiririz. Türkçedeki “kaza” ile aynı kök.","fiil"],
 ["نَسِيَ – يَنْسَى","unuttu – unutur","hatırladı – hatırlar","öğrendi – öğrenir","Mastarı: نِسْيَان. Türkçedeki “nisyan”.","fiil"],
 ["تَذَكَّرَ – يَتَذَكَّرُ","hatırladı – hatırlar","unuttu – unutur","anlattı – anlatır","Türkçedeki “tezkere” ve “zikir” ile aynı kök.","fiil"],
 ["مَارَسَ – يُمَارِسُ","(spor, hobi) yaptı – yapar","izledi – izler","sevdi – sever","Mastarı: مُمَارَسَة. أُمَارِسُ الرِّيَاضَةَ = spor yaparım.","fiil"],
@@ -968,16 +970,16 @@ const RAW2B = [
 ["سَعَادَة","mutluluk","hüzün","yorgunluk","Zıttı: حُزْن. Türkçedeki “saadet”.","gunluk"],
 ["حُزْن","hüzün","mutluluk","korku","Zıttı: سَعَادَة. Türkçedeki “hüzün”.","gunluk"],
 ["صَيْدُ السَّمَكِ","balık tutma","balık pazarı","balık yemeği","صَيْد = av. Türkçedeki “sayd”.","gunluk"],
-["التَّصْوِير","fotoğrafçılık","resim yapma","yazı yazma","Türkçedeki “tasvir”.","gunluk"],
+["التَّصْوِير","fotoğrafçılık","şarkı söyleme","yazı yazma","Türkçedeki “tasvir”.","gunluk"],
 ["تَسَلُّقُ الجِبَالِ","dağcılık","dağ yolu","dağ evi","تَسَلَّقَ (tırmandı) fiilinin mastarı.","gunluk"],
 ["المَشْي","yürüyüş","koşu","yüzme","Zıttı: الرَّكْض. مَشَى – يَمْشِي = yürüdü – yürür.","gunluk"],
 ["الرَّكْض","koşu","yürüyüş","atlama","Zıttı: المَشْي.","gunluk"],
-["أَوْقَاتُ الفَرَاغِ","boş zamanlar","iş saatleri","tatil günleri","فَرَاغ = boşluk.","gunluk"],
+["أَوْقَاتُ الفَرَاغِ","boş zamanlar","iş saatleri","ders saatleri","فَرَاغ = boşluk.","gunluk"],
 ["العُطْلَة","tatil","iş","okul","يَوْمُ عُطْلَةٍ = tatil günü. Türkçedeki “tatil” ile aynı kök.","gunluk"],
 ["مُمْتِعَة","zevkli, keyifli","sıkıcı","yorucu","الاِسْتِمْتَاع ile aynı kök.","gunluk"],
 ["مُتَشَابِه","benzer","farklı","aynı","Zıttı: مُخْتَلِف. Türkçedeki “müteşabih”.","gunluk"],
-["رِحْلَة","gezi, yolculuk","tatil","ziyaret","Türkçedeki “rihlet” ile aynı kök.","gunluk"],
-["الشَّبَكَةُ العَنْكَبُوتِيَّةُ","internet","telefon ağı","televizyon","Kelime anlamı “örümcek ağı”. عَنْكَبُوت = örümcek (Ankebut suresi).","gunluk"],
+["رِحْلَة","gezi, yolculuk","ödev","toplantı","Türkçedeki “rihlet” ile aynı kök.","gunluk"],
+["الشَّبَكَةُ العَنْكَبُوتِيَّةُ","internet","gazete","televizyon","Kelime anlamı “örümcek ağı”. عَنْكَبُوت = örümcek (Ankebut suresi).","gunluk"],
 ["مُذِيع","spiker, sunucu","yazar","izleyici","Hava durumunu sunan kişi: مُذِيعُ النَّشْرَةِ الجَوِّيَّةِ.","gunluk"]
 ];
 const RAW3B = [
@@ -990,7 +992,7 @@ const RAW3B = [
 ["خِدْمَات","hizmetler","dükkânlar","binalar","Tekili: خِدْمَة. Türkçedeki “hizmet”.","sehir"],
 ["صَيْدَلِيَّة","eczane","hastane","fırın","Çoğulu: صَيْدَلِيَّات.","sehir"],
 ["مُسْتَشْفَى","hastane","eczane","okul","شِفَاء (şifa) ile aynı kök.","sehir"],
-["مَخْبَز","fırın","mutfak","pastane","خُبْز = ekmek.","sehir"],
+["مَخْبَز","fırın","mutfak","kasap","خُبْز = ekmek.","sehir"],
 ["الدُّكَّان","dükkân","depo","ev","Türkçedeki “dükkân”.","sehir"],
 ["بَقَّالَة","bakkal","kasap","fırın","Türkçedeki “bakkal”.","sehir"],
 ["مَحَلُّ جِزَارَةٍ","kasap dükkânı","balıkçı","bakkal","جَزَّار = kasap.","sehir"],
@@ -999,7 +1001,7 @@ const RAW3B = [
 ["زُقَاق","dar sokak","geniş cadde","meydan","Türkçedeki “sokak” bu kelimeden gelir.","sehir"],
 ["مَكْتَبُ البَرِيدِ","postane","emlak ofisi","banka","بَرِيد = posta.","sehir"],
 ["مَصْرِف","banka","postane","pazar","Çoğulu: مَصَارِف. Türkçedeki “masraf” ile aynı kök.","sehir"],
-["صَرَّاف","sarraf, para çekme makinesi","kasiyer","postacı","Türkçedeki “sarraf”. مَكْتَبُ الصِّرَافَةِ = döviz bürosu.","sehir"],
+["صَرَّاف","sarraf, para çekme makinesi","garson","postacı","Türkçedeki “sarraf”. مَكْتَبُ الصِّرَافَةِ = döviz bürosu.","sehir"],
 ["السُّوقُ الأَثَرِيُّ","tarihî çarşı","sebze pazarı","alışveriş merkezi","أَثَرِيّ = antik, tarihî.","sehir"],
 ["السِّفَارَة","büyükelçilik","postane","belediye","Çoğulu: سِفَارَات. Türkçedeki “sefaret”.","sehir"],
 ["الطَّابِق","kat","oda","daire","الطَّابِقُ الأَوَّلُ = birinci kat. Türkçedeki “tabaka” ile aynı kök.","sehir"],
@@ -1030,16 +1032,16 @@ const RAW3B = [
 ["قَطَعَ – يَقْطَعُ","(yolu) geçti, kesti","çıktı","döndü","Emri: اِقْطَعِ الشَّارِعَ (caddeyi geç). Türkçedeki “kat'i” ile aynı kök.","fiil"],
 ["صَعِدَ – يَصْعَدُ","yukarı çıktı – çıkar","indi – iner","geçti – geçer","Zıttı: نَزَلَ. Emri: اِصْعَدْ.","fiil"],
 ["نَزَلَ – يَنْزِلُ","indi – iner","çıktı – çıkar","bindi – biner","Zıttı: صَعِدَ. Emri: اِنْزِلْ. Türkçedeki “nüzul”.","fiil"],
-["اِتَّجَهَ – يَتَّجِهُ","yöneldi – yönelir","durdu – durur","döndü – döner","Emri: اِتَّجِهْ إِلَى اليَمِينِ (sağa yönel).","fiil"],
+["اِتَّجَهَ – يَتَّجِهُ","yöneldi – yönelir","durdu – durur","oturdu – oturur","Emri: اِتَّجِهْ إِلَى اليَمِينِ (sağa yönel).","fiil"],
 ["مَشَى – يَمْشِي","yürüdü – yürür","koştu – koşar","bindi – biner","Emri: اِمْشِ.","fiil"],
 ["اِسْتَغْرَقَ – يَسْتَغْرِقُ","(zaman) sürdü – sürer","bitti – biter","başladı – başlar","يَسْتَغْرِقُ الطَّرِيقُ نِصْفَ سَاعَةٍ = yol yarım saat sürer.","fiil"],
 ["اِشْتَهَرَ – يَشْتَهِرُ بِـ","...ile meşhur oldu / olur","...e benzedi","...den oluştu","تَشْتَهِرُ تُرْكِيَا بِالبُنْدُقِ = Türkiye fındığıyla meşhurdur.","fiil"],
 ["بُرْج","kule","köprü","duvar","Çoğulu: أَبْرَاج. Türkçedeki “burç”. بُرْجُ غَلَطَةَ = Galata Kulesi.","eser"],
 ["تِمْثَال","heykel","tablo","sütun","Çoğulu: تَمَاثِيل. Türkçedeki “timsal”. تِمْثَالُ الحُرِّيَّةِ = Özgürlük Heykeli.","eser"],
-["مِئْذَنَة","minare","kubbe","kule","Çoğulu: مَآذِن. أَذَان (ezan) ile aynı kök.","eser"],
+["مِئْذَنَة","minare","kubbe","avlu","Çoğulu: مَآذِن. أَذَان (ezan) ile aynı kök.","eser"],
 ["السُّوقُ المُغَطَّى","Kapalıçarşı","sebze pazarı","Mısır Çarşısı","مُغَطًّى = üstü kapalı.","eser"],
 ["خَانُ الخَلِيلِيِّ","Han el-Halili (Kahire çarşısı)","Kahire Kalesi","Ezher Camii","Kahire’nin meşhur tarihî çarşısı. خَان = han.","eser"],
-["التَّوْأَم","ikiz","üçüz","kardeş","بُرْجَا كُوالالُمْبُورَ التَّوْأَمُ = Kuala Lumpur İkiz Kuleleri.","eser"],
+["التَّوْأَم","ikiz","üçüz","tek","بُرْجَا كُوالالُمْبُورَ التَّوْأَمُ = Kuala Lumpur İkiz Kuleleri.","eser"],
 ["تَلَّة","tepe","dağ","vadi","Çoğulu: تِلَال.","tarih"],
 ["غَابَة","orman","bahçe","çöl","Çoğulu: غَابَات.","tarih"],
 ["بِحَار","denizler","okyanuslar","nehirler","Tekili: بَحْر. Türkçedeki “bahir”, “Bahr-i Muhit”.","tarih"],
@@ -1052,7 +1054,7 @@ const RAW3B = [
 ["مَدِينَةُ المَآذِنِ","Minareler Şehri (İstanbul)","Yedi Tepeli Şehir","Çölün Gelini","Kitapta İstanbul’un bugünkü lakabı. مَآذِن = minareler (tekili مِئْذَنَة).","ifade"],
 ["مَدِينَةُ الأَلْفِ مِئْذَنَةٍ","Bin Minareli Şehir (Kahire)","Yedi Tepeli Şehir","Kış Şehri","Kitapta Kahire için kullanılır.","ifade"],
 ["جَوْهَرَةُ الشَّرْقِ","Doğu'nun İncisi (Kahire)","Çölün Gelini","Pembe Şehir","جَوْهَرَة = mücevher, Türkçedeki “cevher”.","ifade"],
-["الأَمَاكِنُ السِّيَاحِيَّةُ","turistik yerler","tarihî kalıntılar","alışveriş yerleri","سِيَاحِيّ = turistik, سَائِح (turist) ile aynı kök.","ifade"],
+["الأَمَاكِنُ السِّيَاحِيَّةُ","turistik yerler","çalışma yerleri","alışveriş yerleri","سِيَاحِيّ = turistik, سَائِح (turist) ile aynı kök.","ifade"],
 ["الوَطَنُ العَرَبِيُّ","Arap dünyası","Arap Yarımadası","Arap dili","وَطَن = vatan.","ulke"],
 ["الدُّوَل","devletler, ülkeler","şehirler","kıtalar","Tekili: دَوْلَة. Türkçedeki “düvel”.","ulke"],
 ["عَدَدُ السُّكَّانِ","nüfus","yüzölçümü","şehir sayısı","عَدَد = sayı, Türkçedeki “aded”.","ulke"],
@@ -1071,7 +1073,7 @@ const RAW3B = [
 ["الزَّيْتُون","zeytin","incir","üzüm","Türkçedeki “zeytin”. Tîn suresinde geçer.","ulke"],
 ["الأَرُزّ","pirinç","buğday","mısır","Dikkat: الأَرْز (sedir ağacı) ile karıştırma.","ulke"],
 ["البُنْدُق","fındık","ceviz","badem","Türkçedeki “fındık” buradan gelir.","ulke"],
-["المَنْسُوجَات","dokumalar, tekstil","boyalar","halılar","Türkçedeki “mensucat”.","ulke"],
+["المَنْسُوجَات","dokumalar, tekstil","boyalar","mücevherler","Türkçedeki “mensucat”.","ulke"],
 ["فَرَنْسَا","Fransa","İtalya","İspanya","Başkenti: بَارِيس.","ulke"],
 ["إِيطَالِيَا","İtalya","Fransa","Yunanistan","Başkenti: رُومَا.","ulke"],
 ["الأُرْدُنّ","Ürdün","Suriye","Lübnan","Başkenti: عَمَّان. Petra buradadır.","ulke"],
@@ -1102,7 +1104,7 @@ const RAW_ESK = [
 ["غَالِيَة","pahalı","ucuz","taze","Eş anlamlısı: بَاهِظَةُ الثَّمَنِ.","eskimo"],
 ["رَخِيص","ucuz","pahalı","bozuk","Zıttı: بَاهِظ / غَالٍ. Türkçedeki “ruhsat” ile aynı kök.","eskimo"],
 ["مُغَطَّاةٌ بِالثُّلُوجِ","karla kaplı","buzdan yapılmış","yağmurlu","مُغَطًّى = örtülmüş, kaplanmış.","eskimo"],
-["يُحَضِّرُ","hazırlar","pişirir","kurutur","Mazisi: حَضَّرَ. Eş anlamlısı: يُجَهِّزُ.","eskimo"],
+["يُحَضِّرُ","hazırlar","yıkar","kurutur","Mazisi: حَضَّرَ. Eş anlamlısı: يُجَهِّزُ.","eskimo"],
 ["يُجَهِّزُ","hazırlar, donatır","yıkar","kurutur","Mazisi: جَهَّزَ. Türkçedeki cihaz, teçhizat, çeyiz ile aynı kök.","eskimo"],
 ["بِطُرُقٍ مُخْتَلِفَةٍ","farklı yollarla","aynı şekilde","çok hızlı","طُرُق = yollar, yöntemler.","eskimo"],
 ["يُجَفِّفُونَ","kuruturlar","pişirirler","koyarlar","Mazisi: جَفَّفَ. جَافّ (kuru) ile aynı kök.","eskimo"],
@@ -1117,7 +1119,7 @@ const RAW_ESK = [
 ["مَطْبُوخ","pişmiş","çiğ","kurutulmuş","Zıttı: نَيِّء. طَبَخَ (pişirdi) fiilinden.","eskimo"],
 ["دُونَ طَبْخٍ","pişirmeden","kullanarak","yavaşça","دُونَ = -madan, -sız.","eskimo"],
 ["المِهْنَة","meslek","av","ticaret","Çoğulu: مِهَن. Eskimoların temel mesleği avcılıktır.","eskimo"],
-["الصَّيْد","avcılık, av","balıkçılık","ticaret","صَادَ – يَصِيدُ = avladı – avlar.","eskimo"],
+["الصَّيْد","avcılık, av","tarım","ticaret","صَادَ – يَصِيدُ = avladı – avlar.","eskimo"],
 ["صَيَّادُونَ مَاهِرُونَ","usta avcılar","usta aşçılar","genç avcılar","Tekili: صَيَّادٌ مَاهِرٌ. مَاهِر = usta, Türkçedeki “mahir”.","eskimo"],
 ["يَصِيدُونَ","avlarlar","yaşarlar","yakarlar","Mazisi: صَادَ.","eskimo"],
 ["الحَيَوَانَاتُ البَرِّيَّةُ","kara hayvanları","su hayvanları","uçan hayvanlar","بَرّ = kara. Tekili: حَيَوَانٌ بَرِّيٌّ.","eskimo"],
@@ -1137,7 +1139,7 @@ const RAW_ESK = [
 ["يَعِيشُ","yaşar","avlanır","uyur","Mazisi: عَاشَ. Türkçedeki “maişet” ile aynı kök.","eskimo"],
 ["أَكْوَاخ","kulübeler","çadırlar","saraylar","Tekili: كُوخ. Eskimolar buzdan kulübelerde yaşar.","eskimo"],
 ["بُيُوتٌ جَلِيدِيَّةٌ","buz evler (iglo)","taş evler","ahşap evler","جَلِيدِيّ = buzdan.","eskimo"],
-["خِيَام","çadırlar","kulübeler","evler","Tekili: خَيْمَة. Bedeviler çadırda yaşar. Türkçedeki “hayme” (çadır).","eskimo"],
+["خِيَام","çadırlar","kulübeler","mağaralar","Tekili: خَيْمَة. Bedeviler çadırda yaşar. Türkçedeki “hayme” (çadır).","eskimo"],
 ["مَصْنُوعَةٌ مِنَ الجَلِيدِ","buzdan yapılmış","karla kaplı","deriyle döşenmiş","مَصْنُوع = yapılmış. Türkçedeki “sanat, masnû” ile aynı kök.","eskimo"],
 ["الجَلِيد","buz","kar","su","Kar: ثَلْج. Türkçedeki “celit” (buz).","eskimo"],
 ["يُشْعِلُونَ النَّارَ","ateş yakarlar","ateşi söndürürler","ateşte pişirirler","Mazisi: أَشْعَلَ. Zıttı: أَطْفَأَ.","eskimo"],
@@ -1145,7 +1147,7 @@ const RAW_ESK = [
 ["دَاخِلَ","içinde","dışında","üstünde","Zıttı: خَارِجَ. Türkçedeki “dahil”.","eskimo"],
 ["جُدْرَان","duvarlar","pencereler","kapılar","Tekili: جِدَار. Türkçedeki “cidar” (çeper).","eskimo"],
 ["تَذُوبُ","erir","donar","yanar","Mazisi: ذَابَ. Türkçedeki “izabe” (eritme) ile aynı kök.","eskimo"],
-["مَفْرُوشَة","döşenmiş, serili","boyanmış","kaplanmış","فَرَشَ = serdi. Türkçedeki “ferş, mefruşat” ile aynı kök.","eskimo"],
+["مَفْرُوشَة","döşenmiş, serili","boyanmış","yıkanmış","فَرَشَ = serdi. Türkçedeki “ferş, mefruşat” ile aynı kök.","eskimo"],
 ["جُلُود","deriler","kürkler","kemikler","Tekili: جِلْد. Türkçedeki “cilt”.","eskimo"],
 ["فِرَاء","kürkler","deriler","yünler","Tekili: فَرْو.","eskimo"],
 ["المَلَابِس","giysiler","ayakkabılar","eşyalar","Tekili: مَلْبَس. لَبِسَ – يَلْبَسُ ile aynı kök.","eskimo"],
@@ -1160,11 +1162,11 @@ const RAW_ESK = [
 ["تَدْفِئَة","ısıtma","soğutma","yıkama","Zıttı: تَبْرِيد. لِتَدْفِئَةِ الجِسْمِ = vücudu ısıtmak için.","eskimo"],
 ["تَبْرِيد","soğutma","ısıtma","kurutma","Zıttı: تَدْفِئَة. بَارِد (soğuk) ile aynı kök.","eskimo"],
 ["المِدْفَأَة","soba, ısıtıcı","ocak","fırın","تَدْفِئَة ve دَافِئ ile aynı kök.","eskimo"],
-["المَوْقِد","ocak","soba","fırın","Kökü و ق د (yanmak). وَقُود = yakıt.","eskimo"],
+["المَوْقِد","ocak","buzdolabı","fırın","Kökü و ق د (yanmak). وَقُود = yakıt.","eskimo"],
 ["وَسَائِلُ المُوَاصَلَاتِ","ulaşım araçları","iletişim araçları","av aletleri","Tekili: وَسِيلَةُ مُوَاصَلَاتٍ.","eskimo"],
 ["بَسِيطَة","basit","karmaşık","pahalı","Türkçedeki “basit”.","eskimo"],
 ["لِلِانْتِقَالِ","yer değiştirmek için","avlanmak için","ısınmak için","لِـ + الاِنْتِقَال → لِلِانْتِقَالِ (elif düşer).","eskimo"],
-["القَوَارِب","kayıklar, sandallar","kızaklar","gemiler","Tekili: قَارِب. Çoğulu فَوَاعِل kalıbında.","eskimo"],
+["القَوَارِب","kayıklar, sandallar","kızaklar","uçaklar","Tekili: قَارِب. Çoğulu فَوَاعِل kalıbında.","eskimo"],
 ["الزَّلَّاجَات","kızaklar","kayıklar","arabalar","Tekili: زَلَّاجَة. Kökü ز ل ج (kaymak).","eskimo"],
 ["الخَشَبِيَّة","ahşap, tahtadan","buzdan","demirden","خَشَب = tahta, odun.","eskimo"],
 ["تَجُرُّهَا الكِلَابُ","köpeklerin çektiği","köpeklerin taşıdığı","köpeklerin koruduğu","جَرَّ = çekti. Harf-i cer (حَرْفُ الجَرِّ) ile aynı kök.","eskimo"],
@@ -1183,7 +1185,7 @@ const RAW_ESK = [
 ["التَّمْر","hurma","incir","üzüm","رُطَب = taze hurma, نَخْلَة = hurma ağacı.","eskimo"],
 ["الحَلِيب","süt","yoğurt","su","Bedevilerin temel yiyeceklerinden.","eskimo"],
 ["الزُّبْدَة","tereyağı","peynir","zeytinyağı","تَطْهُو أُمِّي الطَّعَامَ بِالزَّيْتِ أَوِ الزُّبْدَةِ.","eskimo"],
-["السَّكَنُ الجَامِعِيُّ","üniversite yurdu","üniversite binası","öğrenci evi","سَكَن = konut. سَكَنَ – يَسْكُنُ = oturdu – oturur.","eskimo"],
+["السَّكَنُ الجَامِعِيُّ","üniversite yurdu","üniversite binası","üniversite kütüphanesi","سَكَن = konut. سَكَنَ – يَسْكُنُ = oturdu – oturur.","eskimo"],
 ["العُشْب","ot","yaprak","ağaç","الحَيَوَانَاتُ الأَلِيفَةُ تَأْكُلُ العُشْبَ.","eskimo"],
 ["الشُّرْطِيّ","polis memuru","asker","doktor","الشُّرْطَة = polis teşkilatı.","eskimo"],
 ["مَلَابِسُ رَسْمِيَّةٌ","resmî kıyafet","spor kıyafet","kışlık kıyafet","رَسْمِيّ = resmî.","eskimo"],
@@ -1195,7 +1197,7 @@ const RAW_ESK = [
 ["الكُرْسِيّ","sandalye","masa","yatak","Türkçedeki “kürsü”.","eskimo"],
 ["الخَشَب","tahta, odun","demir","taş","الكُرْسِيُّ مَصْنُوعٌ مِنَ الخَشَبِ.","eskimo"],
 ["الخُبْز","ekmek","buğday","un","الخُبْزُ مَصْنُوعٌ مِنَ القَمْحِ.","eskimo"],
-["الأَثَاث","mobilya","halı","eşya","الشَّقَّةُ مَفْرُوشَةٌ بِالأَثَاثِ.","eskimo"],
+["الأَثَاث","mobilya","halı","kitap","الشَّقَّةُ مَفْرُوشَةٌ بِالأَثَاثِ.","eskimo"],
 ["سَمِين","şişman","zayıf","uzun","Zıttı: نَحِيف. Türkçedeki “semiz”.","eskimo"],
 ["نَحِيفَة","zayıf","şişman","kısa","Zıttı: سَمِينَة. هِيَ نَحِيفَةٌ لِأَنَّهَا تَأْكُلُ قَلِيلاً.","eskimo"],
 ["يَسْتَيْقِظُ","uyanır","uyur","yürür","Mazisi: اِسْتَيْقَظَ. Türkçedeki “yakaza” (uyanıklık) ile aynı kök.","eskimo"],
@@ -1736,6 +1738,8 @@ const QT = {
   cumle:   { icon: "🧩", title: "Cümle sıralama", short: "Kelimeleri sıraya diz", desc: "Türkçesine bakarak karışık kelimeleri doğru sıraya dizersin. Kontrol, örnek cümledeki sıraya göre yapılır.", ask: "Kelimeleri doğru sıraya diz" },
   kok:     { icon: "🌳", title: "Kök ve Türkçe", short: "Kökü ya da Türkçe akrabası", desc: "Kelimenin kökünü ya da Türkçeye geçen akrabasını seçersin.", ask: "" }
 };
+// boşluk doldurma: her cümle için tek tek kontrol edilmiş yanlış seçenekler (cümle numarası → seçeneklerin geldiği cümleler)
+const BOSLUK_D = {"0": [291, 94, 16], "1": [268, 15, 277], "2": [282, 279, 286], "3": [311, 287, 304], "4": [291, 287, 267], "5": [266, 291, 299], "6": [286, 305, 288], "7": [273, 283, 296], "8": [15, 299, 287], "9": [292, 263, 289], "10": [306, 15, 274], "11": [279, 278, 271], "12": [291, 296, 305], "14": [56, 208, 496], "15": [503, 440, 508], "16": [442, 483, 432], "18": [311, 283, 292], "19": [291, 276, 265], "20": [294, 270, 305], "21": [85, 269, 94], "22": [250, 245, 271], "23": [77, 526, 251], "24": [97, 476, 201], "25": [246, 282, 228], "26": [247, 283, 308], "27": [87, 262, 275], "28": [268, 24, 276], "29": [65, 263, 271], "30": [265, 272, 14], "31": [270, 267, 277], "32": [271, 266, 94], "33": [276, 277, 16], "34": [94, 241, 59], "35": [297, 306, 270], "36": [16, 14, 94], "37": [279, 274, 223], "38": [272, 24, 273], "39": [12, 532, 252], "40": [267, 269, 275], "41": [267, 263, 16], "42": [225, 234, 245], "43": [252, 297, 234], "44": [264, 265, 275], "45": [280, 22, 86], "46": [276, 16, 287], "48": [280, 265, 229], "49": [272, 274, 270], "50": [448, 269, 494], "51": [288, 16, 270], "52": [274, 296, 292], "53": [269, 302, 310], "54": [272, 65, 14], "55": [24, 271, 266], "56": [24, 94, 273], "57": [273, 269, 268], "58": [263, 94, 23], "59": [30, 16, 27], "60": [303, 299, 23], "61": [275, 94, 65], "62": [24, 285, 273], "63": [270, 267, 268], "64": [268, 262, 269], "65": [202, 471, 514], "66": [278, 293, 281], "67": [279, 263, 14], "68": [37, 309, 274], "69": [270, 94, 16], "70": [226, 452, 436], "71": [417, 15, 445], "72": [229, 480, 79], "73": [29, 302, 277], "74": [278, 289, 234], "75": [243, 246, 459], "76": [477, 446, 502], "77": [269, 268, 274], "78": [43, 46, 304], "79": [268, 269, 275], "80": [14, 269, 24], "81": [271, 14, 272], "82": [14, 16, 270], "83": [273, 270, 262], "84": [266, 270, 271], "85": [24, 15, 264], "86": [276, 24, 270], "87": [16, 267, 264], "88": [265, 273, 15], "89": [292, 15, 304], "90": [267, 276, 296], "92": [296, 293, 273], "93": [299, 296, 275], "94": [8, 533, 90], "95": [519, 28, 460], "96": [288, 272, 302], "97": [94, 24, 303], "98": [297, 281, 303], "99": [24, 268, 305], "100": [136, 408, 396], "101": [398, 385, 397], "102": [122, 362, 358], "103": [130, 120, 358], "104": [127, 364, 356], "105": [133, 364, 363], "106": [340, 357, 127], "107": [362, 361, 130], "108": [388, 400, 130], "109": [345, 134, 394], "110": [121, 389, 135], "111": [135, 385, 386], "112": [359, 350, 344], "113": [131, 356, 120], "114": [406, 349, 343], "115": [122, 120, 344], "116": [352, 390, 386], "117": [395, 132, 346], "118": [344, 405, 349], "119": [350, 342, 351], "120": [329, 111, 156], "121": [106, 396, 138], "122": [355, 391, 370], "127": [407, 395, 178], "129": [326, 327, 145], "130": [376, 338, 115], "131": [167, 321, 142], "132": [153, 166, 101], "133": [322, 313, 173], "134": [377, 389, 404], "135": [314, 166, 118], "136": [110, 141, 114], "137": [358, 134, 356], "138": [317, 176, 362], "139": [351, 134, 180], "140": [354, 361, 322], "141": [179, 132, 163], "142": [175, 176, 170], "143": [354, 344, 338], "144": [166, 336, 178], "145": [176, 318, 330], "146": [130, 129, 132], "147": [357, 134, 133], "148": [135, 343, 178], "149": [137, 363, 358], "150": [162, 171, 362], "151": [358, 127, 179], "152": [130, 317, 334], "153": [132, 120, 135], "154": [134, 316, 164], "155": [130, 332, 174], "156": [168, 351, 333], "157": [121, 349, 174], "158": [361, 356, 120], "159": [357, 319, 322], "160": [375, 164, 120], "161": [122, 132, 131], "162": [141, 129, 362], "163": [360, 319, 131], "164": [387, 152, 316], "165": [122, 356, 362], "166": [348, 362, 323], "167": [354, 145, 122], "168": [146, 155, 323], "169": [330, 410, 393], "170": [403, 326, 361], "171": [133, 130, 121], "172": [339, 355, 133], "173": [399, 140, 153], "174": [132, 357, 131], "175": [353, 132, 358], "176": [363, 135, 360], "177": [394, 140, 351], "178": [361, 364, 130], "179": [362, 339, 334], "180": [398, 133, 388], "181": [129, 349, 318], "182": [398, 333, 350], "183": [343, 133, 132], "184": [344, 384, 395], "185": [411, 327, 351], "186": [135, 346, 130], "187": [131, 132, 361], "188": [343, 132, 357], "189": [312, 384, 355], "190": [390, 343, 325], "191": [130, 134, 363], "192": [122, 127, 357], "193": [343, 135, 358], "194": [388, 410, 131], "195": [331, 326, 349], "196": [390, 134, 357], "197": [349, 385, 352], "198": [331, 408, 337], "199": [391, 329, 397], "200": [266, 16, 273], "201": [295, 276, 287], "202": [280, 311, 274], "203": [14, 65, 16], "204": [291, 302, 23], "205": [273, 287, 23], "206": [291, 303, 270], "207": [65, 284, 304], "208": [269, 275, 311], "209": [262, 301, 269], "210": [305, 308, 279], "211": [15, 282, 284], "212": [14, 23, 297], "213": [264, 94, 269], "214": [65, 270, 267], "215": [23, 262, 301], "216": [15, 268, 263], "217": [277, 311, 281], "218": [23, 268, 264], "219": [274, 16, 277], "220": [310, 311, 308], "221": [14, 289, 268], "222": [21, 286, 32], "223": [311, 263, 22], "224": [94, 295, 292], "225": [264, 269, 270], "226": [297, 43, 294], "227": [23, 307, 263], "228": [25, 44, 282], "229": [267, 23, 94], "230": [296, 271, 49], "231": [307, 306, 301], "232": [265, 301, 288], "233": [289, 27, 291], "234": [267, 266, 273], "235": [37, 297, 33], "236": [268, 270, 269], "237": [279, 271, 270], "238": [266, 302, 94], "239": [270, 24, 14], "240": [268, 269, 262], "241": [270, 269, 265], "242": [28, 29, 0], "243": [24, 273, 276], "244": [16, 23, 277], "245": [35, 284, 295], "246": [273, 287, 269], "247": [262, 268, 266], "248": [267, 94, 263], "249": [24, 30, 35], "250": [277, 270, 269], "251": [272, 26, 297], "252": [265, 264, 267], "253": [62, 474, 494], "254": [475, 203, 526], "255": [18, 474, 48], "256": [506, 10, 303], "257": [286, 8, 69], "258": [457, 307, 207], "259": [206, 477, 519], "260": [527, 509, 273], "261": [14, 263, 273], "262": [448, 466, 11], "263": [288, 10, 245], "264": [35, 62, 477], "265": [8, 513, 53], "266": [22, 489, 9], "267": [88, 212, 34], "268": [427, 212, 22], "269": [68, 529, 455], "270": [90, 510, 528], "271": [462, 508, 433], "272": [497, 523, 429], "273": [288, 429, 528], "274": [249, 474, 304], "275": [6, 8, 479], "276": [431, 200, 99], "277": [441, 450, 247], "278": [205, 49, 93], "279": [240, 44, 96], "280": [66, 6, 98], "281": [272, 12, 61], "282": [14, 15, 273], "283": [270, 94, 276], "284": [266, 16, 24], "285": [263, 270, 24], "286": [270, 274, 65], "287": [274, 15, 269], "288": [242, 33, 207], "289": [213, 22, 217], "290": [267, 270, 268], "291": [78, 263, 271], "292": [208, 210, 36], "293": [98, 57, 8], "294": [267, 1, 34], "295": [65, 206, 274], "296": [94, 277, 263], "297": [15, 16, 65], "298": [264, 268, 266], "299": [16, 266, 277], "300": [276, 272, 275], "301": [215, 229, 85], "302": [277, 219, 36], "303": [263, 34, 267], "304": [270, 94, 275], "305": [264, 269, 262], "306": [266, 15, 270], "307": [273, 264, 83], "308": [229, 9, 35], "309": [14, 272, 275], "310": [262, 265, 267], "311": [203, 208, 237], "312": [133, 166, 121], "313": [164, 120, 132], "314": [358, 133, 172], "315": [177, 121, 127], "316": [165, 360, 356], "317": [377, 165, 137], "318": [145, 161, 357], "319": [133, 361, 363], "320": [127, 136, 164], "321": [171, 177, 356], "322": [180, 170, 137], "323": [362, 359, 364], "324": [377, 133, 168], "325": [356, 396, 388], "326": [362, 133, 132], "327": [358, 171, 136], "328": [361, 175, 122], "329": [166, 135, 171], "330": [134, 131, 136], "331": [388, 133, 384], "332": [135, 133, 129], "333": [360, 356, 170], "334": [162, 135, 360], "335": [131, 121, 358], "336": [363, 136, 120], "337": [134, 121, 398], "338": [167, 132, 385], "339": [396, 167, 360], "340": [171, 137, 161], "341": [137, 411, 395], "342": [400, 409, 401], "343": [162, 137, 133], "344": [103, 144, 178], "345": [104, 366, 108], "346": [106, 108, 152], "347": [112, 180, 368], "348": [157, 114, 159], "349": [392, 174, 378], "350": [134, 131, 361], "351": [356, 121, 359], "352": [377, 362, 385], "353": [135, 174, 356], "354": [121, 179, 178], "355": [132, 360, 130], "356": [106, 386, 367], "357": [322, 166, 180], "358": [144, 411, 401], "359": [378, 330, 323], "360": [405, 366, 319], "361": [386, 341, 333], "362": [340, 411, 177], "363": [347, 353, 327], "364": [332, 399, 393], "365": [393, 346, 395], "366": [406, 354, 120], "367": [339, 405, 131], "368": [399, 387, 385], "369": [356, 389, 338], "370": [390, 354, 408], "371": [122, 162, 120], "372": [345, 132, 122], "373": [162, 351, 169], "374": [328, 316, 360], "375": [342, 405, 411], "376": [130, 131, 136], "377": [150, 145, 358], "378": [349, 397, 401], "379": [408, 325, 132], "380": [331, 330, 385], "381": [347, 342, 394], "382": [392, 351, 400], "383": [132, 121, 362], "384": [356, 168, 347], "385": [318, 341, 314], "386": [316, 345, 337], "387": [377, 324, 359], "388": [321, 103, 114], "389": [170, 313, 336], "390": [357, 362, 359], "391": [107, 167, 168], "392": [163, 339, 121], "393": [179, 120, 337], "394": [136, 360, 364], "395": [349, 351, 377], "396": [110, 346, 118], "397": [348, 352, 364], "398": [352, 106, 335], "399": [332, 121, 345], "400": [122, 330, 342], "401": [120, 377, 130], "402": [359, 133, 120], "403": [377, 133, 375], "404": [357, 133, 132], "405": [354, 136, 327], "406": [361, 137, 135], "407": [343, 177, 376], "408": [167, 375, 165], "409": [349, 178, 348], "410": [339, 105, 136], "411": [339, 130, 364], "412": [24, 273, 265], "413": [267, 14, 23], "414": [272, 274, 277], "415": [272, 262, 23], "416": [24, 276, 265], "417": [23, 263, 277], "418": [263, 265, 271], "419": [264, 271, 65], "420": [275, 23, 264], "421": [270, 65, 272], "422": [23, 263, 264], "423": [264, 271, 65], "424": [23, 14, 65], "425": [268, 275, 271], "426": [263, 274, 265], "427": [277, 275, 273], "428": [272, 273, 271], "429": [65, 266, 15], "430": [272, 266, 263], "431": [269, 94, 23], "432": [270, 274, 94], "433": [269, 65, 264], "434": [266, 263, 15], "435": [267, 23, 272], "436": [267, 23, 24], "437": [23, 272, 267], "438": [277, 265, 269], "439": [275, 274, 65], "440": [94, 266, 276], "441": [264, 270, 23], "442": [15, 275, 268], "443": [269, 14, 270], "444": [65, 273, 270], "445": [14, 272, 263], "446": [273, 269, 24], "447": [269, 263, 267], "448": [271, 268, 275], "449": [266, 94, 272], "450": [265, 270, 16], "451": [271, 14, 15], "452": [264, 94, 272], "453": [270, 269, 263], "454": [65, 277, 271], "455": [269, 266, 24], "456": [267, 23, 15], "457": [273, 15, 268], "458": [273, 265, 276], "459": [267, 272, 276], "460": [269, 23, 276], "461": [268, 270, 23], "462": [265, 16, 262], "463": [16, 274, 275], "464": [273, 271, 270], "465": [65, 274, 270], "466": [271, 275, 277], "467": [65, 275, 94], "468": [267, 263, 264], "469": [266, 263, 271], "470": [268, 275, 270], "471": [270, 16, 262], "472": [263, 274, 277], "473": [14, 15, 275], "474": [272, 266, 277], "475": [275, 23, 271], "476": [273, 275, 262], "477": [14, 269, 24], "478": [272, 23, 275], "479": [273, 275, 94], "480": [265, 15, 275], "481": [262, 23, 274], "482": [15, 272, 264], "483": [65, 270, 268], "484": [271, 65, 23], "485": [266, 15, 65], "486": [266, 94, 271], "487": [262, 273, 267], "488": [266, 274, 16], "489": [15, 94, 65], "490": [269, 24, 275], "491": [14, 263, 272], "492": [275, 267, 23], "493": [267, 272, 276], "494": [15, 265, 14], "495": [268, 65, 94], "496": [16, 24, 266], "497": [269, 262, 273], "498": [268, 23, 266], "499": [275, 23, 273], "500": [273, 15, 266], "501": [268, 15, 273], "502": [24, 277, 273], "503": [65, 24, 267], "504": [264, 271, 267], "505": [24, 269, 263], "506": [23, 265, 269], "507": [268, 267, 94], "508": [65, 24, 262], "509": [266, 269, 271], "510": [274, 262, 271], "511": [267, 264, 272], "512": [263, 273, 16], "513": [274, 269, 15], "514": [273, 16, 275], "515": [273, 276, 23], "516": [270, 24, 273], "517": [268, 23, 263], "518": [267, 94, 273], "519": [16, 262, 94], "520": [264, 265, 266], "521": [274, 264, 15], "522": [274, 271, 14], "523": [15, 270, 277], "524": [65, 266, 270], "525": [265, 277, 272], "526": [274, 15, 23], "527": [14, 65, 274], "528": [268, 271, 16], "529": [23, 262, 263], "530": [277, 23, 263], "531": [262, 271, 267], "532": [277, 24, 267], "533": [262, 270, 268]};
 const QT_ORDER = ["anlam", "bosluk", "ters", "resim", "dinleme", "harf", "cumle", "kok"];
 function hardMap() { if (!store.hard || typeof store.hard !== "object") store.hard = {}; return store.hard; }
 function elig(type, i) {
@@ -1753,14 +1757,42 @@ function poolFor(type, scope) {
   const h = hardMap();
   return DATA.map((_, i) => i).filter(i => elig(type, i) && (scope === "both" || (scope === "hard" ? !!h[i] : DATA[i].u === unit)));
 }
-// yanlış seçenekler: önce aynı ünite ve aynı gruptan, sonra aynı üniteden, sonra hepsinden
-function pickOthers(i, n, ok, key) {
+// Türkçe anlamdaki asıl kelimeler (anlamca birbirinin yerine geçebilecek seçenekleri ayıklamak için)
+const TR_STOP = new Set(["daha", "olan", "olarak", "gibi", "için", "veya", "ile", "bir", "çok", "en"]);
+function trWords(i) {
+  return new Set(DATA[i].tr.toLocaleLowerCase("tr").replace(/\(.*?\)/g, " ").split(/[^a-zçğıöşüâîû]+/).filter(w => w.length >= 4 && !TR_STOP.has(w)).map(w => w.slice(0, 5)));
+}
+let SYN = null;
+const SYN_EXTRA = [["أَكْوَاخ", "بُيُوتٌ جَلِيدِيَّةٌ"], ["دَافِئ", "مُعْتَدِل"], ["المَنَاخ", "الطَّقْس"], ["مَنَاخ", "الطَّقْس"], ["غَالِيَة", "بَاهِظَةُ الثَّمَنِ"], ["مَحَلّ", "الدُّكَّان"], ["مَصْرِف", "صَرَّاف"]];
+function arKey(t) { return strip(t).replace(/^ال/, "").replace(/\s+/g, " ").trim(); }
+function synSet() {
+  if (SYN) return SYN;
+  SYN = new Set();
+  const by = {}; DATA.forEach((d, i) => { (by[arKey(d.ar)] = by[arKey(d.ar)] || []).push(i); });
+  const add = (a, b) => (by[arKey(a)] || []).forEach(x => (by[arKey(b)] || []).forEach(y => { SYN.add(x + "-" + y); SYN.add(y + "-" + x); }));
+  (typeof MATCH !== "undefined" ? MATCH.muradif : []).forEach(p => add(p[1], p[2]));
+  SYN_EXTRA.forEach(([a, b]) => add(a, b));
+  return SYN;
+}
+function sameMeaning(i, j) {
+  if (synSet().has(i + "-" + j)) return true;
+  const a = trWords(i); for (const w of trWords(j)) if (a.has(w)) return true; return false;
+}
+// birbirine benzeyen resimler aynı soruda yan yana çıkmasın
+const PIC_GROUPS = [["☀️", "🌞", "🌤️"], ["☁️", "⛅"], ["🌧️", "☔", "🌦️", "💦", "💧"], ["❄️", "🌨️", "☃️", "⛄", "🥶", "🧊", "🏔️"], ["💨", "🌬️", "🌪️", "🍃"], ["🌊", "🏖️", "⛱️", "🏝️"], ["🔥", "🥵", "♨️", "🌡️", "s:thermoLow", "s:thermoHigh"], ["🏜️", "🌵", "🐪", "🌴"], ["🕌", "🕋", "s:minaret"], ["💰", "💸", "🏷️", "🥇"], ["👥", "👨‍👩‍👧‍👦", "🙋"], ["📅", "📆", "🗓️"], ["⏳", "⌛", "🕒", "⏰", "⏱️", "🕰️"], ["⛈️", "⚡"], ["🏛️", "s:temple", "s:column"], ["🏢", "🏘️", "🏠", "🚪"], ["🧥", "👕", "👗", "👔"], ["🐦", "🕊️", "🦅"], ["🐟", "🐠", "🍣"], ["🏹", "🎯"], ["🧗", "⛰️"], ["🌳", "🌲", "🌿", "🌱"], ["s:dirN", "s:dirS", "s:dirE", "s:dirW"], ["🛢️", "⛏️", "🪨"]];
+const PIC_GROUP = {}; PIC_GROUPS.forEach((g, n) => g.forEach(e => { PIC_GROUP[e] = n; }));
+function picGroup(i) { const v = PICS[i]; return v in PIC_GROUP ? "g" + PIC_GROUP[v] : v; }
+// yanlış seçenekler: anlamca doğru cevabın yerine geçebilecek kelimeler hiç seçilmez.
+// diffCat: true ise seçenekler başka gruplardan gelir (boşluk doldurma ve resimde birden fazla doğru çıkmasın diye)
+function pickOthers(i, n, ok, key, diffCat) {
   const used = new Set([key(i)]), out = [];
-  const tiers = [j => DATA[j].u === DATA[i].u && DATA[j].c === DATA[i].c, j => DATA[j].u === DATA[i].u, () => true];
+  const tiers = diffCat
+    ? [j => DATA[j].u === DATA[i].u && DATA[j].c !== DATA[i].c, j => DATA[j].c !== DATA[i].c]
+    : [j => DATA[j].u === DATA[i].u && DATA[j].c === DATA[i].c, j => DATA[j].u === DATA[i].u, () => true];
   for (const t of tiers) {
     for (const j of shuffled(DATA.map((_, k) => k))) {
       if (out.length >= n) break;
-      if (j === i || !ok(j) || !t(j)) continue;
+      if (j === i || !ok(j) || !t(j) || sameMeaning(i, j)) continue;
       const k = key(j); if (!k || used.has(k)) continue;
       used.add(k); out.push(j);
     }
@@ -1772,21 +1804,28 @@ function makeQ(type, i) {
   const d = DATA[i];
   const q = { type, i, kind: "mc", ask: QT[type].ask, opts: [], arOpts: false, answer: "", answerAr: false };
   const mc = (correct, others, ar) => { q.arOpts = ar; q.answer = correct; q.answerAr = ar; q.opts = shuffled([{ t: correct, ok: true }, ...others.map(t => ({ t, ok: false }))]); };
-  const arOthers = (ok) => pickOthers(i, 3, ok, j => strip(DATA[j].ar)).map(j => DATA[j].ar);
+  const arOthers = (ok, diffCat) => pickOthers(i, 3, ok, j => arKey(DATA[j].ar), diffCat).map(j => DATA[j].ar);
   switch (type) {
     case "anlam": mc(d.tr, [d.d[0], d.d[1]], false); break;
     case "ters": mc(d.ar, arOthers(() => true), true); break;
-    case "resim": mc(d.ar, arOthers(j => !!PICS[j] && PICS[j] !== PICS[i]), true); break;
+    case "resim": mc(d.ar, arOthers(j => !!PICS[j] && picGroup(j) !== picGroup(i), true), true); break;
     case "dinleme": mc(d.ar, arOthers(() => true), true); break;
     case "bosluk": {
       q.sentence = d.s.replace(/\[\[.*?\]\]/, "\u0000");
-      mc(hlPart(d.s), pickOthers(i, 3, j => elig("bosluk", j), j => strip(hlPart(DATA[j].s))).map(j => hlPart(DATA[j].s)), true);
+      const fixed = BOSLUK_D[i];
+      const others = fixed && fixed.length === 3 ? fixed : pickOthers(i, 3, j => elig("bosluk", j), j => strip(hlPart(DATA[j].s)), true);
+      mc(hlPart(d.s), others.map(j => hlPart(DATA[j].s)), true);
       break;
     }
     case "kok": {
       const useRoot = !!ROOTS[i] && (!COG[i] || Math.random() < 0.5);
       if (useRoot) { q.sub = "root"; q.ask = "Kökü hangisi?"; mc(ROOTS[i], pickOthers(i, 3, j => !!ROOTS[j], j => ROOTS[j]).map(j => ROOTS[j]), true); }
-      else { q.sub = "cog"; q.ask = "Türkçeye geçen akrabası hangisi?"; mc(COG[i], pickOthers(i, 3, j => !!COG[j], j => COG[j].toLocaleLowerCase("tr")).map(j => COG[j]), false); }
+      else {
+        q.sub = "cog"; q.ask = "Türkçeye geçen akrabası hangisi?";
+        const p4 = t => t.toLocaleLowerCase("tr").slice(0, 4);
+        const okCog = j => !!COG[j] && !(ROOTS[i] && ROOTS[j] === ROOTS[i]) && p4(COG[j]) !== p4(COG[i]);
+        mc(COG[i], pickOthers(i, 3, okCog, j => COG[j].toLocaleLowerCase("tr")).map(j => COG[j]), false);
+      }
       break;
     }
     case "harf":
@@ -1872,6 +1911,15 @@ function renderCountChips() {
 function renderSetup() {
   const t = QT[qz.type];
   $("q-icon").textContent = t.icon; $("q-title").textContent = t.title; $("q-desc").textContent = t.desc;
+  const old = document.getElementById("voice-warn"); if (old) old.remove();
+  if (qz.type === "dinleme") {
+    if (HAS_TTS && !arVoices.length) loadVoices();
+    if (!HAS_TTS || !arVoices.length) {
+      const w = document.createElement("p"); w.id = "voice-warn"; w.className = "voice-warn";
+      w.textContent = "Bu cihazda Arapça okuma sesi bulunamadı. Ses olmadan bu test çalışmaz. Telefonun ya da bilgisayarın ayarlarından Arapça sesi yükledikten sonra uygulamayı yeniden aç.";
+      $("q-desc").after(w);
+    }
+  }
   renderScopeChips(); renderCountChips();
 }
 function showStage(s) {
@@ -1980,7 +2028,7 @@ function choose(btn) {
   finish(right, !!btn);
 }
 function markHard(i, right) {
-  const h = hardMap();
+  const h = hardMap(); qz.prevHard = h[i];
   if (right) { if (h[i]) { h[i]--; if (h[i] <= 0) delete h[i]; } }
   else h[i] = 2;
   persist();
@@ -2000,7 +2048,7 @@ function finish(right, picked) {
   if (q.type === "dinleme") { const w = $("q-word"); w.textContent = d.ar; w.className = "word ar " + sizeClass(d.ar); }
   if (q.type === "bosluk") renderSentence($("q-sent"), d.s);
   if (q.kind === "build") {
-    if (!right) { q.chosen = q.target.map(ch => ({ ch })); q.pool.forEach(t => { t.used = true; }); }
+    if (!right) { q.userOrder = q.chosen.map(t => t.ch); q.chosen = q.target.map(ch => ({ ch })); q.pool.forEach(t => { t.used = true; }); }
     renderBuild();
     $("b-ans").classList.add(right ? "ok" : "shown");
   }
@@ -2027,9 +2075,40 @@ function finish(right, picked) {
   }
   if (line.childNodes.length) fb.appendChild(line);
   if (q.type === "anlam" || q.type === "kok") { const note = document.createElement("span"); richText(note, d.n); fb.appendChild(note); }
+  if (!right && picked && q.type === "harf" && q.userOrder && q.userOrder.length) {
+    const u = document.createElement("span"); u.className = "fb-line";
+    const lab = document.createElement("span"); lab.className = "fb-tr"; lab.textContent = "Senin kurduğun kelime:";
+    const us = document.createElement("span"); us.className = "fb-sent ar fb-wrong"; us.lang = "ar"; us.textContent = q.userOrder.join("");
+    const lab2 = document.createElement("span"); lab2.className = "fb-tr"; lab2.textContent = "Yukarıdaki kutuda doğru yazılışı görüyorsun.";
+    u.append(lab, us, lab2); fb.appendChild(u);
+  }
+  if (!right && picked && (q.kind === "mc" || q.type === "cumle")) {
+    if (q.type === "cumle" && q.userOrder && q.userOrder.length) {
+      const u = document.createElement("span"); u.className = "fb-line";
+      const lab = document.createElement("span"); lab.className = "fb-tr"; lab.textContent = "Senin sıralaman:";
+      const us = document.createElement("span"); us.className = "fb-sent ar"; us.lang = "ar"; us.textContent = q.userOrder.join(" ") + (q.end || "");
+      u.append(lab, us); fb.appendChild(u);
+    }
+    const ob = document.createElement("button"); ob.type = "button"; ob.className = "linkbtn dispute";
+    ob.textContent = q.type === "cumle" ? "Benim sıralamam da doğru" : "Benim cevabım da doğru";
+    ob.addEventListener("click", () => acceptMine(i, ob));
+    fb.appendChild(ob);
+  }
   fb.hidden = false;
   $("btn-qnext").disabled = false; $("btn-reveal").disabled = true;
   setTimeout(() => fb.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" }), 60);
+}
+// kullanıcı kendi cevabının da doğru olduğunu düşünüyorsa: doğru say
+function acceptMine(i, btn) {
+  if (qz.list[qz.pos] !== i || !qz.answered) return;
+  qz.bad = Math.max(0, qz.bad - 1); qz.ok++;
+  const w = qz.wrong.lastIndexOf(i); if (w >= 0) qz.wrong.splice(w, 1);
+  const h = hardMap(); if (qz.prevHard) h[i] = qz.prevHard; else delete h[i]; persist();
+  $("q-ok").textContent = qz.ok; $("q-bad").textContent = qz.bad;
+  const v = $("verdict"); v.innerHTML = ICON_OK; v.className = "verdict show ok";
+  const fb = $("feedback"); fb.className = "feedback ok";
+  const head = fb.querySelector("b"); if (head) head.textContent = "Doğru sayıldı";
+  btn.remove();
 }
 function finishQuiz() {
   const total = qz.list.length;
@@ -2349,6 +2428,7 @@ const MATCH_EXTRA = {
 };
 // kitaptaki alıştırmalar önce, kart kelimelerinden ek alıştırmalar sonra gelir
 for (const k in MATCH_EXTRA) MATCH[k] = MATCH[k].concat(MATCH_EXTRA[k].map(p => [...p, "Kart kelimelerinden ek alıştırma"]));
+(function () { const z = MATCH.zit, a = z.findIndex(p => p[0] === 3 && p[1] === "بِدَايَة"), b = z.findIndex(p => p[0] === 3 && p[1] === "كَبِير"); if (a >= 0 && b >= 0) { const t = z[a]; z[a] = z[b]; z[b] = t; } })();
 const MATCH_INFO = {
   muradif: { ar: "صِلْ بَيْنَ الكَلِمَةِ وَمُرَادِفِهَا", tr: "Her kelimeyi eş anlamlısıyla eşleştir.", ha: "الكَلِمَة", hb: "مُرَادِفُهَا" },
   zit: { ar: "صِلْ بَيْنَ الكَلِمَةِ وَضِدِّهَا", tr: "Her kelimeyi zıt anlamlısıyla eşleştir.", ha: "الكَلِمَة", hb: "ضِدُّهَا" },
